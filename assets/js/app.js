@@ -96,9 +96,9 @@ function renderGallery(gallery) {
   if (!allGallery || allGallery.length === 0) return;
 
   container.innerHTML = allGallery.map(item => `
-    <div class="gallery-item" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" style="cursor: pointer;" tabindex="0" role="button">
+    <div class="gallery-masonry-item" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" tabindex="0" role="button" aria-label="Lihat foto ${item.title}">
       ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : ''}
-      <div class="gallery-item-title">${item.title}</div>
+      <div class="gallery-masonry-caption">${item.title}</div>
     </div>
   `).join('');
 }
@@ -151,12 +151,12 @@ function openGalleryModal(id, url, titleEnc) {
   
   imgEl.src = url;
   frame.style.display = 'block';
-  urlBar.innerText = `skagamu.sch.id/gallery/dokumentasi`;
+  urlBar.innerText = `skagamu.sch.id/gallery/kemerdekaan-ri-81`;
   
   document.getElementById('modalCategory').innerText = 'Dokumentasi & Galeri';
   document.getElementById('modalTitle').innerText = title;
   document.getElementById('modalAuthor').innerText = 'HUT RI Ke-81 • Wuryantoro';
-  document.getElementById('modalDesc').innerText = 'Dokumentasi resmi partisipasi dan kreativitas kontingen SMK Gajah Mungkur 1 Wuryantoro.';
+  document.getElementById('modalDesc').innerText = 'Dokumentasi resmi kemeriahan dan partisipasi kontingen siswa & guru SMK Gajah Mungkur 1 Wuryantoro.';
   
   const modal = document.getElementById('workModal');
   modal.classList.add('active');

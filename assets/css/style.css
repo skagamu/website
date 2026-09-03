@@ -181,17 +181,41 @@ nav.nav-links a:hover { color: var(--ink); }
 .work-body h3 { font-size: 18px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
 .work-body p.work-meta { font-size: 13px; color: var(--ink-muted); }
 
-/* GALLERY */
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.gallery-item {
-  aspect-ratio: 4 / 3; border-radius: var(--radius-lg); overflow: hidden; position: relative;
-  background: var(--surface-2); border: 1px solid var(--hairline);
+/* MASONRY GALLERY (EDITORIAL MULTI-COLUMN) */
+.gallery-masonry {
+  column-count: 3;
+  column-gap: 20px;
 }
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-item-title {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 20px;
-  background: linear-gradient(to top, rgba(9,9,9,0.92) 0%, rgba(9,9,9,0.6) 60%, transparent 100%);
-  font-size: 15px; font-weight: 700;
+.gallery-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--hairline);
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.gallery-masonry-item:hover {
+  border-color: var(--hairline-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+}
+.gallery-masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.gallery-masonry-item:hover img {
+  transform: scale(1.04);
+}
+.gallery-masonry-caption {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 20px 18px;
+  background: linear-gradient(to top, rgba(9,9,9,0.95) 0%, rgba(9,9,9,0.7) 60%, transparent 100%);
+  font-size: 14px; font-weight: 700; line-height: 1.4; color: #fff;
+  opacity: 0.95; transition: opacity 0.2s;
 }
 
 /* CONTACT & FOOTER */
@@ -248,16 +272,18 @@ footer { padding: 40px 0; border-top: 1px solid var(--hairline); font-size: 13px
 .mockup-viewport::-webkit-scrollbar-thumb { background: var(--hairline-hover); border-radius: 3px; }
 .mockup-viewport img { width: 100%; height: auto; display: block; }
 
-/* RESPONSIVE BREAKPOINTS (MOBILE & TABLET) */
+/* RESPONSIVE BREAKPOINTS */
 @media (max-width: 1024px) {
   .grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .services { grid-template-columns: repeat(2, 1fr); }
-  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .gallery-masonry { column-count: 2; column-gap: 16px; }
+  .gallery-masonry-item { margin-bottom: 16px; }
 }
 
 @media (max-width: 768px) {
   .hero-grid, .two-col { grid-template-columns: 1fr; gap: 36px; }
-  .grid, .services, .gallery { grid-template-columns: 1fr; }
+  .grid, .services { grid-template-columns: 1fr; }
+  .gallery-masonry { column-count: 1; }
   .hero { min-height: auto; padding: 40px 0; }
   .hero-card { height: 280px; }
   .hero-card-content h3 { font-size: 26px; }
