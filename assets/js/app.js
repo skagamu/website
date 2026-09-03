@@ -1,4 +1,5 @@
 let allWorks = [];
+let allGallery = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   initPublicData();
@@ -90,10 +91,12 @@ function renderFallbackPortfolio() {
 }
 
 function renderGallery(gallery) {
+  allGallery = gallery || [];
   const container = document.getElementById('galleryGrid');
-  if (!gallery || gallery.length === 0) return;
-  container.innerHTML = gallery.map(item => `
-    <div class="gallery-item">
+  if (!allGallery || allGallery.length === 0) return;
+
+  container.innerHTML = allGallery.map(item => `
+    <div class="gallery-item" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" style="cursor: pointer;" tabindex="0" role="button">
       ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : ''}
       <div class="gallery-item-title">${item.title}</div>
     </div>
@@ -137,7 +140,27 @@ function openModal(id) {
   
   const modal = document.getElementById('workModal');
   modal.classList.add('active');
-  document.body.style.overflow = 'hidden'; // prevent background scroll
+  document.body.style.overflow = 'hidden';
+}
+
+function openGalleryModal(id, url, titleEnc) {
+  const title = decodeURIComponent(titleEnc);
+  const frame = document.getElementById('modalMockupFrame');
+  const imgEl = document.getElementById('modalImg');
+  const urlBar = document.getElementById('modalUrlBar');
+  
+  imgEl.src = url;
+  frame.style.display = 'block';
+  urlBar.innerText = `skagamu.sch.id/gallery/dokumentasi`;
+  
+  document.getElementById('modalCategory').innerText = 'Dokumentasi & Galeri';
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalAuthor').innerText = 'HUT RI Ke-81 • Wuryantoro';
+  document.getElementById('modalDesc').innerText = 'Dokumentasi resmi partisipasi dan kreativitas kontingen SMK Gajah Mungkur 1 Wuryantoro.';
+  
+  const modal = document.getElementById('workModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {

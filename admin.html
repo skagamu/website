@@ -31,13 +31,44 @@
     .action-btn:hover { background: var(--surface-3); }
     .action-btn.delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
     
-    .form-group { margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; position: relative; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--ink-muted); }
-    .form-control { width: 100%; background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 12px 14px; color: #fff; font-size: 14px; min-height: 44px; }
+    .form-control { width: 100%; background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 12px 14px; color: #fff; font-size: 14px; min-height: 44px; transition: border-color 0.2s; }
     .form-control:focus { outline: none; border-color: var(--primary); }
     
-    .login-overlay { position: fixed; inset: 0; background: #090909; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .login-box { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 36px 30px; width: min(420px, 100%); }
+    /* PASSWORD FIELD WITH TOGGLE */
+    .password-wrapper { position: relative; display: flex; align-items: center; }
+    .password-wrapper input { padding-right: 44px; }
+    .toggle-password {
+      position: absolute; right: 10px; background: none; border: none;
+      color: var(--ink-muted); cursor: pointer; padding: 6px; display: flex;
+      align-items: center; justify-content: center; font-size: 16px;
+    }
+    .toggle-password:hover { color: #fff; }
+
+    /* LOGIN MODAL & ANIMATIONS */
+    .login-overlay { position: fixed; inset: 0; background: rgba(9,9,9,0.92); backdrop-filter: blur(16px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-box {
+      background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+      padding: 40px 32px; width: min(420px, 100%); box-shadow: 0 24px 48px rgba(0,0,0,0.8);
+      transition: transform 0.2s ease;
+    }
+    
+    /* SHAKE ANIMATION ON ERROR */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .login-box.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+    /* LOADING SPINNER BUTTON */
+    .btn-spinner {
+      display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%; border-top-color: #fff; animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: var(--radius-sm); background: #22c55e; color: #fff; font-weight: 600; font-size: 14px; z-index: 3000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     
     /* MOBILE BOTTOM TAB BAR FOR ADMIN */
@@ -61,23 +92,32 @@
 
 <!-- LOGIN OVERLAY -->
 <div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+  <div class="login-box" id="loginBox">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
       <span class="brand-badge">SK</span>
       <h2 style="font-size: 22px; font-weight: 800;">SKAGAMU CMS</h2>
     </div>
     <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Masuk untuk mengelola portofolio karya & galeri sekolah.</p>
-    <form id="loginForm">
+    
+    <form id="loginForm" novalidate>
       <div class="form-group">
         <label>Username</label>
-        <input type="text" id="loginUser" class="form-control" required value="adminwebsite" autocomplete="username">
+        <input type="text" id="loginUser" class="form-control" required placeholder="Masukkan username" autocomplete="username">
       </div>
+      
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="loginPass" class="form-control" required value="skagamu123" autocomplete="current-password">
+        <div class="password-wrapper">
+          <input type="password" id="loginPass" class="form-control" required placeholder="Masukkan password" autocomplete="current-password">
+          <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Lihat password">👁️</button>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn">Masuk Dashboard</button>
-      <div id="loginError" style="color: #ef4444; font-size: 13px; margin-top: 12px; display: none;"></div>
+      
+      <div id="loginError" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; display: none;"></div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;" id="loginBtn">
+        <span id="loginBtnText">Masuk Dashboard</span>
+      </button>
     </form>
   </div>
 </div>
@@ -244,7 +284,7 @@
     <form id="galleryForm">
       <div class="form-group">
         <label>Judul Kegiatan</label>
-        <input type="text" id="gTitle" class="form-control" required placeholder="Contoh: Workshop Desain Grafis 2026">
+        <input type="text" id="gTitle" class="form-control" required placeholder="Contoh: Pawai Kemerdekaan RI Ke-81">
       </div>
       <div class="form-group">
         <label>Foto Dokumentasi</label>

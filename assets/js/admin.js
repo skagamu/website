@@ -4,13 +4,19 @@ let currentData = { portfolio: [], gallery: [], settings: {} };
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
   setupEvents();
+  setupPasswordToggle();
+  setupInputListeners();
 });
 
 function checkAuth() {
   const saved = sessionStorage.getItem(CONFIG.STORAGE_AUTH_KEY);
   if (saved) {
-    adminAuth = JSON.parse(saved);
-    showDashboard();
+    try {
+      adminAuth = JSON.parse(saved);
+      showDashboard();
+    } catch (e) {
+      sessionStorage.removeItem(CONFIG.STORAGE_AUTH_KEY);
+    }
   }
 }
 
@@ -34,31 +40,73 @@ async function loadDashboardData() {
   }
 }
 
+function setupPasswordToggle() {
+  const toggleBtn = document.getElementById('togglePasswordBtn');
+  const passInput = document.getElementById('loginPass');
+  if (toggleBtn && passInput) {
+    toggleBtn.addEventListener('click', () => {
+      const isPass = passInput.type === 'password';
+      passInput.type = isPass ? 'text' : 'password';
+      toggleBtn.innerText = isPass ? '🙈' : '👁️';
+    });
+  }
+}
+
+function setupInputListeners() {
+  const userIn = document.getElementById('loginUser');
+  const passIn = document.getElementById('loginPass');
+  const errBox = document.getElementById('loginError');
+
+  [userIn, passIn].forEach(input => {
+    input.addEventListener('input', () => {
+      if (errBox) errBox.style.display = 'none';
+      document.getElementById('loginBox').classList.remove('shake');
+    });
+  });
+}
+
 function setupEvents() {
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('loginBtn');
-    btn.innerText = 'Memverifikasi...';
-    btn.disabled = true;
+    const btnText = document.getElementById('loginBtnText');
+    const errBox = document.getElementById('loginError');
+    const loginBox = document.getElementById('loginBox');
 
-    const username = document.getElementById('loginUser').value;
+    const username = document.getElementById('loginUser').value.trim();
     const password = document.getElementById('loginPass').value;
+
+    if (!username || !password) {
+      errBox.innerText = 'Username dan password wajib diisi!';
+      errBox.style.display = 'block';
+      loginBox.classList.add('shake');
+      return;
+    }
+
+    btnText.innerHTML = '<span class="btn-spinner"></span> Memverifikasi...';
+    btn.disabled = true;
+    errBox.style.display = 'none';
 
     try {
       const res = await fetchAPI('saveSettings', { username, password, settings: {} }, 'POST');
       if (res && res.success) {
         adminAuth = { username, password };
         sessionStorage.setItem(CONFIG.STORAGE_AUTH_KEY, JSON.stringify(adminAuth));
+        showToast('Login berhasil! Selamat datang');
         showDashboard();
       } else {
-        document.getElementById('loginError').innerText = 'Username atau Password salah!';
-        document.getElementById('loginError').style.display = 'block';
+        errBox.innerText = 'Username atau Password salah!';
+        errBox.style.display = 'block';
+        loginBox.classList.add('shake');
+        document.getElementById('loginPass').value = '';
+        document.getElementById('loginPass').focus();
       }
     } catch (err) {
-      document.getElementById('loginError').innerText = 'Gagal menghubungi server Apps Script.';
-      document.getElementById('loginError').style.display = 'block';
+      errBox.innerText = 'Gagal menghubungi server database. Coba lagi.';
+      errBox.style.display = 'block';
+      loginBox.classList.add('shake');
     } finally {
-      btn.innerText = 'Masuk Dashboard';
+      btnText.innerText = 'Masuk Dashboard';
       btn.disabled = false;
     }
   });
