@@ -8,29 +8,53 @@
   <style>
     body { background-color: #0b0c0e; }
     .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
-    .sidebar { background: #101114; border-right: 1px solid var(--hairline); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-    .sidebar-brand { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 8px; }
-    .nav-item { display: block; padding: 10px 14px; border-radius: var(--radius-sm); color: var(--ink-muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 6px; cursor: pointer; }
+    .sidebar { background: #101114; border-right: 1px solid var(--hairline); padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; }
+    .sidebar-brand { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); color: var(--ink-muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 6px; cursor: pointer; min-height: 44px; transition: all 0.2s; }
     .nav-item:hover, .nav-item.active { background: var(--surface-3); color: #fff; }
-    .main-content { padding: 36px 48px; max-width: 1200px; }
+    
+    .main-content { padding: 36px 40px; max-width: 1200px; width: 100%; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-    .table-container { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); overflow: hidden; margin-top: 20px; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-    th { background: var(--surface-2); padding: 14px 18px; border-bottom: 1px solid var(--hairline); color: var(--ink-muted); font-size: 12px; text-transform: uppercase; }
-    td { padding: 14px 18px; border-bottom: 1px solid var(--hairline); }
+    
+    /* TABLE CONTAINER */
+    .table-container { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); overflow-x: auto; margin-top: 24px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 600px; }
+    th { background: var(--surface-2); padding: 14px 18px; border-bottom: 1px solid var(--hairline); color: var(--ink-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    td { padding: 14px 18px; border-bottom: 1px solid var(--hairline); vertical-align: middle; }
+    
     .badge { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; text-transform: uppercase; }
     .badge-published { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
     .badge-draft { background: rgba(234, 179, 8, 0.15); color: #eab308; }
-    .action-btn { padding: 6px 12px; font-size: 12px; margin-right: 6px; border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--ink); }
+    
+    .action-btn { padding: 8px 14px; font-size: 13px; font-weight: 600; margin-right: 6px; border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--ink); min-height: 38px; }
+    .action-btn:hover { background: var(--surface-3); }
     .action-btn.delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink-muted); }
-    .form-control { width: 100%; background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 10px 14px; color: #fff; font-size: 14px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--ink-muted); }
+    .form-control { width: 100%; background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 12px 14px; color: #fff; font-size: 14px; min-height: 44px; }
     .form-control:focus { outline: none; border-color: var(--primary); }
-    .login-overlay { position: fixed; inset: 0; background: #090909; z-index: 2000; display: flex; align-items: center; justify-content: center; }
-    .login-box { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 40px; width: min(400px, 90%); }
-    .toast { position: fixed; bottom: 30px; right: 30px; padding: 12px 24px; border-radius: var(--radius-sm); background: #22c55e; color: #fff; font-weight: 600; font-size: 14px; z-index: 3000; display: none; }
+    
+    .login-overlay { position: fixed; inset: 0; background: #090909; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-box { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 36px 30px; width: min(420px, 100%); }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: var(--radius-sm); background: #22c55e; color: #fff; font-weight: 600; font-size: 14px; z-index: 3000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    
+    /* MOBILE BOTTOM TAB BAR FOR ADMIN */
+    @media (max-width: 860px) {
+      .admin-layout { grid-template-columns: 1fr; padding-bottom: 74px; }
+      .sidebar {
+        position: fixed; bottom: 0; left: 0; right: 0; top: auto;
+        border-right: none; border-top: 1px solid var(--hairline);
+        flex-direction: row; align-items: center; justify-content: space-around;
+        padding: 8px 12px; z-index: 100; background: rgba(16, 17, 20, 0.95);
+        backdrop-filter: blur(16px);
+      }
+      .sidebar-brand, .sidebar > div:last-child { display: none; }
+      .sidebar nav { display: flex; width: 100%; justify-content: space-around; }
+      .nav-item { margin-bottom: 0; font-size: 12px; padding: 8px 10px; flex-direction: column; gap: 4px; }
+      .main-content { padding: 24px 16px; }
+    }
   </style>
 </head>
 <body>
@@ -38,16 +62,19 @@
 <!-- LOGIN OVERLAY -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">Admin Login</h2>
-    <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Masuk untuk mengelola karya dan web SKAGAMU.</p>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+      <span class="brand-badge">SK</span>
+      <h2 style="font-size: 22px; font-weight: 800;">SKAGAMU CMS</h2>
+    </div>
+    <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Masuk untuk mengelola portofolio karya & galeri sekolah.</p>
     <form id="loginForm">
       <div class="form-group">
         <label>Username</label>
-        <input type="text" id="loginUser" class="form-control" required value="adminwebsite">
+        <input type="text" id="loginUser" class="form-control" required value="adminwebsite" autocomplete="username">
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="loginPass" class="form-control" required value="skagamu123">
+        <input type="password" id="loginPass" class="form-control" required value="skagamu123" autocomplete="current-password">
       </div>
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn">Masuk Dashboard</button>
       <div id="loginError" style="color: #ef4444; font-size: 13px; margin-top: 12px; display: none;"></div>
@@ -63,24 +90,24 @@
         <span>SKAGAMU CMS</span>
       </div>
       <nav>
-        <div class="nav-item active" onclick="switchTab('portfolio')">📁 Karya Siswa</div>
-        <div class="nav-item" onclick="switchTab('gallery')">🖼️ Galeri Aktivitas</div>
-        <div class="nav-item" onclick="switchTab('settings')">⚙️ Pengaturan Web</div>
+        <div class="nav-item active" onclick="switchTab('portfolio')"><span>📁</span><span>Karya Siswa</span></div>
+        <div class="nav-item" onclick="switchTab('gallery')"><span>🖼️</span><span>Galeri</span></div>
+        <div class="nav-item" onclick="switchTab('settings')"><span>⚙️</span><span>Pengaturan</span></div>
       </nav>
     </div>
     <div>
-      <a href="index.html" target="_blank" class="nav-item">🌐 Lihat Website</a>
-      <div class="nav-item" onclick="logout()" style="color: #ef4444;">🚪 Logout</div>
+      <a href="index.html" target="_blank" class="nav-item"><span>🌐</span><span>Lihat Web</span></a>
+      <div class="nav-item" onclick="logout()" style="color: #ef4444;"><span>🚪</span><span>Logout</span></div>
     </div>
   </aside>
 
   <main class="main-content">
     <!-- PORTFOLIO TAB -->
     <section id="portfolioTab" class="tab-content active">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
         <div>
-          <h2 style="font-size: 26px; font-weight: 800;">Manajemen Karya Siswa</h2>
-          <p style="font-size: 13px; color: var(--ink-muted);">Tambah, edit, atau hapus portofolio siswa yang tampil di website.</p>
+          <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800;">Manajemen Karya Siswa</h2>
+          <p style="font-size: 13px; color: var(--ink-muted);">Kelola portofolio karya siswa yang tampil di etalase website.</p>
         </div>
         <button class="btn btn-primary" onclick="openPortfolioModal()">+ Tambah Karya</button>
       </div>
@@ -89,7 +116,7 @@
         <table>
           <thead>
             <tr>
-              <th>Cover</th>
+              <th>Preview</th>
               <th>Judul Karya</th>
               <th>Kategori</th>
               <th>Pembuat</th>
@@ -98,7 +125,7 @@
             </tr>
           </thead>
           <tbody id="portfolioTableBody">
-            <tr><td colspan="6" style="text-align:center; padding: 24px; color: var(--ink-muted);">Memuat data...</td></tr>
+            <tr><td colspan="6" style="text-align:center; padding: 24px; color: var(--ink-muted);">Memuat data dari Google Sheets...</td></tr>
           </tbody>
         </table>
       </div>
@@ -106,10 +133,10 @@
 
     <!-- GALLERY TAB -->
     <section id="galleryTab" class="tab-content">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
         <div>
-          <h2 style="font-size: 26px; font-weight: 800;">Galeri Aktivitas</h2>
-          <p style="font-size: 13px; color: var(--ink-muted);">Upload foto dokumentasi kegiatan workshop dan expo.</p>
+          <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800;">Galeri Aktivitas</h2>
+          <p style="font-size: 13px; color: var(--ink-muted);">Dokumentasi workshop, expo, dan kegiatan studio kreatif.</p>
         </div>
         <button class="btn btn-primary" onclick="openGalleryModal()">+ Upload Foto</button>
       </div>
@@ -132,10 +159,10 @@
 
     <!-- SETTINGS TAB -->
     <section id="settingsTab" class="tab-content">
-      <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 8px;">Pengaturan Website</h2>
-      <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Ubah headline, deskripsi, dan email kontak sekolah tanpa edit kode.</p>
+      <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800; margin-bottom: 6px;">Pengaturan Website</h2>
+      <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Ubah headline, deskripsi, dan email kontak sekolah langsung dari sini.</p>
 
-      <div style="background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); padding: 30px; max-width: 700px;">
+      <div style="background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); padding: 28px; max-width: 700px;">
         <form id="settingsForm">
           <div class="form-group">
             <label>Headline Hero</label>
@@ -165,7 +192,7 @@
 </div>
 
 <!-- MODAL FORM PORTFOLIO -->
-<div class="modal-backdrop" id="portfolioModal">
+<div class="modal-backdrop" id="portfolioModal" role="dialog" aria-modal="true">
   <div class="modal-content">
     <button class="modal-close" onclick="closePortfolioModal()">✕</button>
     <h3 id="portfolioModalTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Tambah Karya Siswa</h3>
@@ -186,10 +213,10 @@
       </div>
       <div class="form-group">
         <label>Nama Siswa & Kelas</label>
-        <input type="text" id="pAuthor" class="form-control" required placeholder="Contoh: Ahmad Fauzi • XI DKV">
+        <input type="text" id="pAuthor" class="form-control" required placeholder="Contoh: Ahmad Fauzi • XI DKV 1">
       </div>
       <div class="form-group">
-        <label>Upload Cover Karya (Otomatis ke Google Drive)</label>
+        <label>Upload Cover Karya (Auto-Upload ke Google Drive)</label>
         <input type="file" id="pFile" class="form-control" accept="image/*">
         <div id="pImgPreview" style="margin-top: 10px;"></div>
       </div>
@@ -200,7 +227,7 @@
       <div class="form-group">
         <label>Status Publikasi</label>
         <select id="pStatus" class="form-control">
-          <option value="published">Published (Tampil di Web)</option>
+          <option value="published">Published (Tampil di Website)</option>
           <option value="draft">Draft (Disembunyikan)</option>
         </select>
       </div>
@@ -210,7 +237,7 @@
 </div>
 
 <!-- MODAL FORM GALLERY -->
-<div class="modal-backdrop" id="galleryModal">
+<div class="modal-backdrop" id="galleryModal" role="dialog" aria-modal="true">
   <div class="modal-content">
     <button class="modal-close" onclick="closeGalleryModal()">✕</button>
     <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Upload Foto Galeri</h3>

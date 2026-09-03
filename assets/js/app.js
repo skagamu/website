@@ -3,6 +3,7 @@ let allWorks = [];
 document.addEventListener('DOMContentLoaded', () => {
   initPublicData();
   setupFilters();
+  setupKeyboardClose();
 });
 
 async function initPublicData() {
@@ -40,13 +41,13 @@ function renderPortfolio(works) {
   }
 
   grid.innerHTML = allWorks.map(item => `
-    <article class="work-card" data-category="${item.category || 'branding'}" onclick="openModal('${item.id}')">
+    <article class="work-card" data-category="${item.category || 'branding'}" onclick="openModal('${item.id}')" tabindex="0" role="button" aria-label="Lihat detail ${item.title}">
       <div class="work-thumb">
         ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : `<div class="work-thumb-placeholder">${(item.category || 'WORK').toUpperCase()}</div>`}
       </div>
       <div class="work-body">
         <div>
-          <span class="work-category-badge">${item.category || 'Karya'}</span>
+          <span class="work-category-badge">${getCategoryName(item.category)}</span>
           <h3>${item.title || 'Untitled Project'}</h3>
         </div>
         <p class="work-meta">${item.author || 'Siswa SKAGAMU'}</p>
@@ -55,22 +56,31 @@ function renderPortfolio(works) {
   `).join('');
 }
 
+function getCategoryName(cat) {
+  switch (cat) {
+    case 'branding': return 'Branding';
+    case 'design': return 'Desain Grafis';
+    case 'content': return 'Konten Digital';
+    default: return cat || 'Karya';
+  }
+}
+
 function renderFallbackPortfolio() {
   const grid = document.getElementById('portfolioGrid');
   const defaults = [
-    { id: '1', title: 'Identitas Merek Kopi Wuryantoro', category: 'branding', author: 'Ahmad • Kelas XI DKV', description: 'Perancangan identitas visual merek produk kopi khas daerah.' },
-    { id: '2', title: 'Poster Kampanye Lingkungan', category: 'design', author: 'Siti • Kelas X DKV', description: 'Poster visual edukasi peduli lingkungan dan hemat energi.' },
-    { id: '3', title: 'Video Dokumenter Kreatif', category: 'content', author: 'Budi • Kelas XI DKV', description: 'Produksi video sinematik aktivitas ekstrakurikuler sekolah.' }
+    { id: '1', title: 'Carragreen • Eco-Friendly Stationery Brand', category: 'branding', author: 'Fajar Nugraha • XII DKV 1', description: 'Desain identitas visual dan landing page e-commerce produk ramah lingkungan.' },
+    { id: '2', title: 'WellNest • On-Demand Wellness & Massage Platform', category: 'design', author: 'Dewi Anggraini • XI DKV 2', description: 'Perancangan antarmuka UI/UX mobile web untuk pemesanan layanan terapi relaksasi.' },
+    { id: '3', title: 'HookLab • Short-Form Creative Agency', category: 'content', author: 'Rizky Pratama • XII DKV 1', description: 'Konsep branding agensi produksi konten video vertikal berkinerja tinggi.' }
   ];
   allWorks = defaults;
   grid.innerHTML = defaults.map(item => `
-    <article class="work-card" data-category="${item.category}" onclick="openModal('${item.id}')">
+    <article class="work-card" data-category="${item.category}" onclick="openModal('${item.id}')" tabindex="0" role="button">
       <div class="work-thumb">
         <div class="work-thumb-placeholder">${item.category.toUpperCase()}</div>
       </div>
       <div class="work-body">
         <div>
-          <span class="work-category-badge">${item.category}</span>
+          <span class="work-category-badge">${getCategoryName(item.category)}</span>
           <h3>${item.title}</h3>
         </div>
         <p class="work-meta">${item.author}</p>
@@ -108,25 +118,40 @@ function openModal(id) {
   const item = allWorks.find(w => w.id === id);
   if (!item) return;
   
+  const frame = document.getElementById('modalMockupFrame');
   const imgEl = document.getElementById('modalImg');
+  const urlBar = document.getElementById('modalUrlBar');
+  
   if (item.image_url) {
     imgEl.src = item.image_url;
-    imgEl.style.display = 'block';
+    frame.style.display = 'block';
+    urlBar.innerText = `skagamu.sch.id/works/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`;
   } else {
-    imgEl.style.display = 'none';
+    frame.style.display = 'none';
   }
   
-  document.getElementById('modalCategory').innerText = item.category || 'Karya';
+  document.getElementById('modalCategory').innerText = getCategoryName(item.category);
   document.getElementById('modalTitle').innerText = item.title || '';
   document.getElementById('modalAuthor').innerText = item.author || 'Siswa SKAGAMU';
   document.getElementById('modalDesc').innerText = item.description || 'Tidak ada deskripsi.';
-  document.getElementById('workModal').classList.add('active');
+  
+  const modal = document.getElementById('workModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
 }
 
 function closeModal() {
-  document.getElementById('workModal').classList.remove('active');
+  const modal = document.getElementById('workModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
-window.onclick = (e) => {
-  if (e.target.id === 'workModal') closeModal();
-};
+function setupKeyboardClose() {
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+  
+  window.addEventListener('click', (e) => {
+    if (e.target.id === 'workModal') closeModal();
+  });
+}

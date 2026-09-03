@@ -21,9 +21,9 @@
       <a href="#studio">Creative Studio</a>
       <a href="#galeri">Galeri</a>
       <a href="#kontak">Kontak</a>
-      <a href="admin.html" class="btn btn-accent" style="padding: 6px 14px; font-size: 12px;">Admin Login</a>
+      <a href="admin.html" class="btn btn-accent" style="padding: 8px 16px; font-size: 13px;">Admin Login</a>
     </nav>
-    <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle navigation">☰</button>
   </div>
 </header>
 
@@ -76,7 +76,7 @@
       <div class="filters" id="filterContainer">
         <button class="filter-btn active" data-filter="all">Semua Karya</button>
         <button class="filter-btn" data-filter="branding">Branding</button>
-        <button class="filter-btn" data-filter="design">Desain</button>
+        <button class="filter-btn" data-filter="design">Desain Grafis</button>
         <button class="filter-btn" data-filter="content">Konten Digital</button>
       </div>
 
@@ -150,15 +150,31 @@
   </div>
 </footer>
 
-<!-- LIGHTBOX MODAL -->
-<div class="modal-backdrop" id="workModal">
+<!-- BROWSER MOCKUP LIGHTBOX MODAL -->
+<div class="modal-backdrop" id="workModal" role="dialog" aria-modal="true">
   <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <img id="modalImg" class="modal-img" src="" alt="Detail Karya">
-    <span class="work-category-badge" id="modalCategory">Branding</span>
-    <h3 id="modalTitle" style="font-size: 24px; font-weight: 800; margin: 8px 0 4px;"></h3>
-    <p class="work-meta" id="modalAuthor" style="color: var(--ink-muted); margin-bottom: 16px;"></p>
-    <p id="modalDesc" style="color: var(--ink); line-height: 1.6;"></p>
+    <button class="modal-close" onclick="closeModal()" aria-label="Tutup modal">✕</button>
+    
+    <!-- Browser Frame UI -->
+    <div class="browser-mockup" id="modalMockupFrame">
+      <div class="browser-header">
+        <span class="browser-dot dot-red"></span>
+        <span class="browser-dot dot-yellow"></span>
+        <span class="browser-dot dot-green"></span>
+        <div class="browser-url-bar" id="modalUrlBar">skagamu.sch.id/showcase/preview</div>
+      </div>
+      <div class="mockup-viewport">
+        <img id="modalImg" src="" alt="Detail Karya Siswa" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Details -->
+    <div>
+      <span class="work-category-badge" id="modalCategory">Branding</span>
+      <h3 id="modalTitle" style="font-size: clamp(20px, 3vw, 26px); font-weight: 800; margin: 8px 0 6px;"></h3>
+      <p class="work-meta" id="modalAuthor" style="color: var(--ink-muted); margin-bottom: 16px; font-weight: 600;"></p>
+      <p id="modalDesc" style="color: var(--ink); line-height: 1.7; font-size: 15px;"></p>
+    </div>
   </div>
 </div>
 
