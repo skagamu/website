@@ -446,3 +446,55 @@ footer { padding: 40px 0; border-top: 1px solid var(--hairline); font-size: 13px
     transform: none !important;
   }
 }
+
+/* ============================================================
+   TEXT APPEAR & HEADLINE STAGGER REVEAL (FRAMER MASK STYLE)
+============================================================ */
+.text-mask-reveal {
+  overflow: hidden;
+  display: block;
+}
+
+.text-reveal-item {
+  display: block;
+  opacity: 0;
+  transform: translateY(110%) rotate(2deg);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-visible .text-reveal-item,
+.text-reveal-item.reveal-visible {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+.hero .eyebrow {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero .lead {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s,
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.hero .hero-actions {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+
+.hero.reveal-visible .eyebrow,
+.hero.reveal-visible .lead,
+.hero.reveal-visible .hero-actions {
+  opacity: 1;
+  transform: translateY(0);
+}

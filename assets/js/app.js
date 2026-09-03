@@ -27,7 +27,10 @@ async function initPublicData() {
 }
 
 function renderSettings(settings) {
-  if (settings.hero_title) document.getElementById('heroTitle').innerHTML = settings.hero_title.replace(/\n/g, '<br>');
+  if (settings.hero_title) {
+    const formatted = settings.hero_title.replace(/\n/g, '<br>');
+    document.getElementById('heroTitle').innerHTML = `<span class="text-reveal-item">${formatted}</span>`;
+  }
   if (settings.hero_lead) document.getElementById('heroLead').innerText = settings.hero_lead;
   if (settings.about_title) document.getElementById('aboutTitle').innerText = settings.about_title;
   if (settings.about_desc) document.getElementById('aboutDesc').innerText = settings.about_desc;
@@ -133,8 +136,12 @@ function setupFilters() {
    ANIMATION: INTERSECTION OBSERVER SCROLL REVEAL
 ============================================================ */
 function initScrollReveal() {
+  // Trigger hero animation immediately
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) heroSection.classList.add('reveal-visible');
+
   // Add initial class to static section targets
-  const staticTargets = document.querySelectorAll('.hero-grid > div, .section-header, .two-col > div, .service-card, .contact-card');
+  const staticTargets = document.querySelectorAll('.hero-grid > div, .section-head, .two-col > div, .service-card, .contact-card');
   staticTargets.forEach(el => el.classList.add('reveal-init'));
 
   const revealElements = document.querySelectorAll('.reveal-init');
