@@ -181,14 +181,14 @@ nav.nav-links a:hover { color: var(--ink); }
 .work-body h3 { font-size: 18px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
 .work-body p.work-meta { font-size: 13px; color: var(--ink-muted); }
 
-/* MASONRY GALLERY (EDITORIAL MULTI-COLUMN) */
+/* EDITORIAL ASYMMETRIC MASONRY GRID */
 .gallery-masonry {
-  column-count: 3;
-  column-gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: dense;
+  gap: 20px;
 }
 .gallery-masonry-item {
-  break-inside: avoid;
-  margin-bottom: 20px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   position: relative;
@@ -196,24 +196,34 @@ nav.nav-links a:hover { color: var(--ink); }
   background: var(--surface-2);
   cursor: pointer;
   transition: all 0.3s ease;
+  min-height: 240px;
 }
+/* Ritme visual bervariasi ala Editorial Magazine */
+.gallery-masonry-item.aspect-featured { grid-column: span 2; grid-row: span 2; }
+.gallery-masonry-item.aspect-tall { grid-row: span 2; }
+.gallery-masonry-item.aspect-wide { grid-column: span 2; }
+.gallery-masonry-item.aspect-normal { grid-column: span 1; grid-row: span 1; }
+
 .gallery-masonry-item:hover {
   border-color: var(--hairline-hover);
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+  z-index: 2;
 }
 .gallery-masonry-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 .gallery-masonry-item:hover img {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 .gallery-masonry-caption {
   position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 20px 18px;
-  background: linear-gradient(to top, rgba(9,9,9,0.95) 0%, rgba(9,9,9,0.7) 60%, transparent 100%);
+  background: linear-gradient(to top, rgba(9,9,9,0.95) 0%, rgba(9,9,9,0.65) 60%, transparent 100%);
   font-size: 14px; font-weight: 700; line-height: 1.4; color: #fff;
   opacity: 0.95; transition: opacity 0.2s;
 }
@@ -276,14 +286,18 @@ footer { padding: 40px 0; border-top: 1px solid var(--hairline); font-size: 13px
 @media (max-width: 1024px) {
   .grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .services { grid-template-columns: repeat(2, 1fr); }
-  .gallery-masonry { column-count: 2; column-gap: 16px; }
-  .gallery-masonry-item { margin-bottom: 16px; }
+  .gallery-masonry { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .gallery-masonry-item.aspect-featured { grid-column: span 2; grid-row: span 2; }
 }
 
 @media (max-width: 768px) {
   .hero-grid, .two-col { grid-template-columns: 1fr; gap: 36px; }
   .grid, .services { grid-template-columns: 1fr; }
-  .gallery-masonry { column-count: 1; }
+  .gallery-masonry { grid-template-columns: 1fr; }
+  .gallery-masonry-item.aspect-featured,
+  .gallery-masonry-item.aspect-tall,
+  .gallery-masonry-item.aspect-wide { grid-column: span 1; grid-row: span 1; min-height: 220px; }
+  
   .hero { min-height: auto; padding: 40px 0; }
   .hero-card { height: 280px; }
   .hero-card-content h3 { font-size: 26px; }

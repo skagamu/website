@@ -95,12 +95,18 @@ function renderGallery(gallery) {
   const container = document.getElementById('galleryGrid');
   if (!allGallery || allGallery.length === 0) return;
 
-  container.innerHTML = allGallery.map(item => `
-    <div class="gallery-masonry-item" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" tabindex="0" role="button" aria-label="Lihat foto ${item.title}">
-      ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : ''}
-      <div class="gallery-masonry-caption">${item.title}</div>
-    </div>
-  `).join('');
+  // Pola ritme masonry asimetris editorial (Featured, Wide, Tall, Normal)
+  const rhythmPatterns = ['aspect-featured', 'aspect-normal', 'aspect-tall', 'aspect-wide', 'aspect-normal', 'aspect-normal', 'aspect-tall', 'aspect-normal'];
+
+  container.innerHTML = allGallery.map((item, idx) => {
+    const patternClass = rhythmPatterns[idx % rhythmPatterns.length];
+    return `
+      <div class="gallery-masonry-item ${patternClass}" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" tabindex="0" role="button" aria-label="Lihat foto ${item.title}">
+        ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : ''}
+        <div class="gallery-masonry-caption">${item.title}</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function setupFilters() {
