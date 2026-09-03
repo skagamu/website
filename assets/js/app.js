@@ -22,7 +22,7 @@ async function initPublicData() {
 }
 
 function renderSettings(settings) {
-  if (settings.hero_title) document.getElementById('heroTitle').innerHTML = settings.hero_title.replace('\n', '<br>');
+  if (settings.hero_title) document.getElementById('heroTitle').innerHTML = settings.hero_title.replace(/\n/g, '<br>');
   if (settings.hero_lead) document.getElementById('heroLead').innerText = settings.hero_lead;
   if (settings.about_title) document.getElementById('aboutTitle').innerText = settings.about_title;
   if (settings.about_desc) document.getElementById('aboutDesc').innerText = settings.about_desc;
