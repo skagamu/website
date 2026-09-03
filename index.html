@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKAGAMU Digital Branding • SMK Gajah Mungkur 1 Wuryantoro</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="#home">
+      <span class="brand-badge">SK</span>
+      <span>SKAGAMU</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#profil">Profil</a>
+      <a href="#portfolio">Karya Siswa</a>
+      <a href="#studio">Creative Studio</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#kontak">Kontak</a>
+      <a href="admin.html" class="btn btn-accent" style="padding: 6px 14px; font-size: 12px;">Admin Login</a>
+    </nav>
+    <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO SECTION -->
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">SMK GAJAH MUNGKUR 1 WURYANTORO</span>
+        <h1 id="heroTitle">Belajar. Berkarya.<br><span>Berdampak.</span></h1>
+        <p class="lead" id="heroLead">Ruang digital interaktif untuk menampilkan karya, kreativitas, dan perjalanan inovasi siswa SKAGAMU.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#portfolio">Lihat Karya Siswa</a>
+          <a class="btn" href="#profil">Tentang Studio</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="orb"></div>
+        <div class="hero-card-content">
+          <p>DIGITAL CREATIVE HUB</p>
+          <h3>Kreativitas Tanpa Batas.</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFIL SECTION -->
+  <section id="profil" class="section section-alt">
+    <div class="container two-col">
+      <div>
+        <span class="eyebrow">TENTANG</span>
+        <h2 id="aboutTitle">Ruang tumbuh untuk inovasi dan karya siswa.</h2>
+      </div>
+      <div>
+        <p class="about-text" id="aboutDesc">Platform ini menjadi etalase digital karya siswa sekaligus ruang belajar terintegrasi untuk desain grafis, identitas visual merek, konten digital, dan teknologi kreatif.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO SECTION -->
+  <section id="portfolio" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">SHOWCASE</span>
+          <h2>Karya Siswa</h2>
+        </div>
+      </div>
+
+      <div class="filters" id="filterContainer">
+        <button class="filter-btn active" data-filter="all">Semua Karya</button>
+        <button class="filter-btn" data-filter="branding">Branding</button>
+        <button class="filter-btn" data-filter="design">Desain</button>
+        <button class="filter-btn" data-filter="content">Konten Digital</button>
+      </div>
+
+      <div class="grid" id="portfolioGrid">
+        <!-- Skeleton Loaders -->
+        <div class="work-card"><div class="work-thumb"><div class="work-thumb-placeholder">...</div></div><div class="work-body"><h3>Memuat karya...</h3></div></div>
+        <div class="work-card"><div class="work-thumb"><div class="work-thumb-placeholder">...</div></div><div class="work-body"><h3>Memuat karya...</h3></div></div>
+        <div class="work-card"><div class="work-thumb"><div class="work-thumb-placeholder">...</div></div><div class="work-body"><h3>Memuat karya...</h3></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREATIVE STUDIO SECTION -->
+  <section id="studio" class="section section-alt">
+    <div class="container">
+      <span class="eyebrow">CREATIVE STUDIO</span>
+      <h2>Dari Ide Menjadi Karya Nyata.</h2>
+      <div class="services">
+        <div class="service-card">
+          <div class="service-num">01</div>
+          <h3>Brand Identity</h3>
+          <p>Eksplorasi konsep logo, identitas visual, tipografi, dan strategi komunikasi merek produk lokal.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">02</div>
+          <h3>Creative Design</h3>
+          <p>Poster promosi, kampanye visual, editorial magazine, dan desain kemasan produk inovatif.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <h3>Digital Content</h3>
+          <p>Produksi video pendek kreatif, infografis interaktif, motion graphics, dan fotografi studio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI SECTION -->
+  <section id="galeri" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">DOKUMENTASI</span>
+          <h2>Aktivitas & Galeri</h2>
+        </div>
+      </div>
+      <div class="gallery" id="galleryGrid">
+        <div class="gallery-item"><div class="gallery-item-title">Creative Workshop</div></div>
+        <div class="gallery-item"><div class="gallery-item-title">Student Production</div></div>
+        <div class="gallery-item"><div class="gallery-item-title">Exhibition & Expo</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAK SECTION -->
+  <section id="kontak" class="section section-alt">
+    <div class="container">
+      <div class="contact-box">
+        <span class="eyebrow">KOLABORASI</span>
+        <h2>Siap Berkarya Bersama SKAGAMU?</h2>
+        <p>Buka peluang kerjasama, pemesanan karya desain, atau kolaborasi kreatif bersama talenta muda kami.</p>
+        <a class="btn btn-primary" id="contactBtn" href="mailto:info@skagamu.sch.id">Hubungi Kami</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p id="footerText">© 2026 SKAGAMU Digital Branding • SMK Gajah Mungkur 1 Wuryantoro</p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX MODAL -->
+<div class="modal-backdrop" id="workModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img id="modalImg" class="modal-img" src="" alt="Detail Karya">
+    <span class="work-category-badge" id="modalCategory">Branding</span>
+    <h3 id="modalTitle" style="font-size: 24px; font-weight: 800; margin: 8px 0 4px;"></h3>
+    <p class="work-meta" id="modalAuthor" style="color: var(--ink-muted); margin-bottom: 16px;"></p>
+    <p id="modalDesc" style="color: var(--ink); line-height: 1.6;"></p>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
