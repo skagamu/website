@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPublicData();
   setupFilters();
   setupKeyboardClose();
+  initSpotlightEffect();
 });
 
 async function initPublicData() {
@@ -21,6 +22,8 @@ async function initPublicData() {
     console.warn('Using fallback data:', err);
     renderFallbackPortfolio();
   }
+  // Setup reveal observer after content is injected
+  setTimeout(initScrollReveal, 50);
 }
 
 function renderSettings(settings) {
@@ -41,8 +44,8 @@ function renderPortfolio(works) {
     return;
   }
 
-  grid.innerHTML = allWorks.map(item => `
-    <article class="work-card" data-category="${item.category || 'branding'}" onclick="openModal('${item.id}')" tabindex="0" role="button" aria-label="Lihat detail ${item.title}">
+  grid.innerHTML = allWorks.map((item, idx) => `
+    <article class="work-card reveal-init stagger-${(idx % 4) + 1}" data-category="${item.category || 'branding'}" onclick="openModal('${item.id}')" tabindex="0" role="button" aria-label="Lihat detail ${item.title}">
       <div class="work-thumb">
         ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : `<div class="work-thumb-placeholder">${(item.category || 'WORK').toUpperCase()}</div>`}
       </div>
@@ -74,8 +77,8 @@ function renderFallbackPortfolio() {
     { id: '3', title: 'HookLab • Short-Form Creative Agency', category: 'content', author: 'Rizky Pratama • XII DKV 1', description: 'Konsep branding agensi produksi konten video vertikal berkinerja tinggi.' }
   ];
   allWorks = defaults;
-  grid.innerHTML = defaults.map(item => `
-    <article class="work-card" data-category="${item.category}" onclick="openModal('${item.id}')" tabindex="0" role="button">
+  grid.innerHTML = defaults.map((item, idx) => `
+    <article class="work-card reveal-init stagger-${(idx % 3) + 1}" data-category="${item.category}" onclick="openModal('${item.id}')" tabindex="0" role="button">
       <div class="work-thumb">
         <div class="work-thumb-placeholder">${item.category.toUpperCase()}</div>
       </div>
@@ -93,15 +96,14 @@ function renderFallbackPortfolio() {
 function renderGallery(gallery) {
   allGallery = gallery || [];
   const container = document.getElementById('galleryGrid');
-  if (!allGallery || allGallery.length === 0) return;
+  if (!container || !allGallery || allGallery.length === 0) return;
 
-  // Pola ritme masonry asimetris editorial (Featured, Wide, Tall, Normal)
   const rhythmPatterns = ['aspect-featured', 'aspect-normal', 'aspect-tall', 'aspect-wide', 'aspect-normal', 'aspect-normal', 'aspect-tall', 'aspect-normal'];
 
   container.innerHTML = allGallery.map((item, idx) => {
     const patternClass = rhythmPatterns[idx % rhythmPatterns.length];
     return `
-      <div class="gallery-masonry-item ${patternClass}" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" tabindex="0" role="button" aria-label="Lihat foto ${item.title}">
+      <div class="gallery-masonry-item ${patternClass} reveal-init stagger-${(idx % 4) + 1}" onclick="openGalleryModal('${item.id || ''}', '${item.image_url}', '${encodeURIComponent(item.title)}')" tabindex="0" role="button" aria-label="Lihat foto ${item.title}">
         ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" loading="lazy">` : ''}
         <div class="gallery-masonry-caption">${item.title}</div>
       </div>
@@ -117,10 +119,60 @@ function setupFilters() {
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       document.querySelectorAll('.work-card').forEach(card => {
-        card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'flex' : 'none';
+        const matches = (filter === 'all' || card.dataset.category === filter);
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) {
+          card.classList.add('reveal-visible');
+        }
       });
     });
   });
+}
+
+/* ============================================================
+   ANIMATION: INTERSECTION OBSERVER SCROLL REVEAL
+============================================================ */
+function initScrollReveal() {
+  // Add initial class to static section targets
+  const staticTargets = document.querySelectorAll('.hero-grid > div, .section-header, .two-col > div, .service-card, .contact-card');
+  staticTargets.forEach(el => el.classList.add('reveal-init'));
+
+  const revealElements = document.querySelectorAll('.reveal-init');
+  
+  if (!('IntersectionObserver' in window)) {
+    revealElements.forEach(el => el.classList.add('reveal-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealElements.forEach(el => observer.observe(el));
+}
+
+/* ============================================================
+   ANIMATION: DYNAMIC CURSOR SPOTLIGHT TRACKING
+============================================================ */
+function initSpotlightEffect() {
+  document.addEventListener('pointermove', (e) => {
+    const cards = document.querySelectorAll('.work-card:hover, .gallery-masonry-item:hover, .service-card:hover');
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  }, { passive: true });
 }
 
 function openModal(id) {
