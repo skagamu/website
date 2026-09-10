@@ -18,7 +18,6 @@ async function initPublicData() {
       allProjects = res.data.projects || [];
       renderSettings(res.data.settings || {});
       
-      // Adaptasi data karya (3-layer hierarchy) dengan fallback portfolio legacy
       if (res.data.karya && res.data.karya.length > 0) {
         renderKaryaShowcase(res.data.karya);
       } else if (res.data.portfolio && res.data.portfolio.length > 0) {
@@ -55,7 +54,6 @@ function renderSettings(settings) {
 function renderKaryaShowcase(karyaList) {
   const published = karyaList.filter(k => k.status !== 'draft');
   
-  // Sort terbaru & ambil maksimal 6 karya
   const latestSix = published
     .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
     .slice(0, 6);
@@ -90,7 +88,6 @@ function renderKaryaShowcase(karyaList) {
       </div>
       <div class="work-body">
         <div>
-          <span class="work-category-badge">${item.bab_title.split(':')[0] || 'Modul'} • ${item.project_title}</span>
           <h3>${item.title}</h3>
         </div>
         <p class="work-meta">${item.author}</p>
@@ -121,7 +118,6 @@ function renderLegacyPortfolio(works) {
       </div>
       <div class="work-body">
         <div>
-          <span class="work-category-badge">${item.project_title}</span>
           <h3>${item.title}</h3>
         </div>
         <p class="work-meta">${item.author}</p>
@@ -145,7 +141,6 @@ function renderFallbackPortfolio() {
       </div>
       <div class="work-body">
         <div>
-          <span class="work-category-badge">${item.bab_title.split(':')[0]} • ${item.project_title}</span>
           <h3>${item.title}</h3>
         </div>
         <p class="work-meta">${item.author}</p>
@@ -177,7 +172,7 @@ function setupFilters() {
   if (!filterWrap) return;
   filterWrap.innerHTML = `
     <span style="font-size: 13px; color: var(--ink-muted); display: flex; align-items: center; gap: 8px;">
-      ✨ Menampilkan 6 Karya Siswa Terbaru Berbasis Modul & Proyek Nyata
+      ✨ 6 Karya Siswa Terbaru
     </span>
   `;
 }
