@@ -2,17 +2,28 @@ const SPREADSHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
 
 function doGet(e) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  initSheets(ss);
   
   const action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "getData";
   
+  if (action === "syncModules") {
+    const babsSheet = ss.getSheetByName("babs") || ss.insertSheet("babs");
+    babsSheet.clear();
+    babsSheet.appendRow(["id", "title", "description", "order", "created_at"]);
+    babsSheet.appendRow(["bab_1", "Modul 1: Materi: Ruang Lingkup Digital Branding", "Pengenalan strategi, platform, dan ekosistem digital branding", 1, new Date().toISOString()]);
+    babsSheet.appendRow(["bab_2", "Modul 2: Produksi Konten Digital", "Perancangan konten kreatif, copy, feed, dan motion media", 2, new Date().toISOString()]);
+    babsSheet.appendRow(["bab_3", "Modul 3: Desain Logo Produk", "Perancangan identitas visual, logo system, dan moodboard merek", 3, new Date().toISOString()]);
+    babsSheet.appendRow(["bab_4", "Modul 4: Foto dan Video Produk", "Teknik pengambilan visual produk, tata cahaya, dan video editing", 4, new Date().toISOString()]);
+    babsSheet.appendRow(["bab_5", "Modul 5: Manajemen Publikasi Konten", "Strategi distribusi kanal media, scheduling, dan analytics kampanye", 5, new Date().toISOString()]);
+    return responseJSON({ success: true, message: "5 modules synced successfully" });
+  }
+
   if (action === "getData") {
     const babs = getSheetData(ss.getSheetByName("babs"));
     const projects = getSheetData(ss.getSheetByName("projects"));
     const karya = getSheetData(ss.getSheetByName("karya"));
     const gallery = getSheetData(ss.getSheetByName("gallery"));
     const settings = getSettingsData(ss.getSheetByName("settings"));
-    const portfolio = getSheetData(ss.getSheetByName("portfolio")); // legacy fallback
+    const portfolio = getSheetData(ss.getSheetByName("portfolio"));
     
     return responseJSON({
       success: true,
@@ -27,11 +38,9 @@ function doPost(e) {
   try {
     const body = JSON.parse(e.postData.contents);
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    initSheets(ss);
 
     const action = body.action;
 
-    // --- AUTH LOGIN ---
     if (action === "login") {
       const user = validateUser(ss, body.username, body.password);
       if (user) {
@@ -41,13 +50,11 @@ function doPost(e) {
       }
     }
 
-    // Validasi credential untuk semua aksi modifikasi
     const isValid = validateUser(ss, body.username, body.password);
     if (!isValid) {
       return responseJSON({ success: false, message: "Unauthorized" });
     }
 
-    // --- UPLOAD FILE/IMAGE KE GOOGLE DRIVE ---
     if (action === "uploadImage" || action === "uploadFile") {
       const folderName = "SKAGAMU_UPLOADS";
       let folders = DriveApp.getFoldersByName(folderName);
@@ -65,7 +72,6 @@ function doPost(e) {
       return responseJSON({ success: true, url: fileUrl, fileId: file.getId(), downloadUrl: file.getDownloadUrl() });
     }
 
-    // --- CRUD BAB / MODUL ---
     if (action === "saveBab") {
       const sheet = ss.getSheetByName("babs");
       const item = body.item;
@@ -90,7 +96,6 @@ function doPost(e) {
       return responseJSON({ success: true });
     }
 
-    // --- CRUD PROJECT ---
     if (action === "saveProject") {
       const sheet = ss.getSheetByName("projects");
       const item = body.item;
@@ -115,7 +120,6 @@ function doPost(e) {
       return responseJSON({ success: true });
     }
 
-    // --- CRUD KARYA SISWA ---
     if (action === "saveKarya") {
       const sheet = ss.getSheetByName("karya");
       const item = body.item;
@@ -160,7 +164,6 @@ function doPost(e) {
       return responseJSON({ success: true });
     }
 
-    // --- CRUD GALLERY ---
     if (action === "saveGallery") {
       const sheet = ss.getSheetByName("gallery");
       const item = body.item;
@@ -174,7 +177,6 @@ function doPost(e) {
       return responseJSON({ success: true });
     }
 
-    // --- SAVE SETTINGS ---
     if (action === "saveSettings") {
       const sheet = ss.getSheetByName("settings");
       const settings = body.settings;
@@ -195,41 +197,6 @@ function doPost(e) {
     return responseJSON({ success: false, message: "Unknown action" });
   } catch (err) {
     return responseJSON({ success: false, error: err.toString() });
-  }
-}
-
-// Inisialisasi Sheet Struktur Baru
-function initSheets(ss) {
-  if (!ss.getSheetByName("users")) {
-    const s = ss.insertSheet("users");
-    s.appendRow(["username", "password", "name", "role", "created_at"]);
-    s.appendRow(["adminwebsite", "skagamu123", "Administrator SKAGAMU", "admin", new Date().toISOString()]);
-  }
-  if (!ss.getSheetByName("babs")) {
-    const s = ss.insertSheet("babs");
-    s.appendRow(["id", "title", "description", "order", "created_at"]);
-    s.appendRow(["bab_1", "Modul 1: Identitas & Brand Visual", "Perancangan sistem identitas visual, logo, dan brand collateral", 1, new Date().toISOString()]);
-    s.appendRow(["bab_2", "Modul 2: Desain Grafis & Motion Ads", "Kampanye periklanan digital, poster, dan motion graphics", 2, new Date().toISOString()]);
-    s.appendRow(["bab_3", "Modul 3: UI/UX & Digital Product", "Desain antarmuka web dan aplikasi interaktif", 3, new Date().toISOString()]);
-  }
-  if (!ss.getSheetByName("projects")) {
-    const s = ss.insertSheet("projects");
-    s.appendRow(["id", "bab_id", "title", "brief", "lkpd_url", "deadline", "order", "created_at"]);
-    s.appendRow(["proj_1", "bab_1", "Brand Identity Kopi Wuryantoro", "Membuat logo, moodboard, dan mockup kemasan produk lokal", "https://docs.google.com/document/d/sample-lkpd-1", "2026-09-30", 1, new Date().toISOString()]);
-    s.appendRow(["proj_2", "bab_2", "Social Media Feed & Story Ads", "Desain visual promosi produk UMKM", "", "2026-10-15", 1, new Date().toISOString()]);
-    s.appendRow(["proj_3", "bab_3", "Landing Page Portfolio Studio", "Desain antarmuka responsif Figma & Webflow", "", "2026-10-30", 1, new Date().toISOString()]);
-  }
-  if (!ss.getSheetByName("karya")) {
-    const s = ss.insertSheet("karya");
-    s.appendRow(["id", "project_id", "title", "student_name", "class", "media_type", "media_url", "description", "status", "created_at"]);
-  }
-  if (!ss.getSheetByName("gallery")) {
-    const s = ss.insertSheet("gallery");
-    s.appendRow(["id", "title", "image_url", "order", "created_at"]);
-  }
-  if (!ss.getSheetByName("settings")) {
-    const s = ss.insertSheet("settings");
-    s.appendRow(["key", "value"]);
   }
 }
 
