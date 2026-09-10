@@ -36,6 +36,7 @@
 - `PRD.md`: Full requirements & architectural specifications.
 
 ## 5. Deployment & Development Rules
+- **Auto-Sync Mandate**: Setiap agent yang mengubah struktur endpoint, DB sheet, fitur baru, atau UI tokens WAJIB memperbarui `AGENTS.md` dan `PRD.md` sebelum commit.
 - **CI/CD**: Auto-deploy to GitHub Pages on push to `main` via `.github/workflows/deploy.yml`.
 - **Local Testing**: Run local server via `npx serve -l 8080` or `python3 -m http.server 8080`.
 - **GAS Updates**: Use clasp push or update Code.gs when modifying backend handlers.
