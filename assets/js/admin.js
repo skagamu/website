@@ -1,379 +1,692 @@
-let adminAuth = null;
-let currentData = { portfolio: [], gallery: [], settings: {} };
+let currentAuth = null;
+let currentBabs = [];
+let currentProjects = [];
+let currentKarya = [];
+let currentGallery = [];
+let currentSettings = {};
+
+// Navigation State (1: Bab, 2: Project, 3: Karya)
+let currentLevel = 1;
+let selectedBab = null;
+let selectedProject = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  checkAuth();
-  setupEvents();
-  setupPasswordToggle();
-  setupInputListeners();
+  checkAuthSession();
+  setupLoginForm();
+  setupNavTabs();
+  setupSettingsForm();
+  setupGalleryForm();
+  setupBabForm();
+  setupProjectForm();
+  setupKaryaForm();
 });
 
-function checkAuth() {
+/* ============================================================
+   AUTH HANDLING
+============================================================ */
+function checkAuthSession() {
   const saved = sessionStorage.getItem(CONFIG.STORAGE_AUTH_KEY);
   if (saved) {
     try {
-      adminAuth = JSON.parse(saved);
-      showDashboard();
+      currentAuth = JSON.parse(saved);
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminUserName').innerText = currentAuth.name || currentAuth.username;
+      loadAllAdminData();
     } catch (e) {
-      sessionStorage.removeItem(CONFIG.STORAGE_AUTH_KEY);
+      showLoginOverlay();
     }
+  } else {
+    showLoginOverlay();
   }
 }
 
-function showDashboard() {
-  document.getElementById('loginOverlay').style.display = 'none';
-  document.getElementById('adminApp').style.display = 'grid';
-  loadDashboardData();
+function showLoginOverlay() {
+  document.getElementById('loginOverlay').style.display = 'flex';
 }
 
-async function loadDashboardData() {
+function setupLoginForm() {
+  const form = document.getElementById('loginForm');
+  const toggleBtn = document.getElementById('togglePasswordBtn');
+  const passInput = document.getElementById('loginPassword');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const loginBox = document.getElementById('loginBox');
+  const submitBtn = document.getElementById('loginSubmitBtn');
+  const btnText = document.getElementById('loginBtnText');
+
+  toggleBtn.addEventListener('click', () => {
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    toggleBtn.innerText = isPass ? '🙈' : '👁️';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    loginBox.classList.remove('shake');
+    
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = passInput.value.trim();
+
+    submitBtn.disabled = true;
+    btnText.innerHTML = '<span class="btn-spinner"></span> Memverifikasi...';
+
+    try {
+      const res = await fetchAPI('login', { username, password }, 'POST');
+      if (res && res.success && res.user) {
+        currentAuth = { username, password, name: res.user.name, role: res.user.role };
+        sessionStorage.setItem(CONFIG.STORAGE_AUTH_KEY, JSON.stringify(currentAuth));
+        document.getElementById('adminUserName').innerText = res.user.name || username;
+        document.getElementById('loginOverlay').style.display = 'none';
+        loadAllAdminData();
+        showToast('Login berhasil! Selamat datang di CMS.');
+      } else {
+        throw new Error(res.message || 'Username atau password salah.');
+      }
+    } catch (err) {
+      errorMsg.innerText = err.message || 'Gagal terhubung ke database.';
+      errorMsg.style.display = 'block';
+      loginBox.classList.add('shake');
+    } finally {
+      submitBtn.disabled = false;
+      btnText.innerText = 'Masuk ke CMS';
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem(CONFIG.STORAGE_AUTH_KEY);
+    currentAuth = null;
+    location.reload();
+  });
+}
+
+function setupNavTabs() {
+  const items = document.querySelectorAll('.sidebar .nav-item');
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      items.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const tabId = item.dataset.tab;
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    });
+  });
+}
+
+/* ============================================================
+   DATA LOADING
+============================================================ */
+async function loadAllAdminData() {
   try {
     const res = await fetchAPI('getData');
     if (res && res.success && res.data) {
-      currentData = res.data;
-      renderPortfolioTable(currentData.portfolio || []);
-      renderGalleryTable(currentData.gallery || []);
-      fillSettings(currentData.settings || {});
+      currentBabs = res.data.babs || [];
+      currentProjects = res.data.projects || [];
+      currentKarya = res.data.karya || [];
+      currentGallery = res.data.gallery || [];
+      currentSettings = res.data.settings || {};
+
+      renderCurrentExplorerView();
+      renderGalleryTable();
+      populateSettings();
     }
   } catch (err) {
     showToast('Gagal memuat data dari database', true);
   }
 }
 
-function setupPasswordToggle() {
-  const toggleBtn = document.getElementById('togglePasswordBtn');
-  const passInput = document.getElementById('loginPass');
-  if (toggleBtn && passInput) {
-    toggleBtn.addEventListener('click', () => {
-      const isPass = passInput.type === 'password';
-      passInput.type = isPass ? 'text' : 'password';
-      toggleBtn.innerText = isPass ? '🙈' : '👁️';
-    });
+/* ============================================================
+   EXPLORER DRILL-DOWN LOGIC (LEVEL 1, 2, 3)
+============================================================ */
+function navigateToLevel(level, dataId = null) {
+  currentLevel = level;
+  const view1 = document.getElementById('viewLevel1');
+  const view2 = document.getElementById('viewLevel2');
+  const view3 = document.getElementById('viewLevel3');
+  const bc = document.getElementById('explorerBreadcrumb');
+
+  view1.style.display = 'none';
+  view2.style.display = 'none';
+  view3.style.display = 'none';
+
+  if (level === 1) {
+    selectedBab = null;
+    selectedProject = null;
+    view1.style.display = 'block';
+    bc.innerHTML = `<span class="breadcrumb-item active">📁 Semua Modul</span>`;
+    renderBabGrid();
+  } else if (level === 2) {
+    if (dataId) selectedBab = currentBabs.find(b => b.id === dataId);
+    if (!selectedBab) return navigateToLevel(1);
+    
+    selectedProject = null;
+    view2.style.display = 'block';
+    document.getElementById('level2BabTitle').innerText = selectedBab.title;
+    document.getElementById('level2BabDesc').innerText = selectedBab.description || 'Daftar proyek dan tugas siswa dalam modul ini.';
+    
+    bc.innerHTML = `
+      <span class="breadcrumb-item" onclick="navigateToLevel(1)">📁 Semua Modul</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-item active">📂 ${selectedBab.title}</span>
+    `;
+    renderProjectGrid();
+  } else if (level === 3) {
+    if (dataId) selectedProject = currentProjects.find(p => p.id === dataId);
+    if (!selectedProject) return navigateToLevel(2);
+
+    view3.style.display = 'block';
+    document.getElementById('level3ProjTitle').innerText = selectedProject.title;
+    document.getElementById('level3ProjBrief').innerText = selectedProject.brief || 'Instruksi capaian tugas siswa.';
+    
+    const lkpdWrap = document.getElementById('level3LkpdBadge');
+    if (selectedProject.lkpd_url) {
+      lkpdWrap.innerHTML = `<a href="${selectedProject.lkpd_url}" target="_blank" rel="noopener" class="action-btn" style="color: #60a5fa; border-color: rgba(96,165,250,0.3);">📄 Buka Panduan LKPD</a>`;
+    } else {
+      lkpdWrap.innerHTML = `<span style="font-size: 12px; color: var(--ink-muted);">⚠️ Belum ada file/link LKPD</span>`;
+    }
+
+    bc.innerHTML = `
+      <span class="breadcrumb-item" onclick="navigateToLevel(1)">📁 Semua Modul</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-item" onclick="navigateToLevel(2)">📂 ${selectedBab ? selectedBab.title : 'Modul'}</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-item active">📝 ${selectedProject.title}</span>
+    `;
+    renderKaryaTable();
   }
 }
 
-function setupInputListeners() {
-  const userIn = document.getElementById('loginUser');
-  const passIn = document.getElementById('loginPass');
-  const errBox = document.getElementById('loginError');
-
-  [userIn, passIn].forEach(input => {
-    input.addEventListener('input', () => {
-      if (errBox) errBox.style.display = 'none';
-      document.getElementById('loginBox').classList.remove('shake');
-    });
-  });
+function renderCurrentExplorerView() {
+  navigateToLevel(currentLevel, selectedProject ? selectedProject.id : (selectedBab ? selectedBab.id : null));
 }
 
-function setupEvents() {
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+function renderBabGrid() {
+  const container = document.getElementById('babFolderGrid');
+  if (currentBabs.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; padding: 32px; text-align: center; color: var(--ink-muted);">Belum ada modul pembelajaran. Klik '+ Tambah Modul' di atas.</div>`;
+    return;
+  }
+
+  container.innerHTML = currentBabs.map(b => {
+    const projCount = currentProjects.filter(p => p.bab_id === b.id).length;
+    const projectIds = currentProjects.filter(p => p.bab_id === b.id).map(p => p.id);
+    const karyaCount = currentKarya.filter(k => projectIds.includes(k.project_id)).length;
+
+    return `
+      <div class="folder-card" onclick="navigateToLevel(2, '${b.id}')">
+        <div>
+          <div class="folder-icon">📁</div>
+          <div class="folder-title">${b.title}</div>
+          <div style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px; line-height: 1.4;">${b.description || 'Tidak ada deskripsi.'}</div>
+        </div>
+        <div class="folder-meta" style="display: flex; justify-content: space-between; border-top: 1px solid var(--hairline); padding-top: 10px;">
+          <span>${projCount} Proyek</span>
+          <span>${karyaCount} Karya Siswa</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderProjectGrid() {
+  const container = document.getElementById('projectFolderGrid');
+  const filtered = currentProjects.filter(p => p.bab_id === selectedBab.id);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; padding: 32px; text-align: center; color: var(--ink-muted);">Belum ada project di modul ini. Klik '+ Tambah Project'.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(p => {
+    const karyaCount = currentKarya.filter(k => k.project_id === p.id).length;
+    const hasLkpd = Boolean(p.lkpd_url);
+
+    return `
+      <div class="folder-card" onclick="navigateToLevel(3, '${p.id}')">
+        <div>
+          <div class="folder-icon">📂</div>
+          <div class="folder-title">${p.title}</div>
+          <div style="font-size: 13px; color: var(--ink-muted); margin-bottom: 10px;">${p.brief || 'Tidak ada instruksi khusus.'}</div>
+        </div>
+        <div>
+          <div style="margin-bottom: 10px;">
+            ${hasLkpd ? `<span class="badge" style="background: rgba(96,165,250,0.15); color: #60a5fa;">LKPD Terlampir</span>` : `<span class="badge" style="background: var(--surface-2); color: var(--ink-muted);">Tanpa LKPD</span>`}
+          </div>
+          <div class="folder-meta" style="display: flex; justify-content: space-between; border-top: 1px solid var(--hairline); padding-top: 10px;">
+            <span>${karyaCount} Karya Siswa</span>
+            <span>Buka Tugas →</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderKaryaTable() {
+  const tbody = document.getElementById('karyaTableBody');
+  const filtered = currentKarya.filter(k => k.project_id === selectedProject.id);
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 32px; color: var(--ink-muted);">Belum ada karya siswa yang diunggah. Klik '+ Upload Karya Siswa'.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(k => `
+    <tr>
+      <td style="width: 80px;">
+        ${k.media_url ? `<img src="${k.media_url}" style="width: 60px; height: 42px; object-fit: cover; border-radius: 4px; border: 1px solid var(--hairline);" onerror="this.style.display='none'">` : `<div style="width: 60px; height: 42px; background: var(--surface-2); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--ink-muted);">${(k.media_type||'DOC').toUpperCase()}</div>`}
+      </td>
+      <td><strong>${k.title}</strong><div style="font-size: 12px; color: var(--ink-muted);">${k.description ? k.description.substring(0, 45) + '...' : ''}</div></td>
+      <td>${k.student_name} <span style="font-size: 12px; color: var(--ink-muted);">(${k.class || '-'})</span></td>
+      <td><span class="badge" style="background: var(--surface-2); color: var(--ink);">${(k.media_type || 'image').toUpperCase()}</span></td>
+      <td><span class="badge badge-${k.status || 'published'}">${k.status || 'published'}</span></td>
+      <td>
+        <button class="action-btn" onclick="editKarya('${k.id}')">Edit</button>
+        <button class="action-btn delete" onclick="deleteKarya('${k.id}')">Hapus</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+/* ============================================================
+   BAB MODAL & HANDLER
+============================================================ */
+function openBabModal(isEdit = false) {
+  const modal = document.getElementById('babModal');
+  document.getElementById('babModalTitle').innerText = isEdit ? 'Edit Modul Pembelajaran' : 'Tambah Modul Baru';
+  if (!isEdit) {
+    document.getElementById('babId').value = '';
+    document.getElementById('babTitle').value = '';
+    document.getElementById('babDesc').value = '';
+  }
+  modal.classList.add('active');
+}
+function closeBabModal() { document.getElementById('babModal').classList.remove('active'); }
+function editCurrentBab() {
+  if (!selectedBab) return;
+  document.getElementById('babId').value = selectedBab.id;
+  document.getElementById('babTitle').value = selectedBab.title;
+  document.getElementById('babDesc').value = selectedBab.description || '';
+  openBabModal(true);
+}
+
+function setupBabForm() {
+  document.getElementById('babForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = document.getElementById('loginBtn');
-    const btnText = document.getElementById('loginBtnText');
-    const errBox = document.getElementById('loginError');
-    const loginBox = document.getElementById('loginBox');
-
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value;
-
-    if (!username || !password) {
-      errBox.innerText = 'Username dan password wajib diisi!';
-      errBox.style.display = 'block';
-      loginBox.classList.add('shake');
-      return;
-    }
-
-    btnText.innerHTML = '<span class="btn-spinner"></span> Memverifikasi...';
+    const btn = document.getElementById('saveBabBtn');
     btn.disabled = true;
-    errBox.style.display = 'none';
-
-    try {
-      const res = await fetchAPI('saveSettings', { username, password, settings: {} }, 'POST');
-      if (res && res.success) {
-        adminAuth = { username, password };
-        sessionStorage.setItem(CONFIG.STORAGE_AUTH_KEY, JSON.stringify(adminAuth));
-        showToast('Login berhasil! Selamat datang');
-        showDashboard();
-      } else {
-        errBox.innerText = 'Username atau Password salah!';
-        errBox.style.display = 'block';
-        loginBox.classList.add('shake');
-        document.getElementById('loginPass').value = '';
-        document.getElementById('loginPass').focus();
-      }
-    } catch (err) {
-      errBox.innerText = 'Gagal menghubungi server database. Coba lagi.';
-      errBox.style.display = 'block';
-      loginBox.classList.add('shake');
-    } finally {
-      btnText.innerText = 'Masuk Dashboard';
-      btn.disabled = false;
-    }
-  });
-
-  document.getElementById('portfolioForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('savePortfolioBtn');
-    btn.innerText = 'Menyimpan ke Google Drive & Sheets...';
-    btn.disabled = true;
-
-    try {
-      let imageUrl = document.getElementById('pImageUrl').value;
-      const fileInput = document.getElementById('pFile');
-      if (fileInput.files.length > 0) {
-        const base64 = await fileToBase64(fileInput.files[0]);
-        const uploadRes = await fetchAPI('uploadImage', {
-          username: adminAuth.username,
-          password: adminAuth.password,
-          filename: fileInput.files[0].name,
-          base64: base64
-        }, 'POST');
-        if (uploadRes && uploadRes.success) {
-          imageUrl = uploadRes.url;
-        }
-      }
-
-      const item = {
-        id: document.getElementById('pId').value || '',
-        title: document.getElementById('pTitle').value,
-        category: document.getElementById('pCategory').value,
-        author: document.getElementById('pAuthor').value,
-        image_url: imageUrl,
-        description: document.getElementById('pDesc').value,
-        status: document.getElementById('pStatus').value
-      };
-
-      const saveRes = await fetchAPI('savePortfolio', {
-        username: adminAuth.username,
-        password: adminAuth.password,
-        item: item
-      }, 'POST');
-
-      if (saveRes && saveRes.success) {
-        showToast('Karya berhasil disimpan!');
-        closePortfolioModal();
-        loadDashboardData();
-      }
-    } catch (err) {
-      showToast('Gagal menyimpan karya', true);
-    } finally {
-      btn.innerText = 'Simpan Karya';
-      btn.disabled = false;
-    }
-  });
-
-  document.getElementById('galleryForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('saveGalleryBtn');
-    btn.innerText = 'Mengupload ke Google Drive...';
-    btn.disabled = true;
-
-    try {
-      const fileInput = document.getElementById('gFile');
-      const base64 = await fileToBase64(fileInput.files[0]);
-      const uploadRes = await fetchAPI('uploadImage', {
-        username: adminAuth.username,
-        password: adminAuth.password,
-        filename: fileInput.files[0].name,
-        base64: base64
-      }, 'POST');
-
-      if (uploadRes && uploadRes.success) {
-        const item = {
-          title: document.getElementById('gTitle').value,
-          image_url: uploadRes.url,
-          order: (currentData.gallery ? currentData.gallery.length : 0) + 1
-        };
-        await fetchAPI('saveGallery', {
-          username: adminAuth.username,
-          password: adminAuth.password,
-          item: item
-        }, 'POST');
-        showToast('Foto galeri berhasil diupload!');
-        closeGalleryModal();
-        loadDashboardData();
-      }
-    } catch (err) {
-      showToast('Gagal upload galeri', true);
-    } finally {
-      btn.innerText = 'Upload ke Galeri';
-      btn.disabled = false;
-    }
-  });
-
-  document.getElementById('settingsForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('saveSettingsBtn');
     btn.innerText = 'Menyimpan...';
-    btn.disabled = true;
+
+    const id = document.getElementById('babId').value || ('bab_' + Date.now());
+    const title = document.getElementById('babTitle').value.trim();
+    const description = document.getElementById('babDesc').value.trim();
 
     try {
-      const settings = {
-        hero_title: document.getElementById('settingHeroTitle').value,
-        hero_lead: document.getElementById('settingHeroLead').value,
-        about_title: document.getElementById('settingAboutTitle').value,
-        about_desc: document.getElementById('settingAboutDesc').value,
-        contact_email: document.getElementById('settingContactEmail').value
-      };
-
-      const res = await fetchAPI('saveSettings', {
-        username: adminAuth.username,
-        password: adminAuth.password,
-        settings: settings
+      const res = await fetchAPI('saveBab', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        item: { id, title, description, order: 1 }
       }, 'POST');
-
       if (res && res.success) {
-        showToast('Pengaturan website berhasil diperbarui!');
+        showToast('Modul berhasil disimpan!');
+        closeBabModal();
+        await loadAllAdminData();
+      } else {
+        throw new Error(res.message || 'Gagal menyimpan modul');
       }
     } catch (err) {
-      showToast('Gagal menyimpan pengaturan', true);
+      showToast(err.message, true);
     } finally {
-      btn.innerText = 'Simpan Pengaturan';
       btn.disabled = false;
+      btn.innerText = 'Simpan Modul';
     }
   });
 }
 
-function renderPortfolioTable(list) {
-  const tbody = document.getElementById('portfolioTableBody');
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 24px; color: var(--ink-muted);">Belum ada karya siswa. Silakan tambah karya baru.</td></tr>';
-    return;
+/* ============================================================
+   PROJECT MODAL & HANDLER (LKPD)
+============================================================ */
+function openProjectModal(isEdit = false) {
+  if (!selectedBab) return;
+  const modal = document.getElementById('projectModal');
+  document.getElementById('projModalTitle').innerText = isEdit ? 'Edit Project' : `Tambah Project ke ${selectedBab.title}`;
+  document.getElementById('projBabId').value = selectedBab.id;
+  if (!isEdit) {
+    document.getElementById('projId').value = '';
+    document.getElementById('projTitle').value = '';
+    document.getElementById('projBrief').value = '';
+    document.getElementById('projLkpdUrl').value = '';
   }
-  tbody.innerHTML = list.map(item => `
-    <tr>
-      <td>${item.image_url ? `<img src="${item.image_url}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px;">` : '—'}</td>
-      <td><strong>${item.title || '-'}</strong></td>
-      <td><span class="badge" style="background: var(--surface-3);">${item.category || '-'}</span></td>
-      <td>${item.author || '-'}</td>
-      <td><span class="badge ${item.status === 'published' ? 'badge-published' : 'badge-draft'}">${item.status || 'published'}</span></td>
-      <td>
-        <button class="action-btn" onclick="editPortfolio('${item.id}')">Edit</button>
-        <button class="action-btn delete" onclick="deletePortfolio('${item.id}')">Hapus</button>
-      </td>
-    </tr>
-  `).join('');
+  modal.classList.add('active');
+}
+function closeProjectModal() { document.getElementById('projectModal').classList.remove('active'); }
+function editCurrentProject() {
+  if (!selectedProject) return;
+  document.getElementById('projId').value = selectedProject.id;
+  document.getElementById('projBabId').value = selectedProject.bab_id;
+  document.getElementById('projTitle').value = selectedProject.title;
+  document.getElementById('projBrief').value = selectedProject.brief || '';
+  document.getElementById('projLkpdUrl').value = selectedProject.lkpd_url || '';
+  openProjectModal(true);
 }
 
-function renderGalleryTable(list) {
-  const tbody = document.getElementById('galleryTableBody');
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--ink-muted);">Belum ada foto kegiatan.</td></tr>';
-    return;
+function setupProjectForm() {
+  document.getElementById('projectForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveProjBtn');
+    btn.disabled = true;
+    btn.innerText = 'Menyimpan...';
+
+    const id = document.getElementById('projId').value || ('proj_' + Date.now());
+    const bab_id = document.getElementById('projBabId').value;
+    const title = document.getElementById('projTitle').value.trim();
+    const brief = document.getElementById('projBrief').value.trim();
+    const lkpd_url = document.getElementById('projLkpdUrl').value.trim();
+
+    try {
+      const res = await fetchAPI('saveProject', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        item: { id, bab_id, title, brief, lkpd_url, order: 1 }
+      }, 'POST');
+      if (res && res.success) {
+        showToast('Project & LKPD berhasil disimpan!');
+        closeProjectModal();
+        await loadAllAdminData();
+      } else {
+        throw new Error(res.message || 'Gagal menyimpan project');
+      }
+    } catch (err) {
+      showToast(err.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'Simpan Project';
+    }
+  });
+}
+
+/* ============================================================
+   KARYA MODAL & HANDLER (MULTI-MEDIA + COMPRESSOR)
+============================================================ */
+function toggleMediaInput() {
+  const type = document.getElementById('karyaMediaType').value;
+  const groupImg = document.getElementById('groupImageUpload');
+  const groupUrl = document.getElementById('groupMediaUrl');
+
+  if (type === 'image') {
+    groupImg.style.display = 'block';
+    groupUrl.style.display = 'none';
+  } else {
+    groupImg.style.display = 'none';
+    groupUrl.style.display = 'block';
   }
-  tbody.innerHTML = list.map(item => `
-    <tr>
-      <td><img src="${item.image_url}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 6px;"></td>
-      <td><strong>${item.title}</strong></td>
-      <td>${item.order || 1}</td>
-      <td>
-        <button class="action-btn delete" onclick="deleteGallery('${item.id}')">Hapus</button>
-      </td>
-    </tr>
-  `).join('');
 }
 
-function fillSettings(s) {
-  if (s.hero_title) document.getElementById('settingHeroTitle').value = s.hero_title;
-  if (s.hero_lead) document.getElementById('settingHeroLead').value = s.hero_lead;
-  if (s.about_title) document.getElementById('settingAboutTitle').value = s.about_title;
-  if (s.about_desc) document.getElementById('settingAboutDesc').value = s.about_desc;
-  if (s.contact_email) document.getElementById('settingContactEmail').value = s.contact_email;
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
-  
-  if (tab === 'portfolio') {
-    document.getElementById('portfolioTab').classList.add('active');
-    document.querySelectorAll('.sidebar .nav-item')[0].classList.add('active');
-  } else if (tab === 'gallery') {
-    document.getElementById('galleryTab').classList.add('active');
-    document.querySelectorAll('.sidebar .nav-item')[1].classList.add('active');
-  } else if (tab === 'settings') {
-    document.getElementById('settingsTab').classList.add('active');
-    document.querySelectorAll('.sidebar .nav-item')[2].classList.add('active');
+function openKaryaModal(isEdit = false) {
+  if (!selectedProject) return;
+  const modal = document.getElementById('karyaModal');
+  document.getElementById('karyaModalTitle').innerText = isEdit ? 'Edit Karya Siswa' : `Upload Karya ke ${selectedProject.title}`;
+  document.getElementById('karyaProjId').value = selectedProject.id;
+  if (!isEdit) {
+    document.getElementById('karyaId').value = '';
+    document.getElementById('karyaMediaUrl').value = '';
+    document.getElementById('karyaTitle').value = '';
+    document.getElementById('karyaStudent').value = '';
+    document.getElementById('karyaDesc').value = '';
+    document.getElementById('karyaFile').value = '';
+    document.getElementById('karyaUrlInput').value = '';
+    document.getElementById('karyaImgPreview').innerHTML = '';
+    document.getElementById('karyaMediaType').value = 'image';
+    toggleMediaInput();
   }
+  modal.classList.add('active');
 }
+function closeKaryaModal() { document.getElementById('karyaModal').classList.remove('active'); }
 
-function openPortfolioModal() {
-  document.getElementById('portfolioForm').reset();
-  document.getElementById('pId').value = '';
-  document.getElementById('pImageUrl').value = '';
-  document.getElementById('pImgPreview').innerHTML = '';
-  document.getElementById('portfolioModalTitle').innerText = 'Tambah Karya Siswa';
-  document.getElementById('portfolioModal').classList.add('active');
-}
-
-function closePortfolioModal() {
-  document.getElementById('portfolioModal').classList.remove('active');
-}
-
-function editPortfolio(id) {
-  const item = currentData.portfolio.find(p => p.id === id);
+function editKarya(id) {
+  const item = currentKarya.find(k => k.id === id);
   if (!item) return;
-  document.getElementById('pId').value = item.id;
-  document.getElementById('pTitle').value = item.title;
-  document.getElementById('pCategory').value = item.category;
-  document.getElementById('pAuthor').value = item.author;
-  document.getElementById('pDesc').value = item.description || '';
-  document.getElementById('pStatus').value = item.status || 'published';
-  document.getElementById('pImageUrl').value = item.image_url || '';
-  document.getElementById('pImgPreview').innerHTML = item.image_url ? `<img src="${item.image_url}" style="height: 60px; border-radius: 6px;">` : '';
-  document.getElementById('portfolioModalTitle').innerText = 'Edit Karya Siswa';
-  document.getElementById('portfolioModal').classList.add('active');
+  document.getElementById('karyaId').value = item.id;
+  document.getElementById('karyaProjId').value = item.project_id;
+  document.getElementById('karyaMediaUrl').value = item.media_url || '';
+  document.getElementById('karyaTitle').value = item.title;
+  document.getElementById('karyaStudent').value = item.student_name + (item.class ? ` • ${item.class}` : '');
+  document.getElementById('karyaMediaType').value = item.media_type || 'image';
+  document.getElementById('karyaDesc').value = item.description || '';
+  document.getElementById('karyaStatus').value = item.status || 'published';
+  
+  if (item.media_type === 'image' && item.media_url) {
+    document.getElementById('karyaImgPreview').innerHTML = `<img src="${item.media_url}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;">`;
+  } else {
+    document.getElementById('karyaUrlInput').value = item.media_url || '';
+  }
+  toggleMediaInput();
+  openKaryaModal(true);
 }
 
-async function deletePortfolio(id) {
-  if (!confirm('Yakin ingin menghapus karya ini?')) return;
+async function deleteKarya(id) {
+  if (!confirm('Yakin ingin menghapus karya siswa ini?')) return;
   try {
-    const res = await fetchAPI('deletePortfolio', {
-      username: adminAuth.username,
-      password: adminAuth.password,
-      id: id
+    const res = await fetchAPI('deleteKarya', {
+      username: currentAuth.username,
+      password: currentAuth.password,
+      id
     }, 'POST');
     if (res && res.success) {
-      showToast('Karya berhasil dihapus');
-      loadDashboardData();
+      showToast('Karya siswa berhasil dihapus');
+      await loadAllAdminData();
     }
   } catch (err) {
     showToast('Gagal menghapus karya', true);
   }
 }
 
-function openGalleryModal() {
-  document.getElementById('galleryForm').reset();
-  document.getElementById('galleryModal').classList.add('active');
+function setupKaryaForm() {
+  document.getElementById('karyaForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveKaryaBtn');
+    btn.disabled = true;
+    btn.innerText = 'Mengunggah & Menyimpan...';
+
+    const id = document.getElementById('karyaId').value || ('kar_' + Date.now());
+    const project_id = document.getElementById('karyaProjId').value;
+    const title = document.getElementById('karyaTitle').value.trim();
+    const rawStudent = document.getElementById('karyaStudent').value.trim();
+    const [student_name, student_class] = rawStudent.includes('•') ? rawStudent.split('•').map(s => s.trim()) : [rawStudent, ''];
+    const media_type = document.getElementById('karyaMediaType').value;
+    const description = document.getElementById('karyaDesc').value.trim();
+    const status = document.getElementById('karyaStatus').value;
+    const fileInput = document.getElementById('karyaFile');
+    let media_url = document.getElementById('karyaMediaUrl').value;
+
+    try {
+      if (media_type === 'image' && fileInput.files.length > 0) {
+        btn.innerText = 'Mengompres & Upload ke Drive...';
+        const base64 = await compressImage(fileInput.files[0], 1600, 0.85);
+        const uploadRes = await fetchAPI('uploadImage', {
+          username: currentAuth.username,
+          password: currentAuth.password,
+          base64,
+          filename: `karya_${Date.now()}.jpg`
+        }, 'POST');
+        if (!uploadRes.success) throw new Error('Gagal upload gambar ke Google Drive');
+        media_url = uploadRes.url;
+      } else if (media_type !== 'image') {
+        media_url = document.getElementById('karyaUrlInput').value.trim();
+      }
+
+      const res = await fetchAPI('saveKarya', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        item: {
+          id, project_id, title, student_name, class: student_class,
+          media_type, media_url, description, status
+        }
+      }, 'POST');
+
+      if (res && res.success) {
+        showToast('Karya siswa berhasil disimpan!');
+        closeKaryaModal();
+        await loadAllAdminData();
+      } else {
+        throw new Error(res.message || 'Gagal menyimpan karya');
+      }
+    } catch (err) {
+      showToast(err.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'Simpan Karya Siswa';
+    }
+  });
 }
 
-function closeGalleryModal() {
-  document.getElementById('galleryModal').classList.remove('active');
+/* ============================================================
+   GALLERY & SETTINGS HANDLERS
+============================================================ */
+function renderGalleryTable() {
+  const tbody = document.getElementById('galleryTableBody');
+  if (currentGallery.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--ink-muted);">Belum ada foto kegiatan.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = currentGallery.map(g => `
+    <tr>
+      <td><img src="${g.image_url}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--hairline);"></td>
+      <td><strong>${g.title}</strong></td>
+      <td>#${g.order || 1}</td>
+      <td><button class="action-btn delete" onclick="deleteGalleryItem('${g.id}')">Hapus</button></td>
+    </tr>
+  `).join('');
 }
 
-async function deleteGallery(id) {
-  if (!confirm('Yakin ingin menghapus foto galeri ini?')) return;
+function openGalleryModal() { document.getElementById('galleryModal').classList.add('active'); }
+function closeGalleryModal() { document.getElementById('galleryModal').classList.remove('active'); }
+
+async function deleteGalleryItem(id) {
+  if (!confirm('Yakin ingin menghapus foto kegiatan ini?')) return;
   try {
-    const res = await fetchAPI('deleteGallery', {
-      username: adminAuth.username,
-      password: adminAuth.password,
-      id: id
-    }, 'POST');
+    const res = await fetchAPI('deleteGallery', { username: currentAuth.username, password: currentAuth.password, id }, 'POST');
     if (res && res.success) {
-      showToast('Foto galeri berhasil dihapus');
-      loadDashboardData();
+      showToast('Foto kegiatan berhasil dihapus');
+      await loadAllAdminData();
     }
   } catch (err) {
     showToast('Gagal menghapus foto', true);
   }
 }
 
-function fileToBase64(file) {
+function setupGalleryForm() {
+  document.getElementById('galleryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveGalleryBtn');
+    btn.disabled = true;
+    btn.innerText = 'Mengompres & Upload...';
+
+    const title = document.getElementById('gTitle').value.trim();
+    const file = document.getElementById('gFile').files[0];
+
+    try {
+      const base64 = await compressImage(file, 1600, 0.85);
+      const uploadRes = await fetchAPI('uploadImage', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        base64,
+        filename: `gal_${Date.now()}.jpg`
+      }, 'POST');
+      if (!uploadRes.success) throw new Error('Upload gambar gagal');
+
+      const res = await fetchAPI('saveGallery', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        item: { title, image_url: uploadRes.url, order: currentGallery.length + 1 }
+      }, 'POST');
+
+      if (res && res.success) {
+        showToast('Foto dokumentasi berhasil ditambahkan!');
+        closeGalleryModal();
+        await loadAllAdminData();
+      }
+    } catch (err) {
+      showToast(err.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'Upload ke Galeri';
+    }
+  });
+}
+
+function populateSettings() {
+  if (currentSettings.hero_title) document.getElementById('settingHeroTitle').value = currentSettings.hero_title;
+  if (currentSettings.hero_lead) document.getElementById('settingHeroLead').value = currentSettings.hero_lead;
+  if (currentSettings.about_title) document.getElementById('settingAboutTitle').value = currentSettings.about_title;
+  if (currentSettings.about_desc) document.getElementById('settingAboutDesc').value = currentSettings.about_desc;
+  if (currentSettings.contact_email) document.getElementById('settingContactEmail').value = currentSettings.contact_email;
+}
+
+function setupSettingsForm() {
+  document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveSettingsBtn');
+    btn.disabled = true;
+    btn.innerText = 'Menyimpan...';
+
+    const settings = {
+      hero_title: document.getElementById('settingHeroTitle').value.trim(),
+      hero_lead: document.getElementById('settingHeroLead').value.trim(),
+      about_title: document.getElementById('settingAboutTitle').value.trim(),
+      about_desc: document.getElementById('settingAboutDesc').value.trim(),
+      contact_email: document.getElementById('settingContactEmail').value.trim()
+    };
+
+    try {
+      const res = await fetchAPI('saveSettings', {
+        username: currentAuth.username,
+        password: currentAuth.password,
+        settings
+      }, 'POST');
+      if (res && res.success) {
+        showToast('Pengaturan website berhasil diperbarui!');
+        await loadAllAdminData();
+      }
+    } catch (err) {
+      showToast('Gagal menyimpan pengaturan', true);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'Simpan Pengaturan';
+    }
+  });
+}
+
+/* ============================================================
+   CLIENT COMPRESSION UTILITY
+============================================================ */
+function compressImage(file, maxDimension = 1600, quality = 0.85) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
     reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
   });
 }
 
@@ -382,10 +695,5 @@ function showToast(msg, isError = false) {
   toast.innerText = msg;
   toast.style.background = isError ? '#ef4444' : '#22c55e';
   toast.style.display = 'block';
-  setTimeout(() => toast.style.display = 'none', 3000);
-}
-
-function logout() {
-  sessionStorage.removeItem(CONFIG.STORAGE_AUTH_KEY);
-  location.reload();
+  setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }

@@ -3,23 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard • SKAGAMU Digital Branding</title>
+  <title>Admin Dashboard • SKAGAMU Explorer</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    body { background-color: #0b0c0e; }
-    .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    body { background-color: #0b0c0e; color: #ededed; }
+    .admin-layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
     .sidebar { background: #101114; border-right: 1px solid var(--hairline); padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; }
-    .sidebar-brand { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+    .sidebar-brand { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
     .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); color: var(--ink-muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 6px; cursor: pointer; min-height: 44px; transition: all 0.2s; }
     .nav-item:hover, .nav-item.active { background: var(--surface-3); color: #fff; }
     
-    .main-content { padding: 36px 40px; max-width: 1200px; width: 100%; }
+    .main-content { padding: 32px 36px; max-width: 1300px; width: 100%; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     
+    /* WINDOWS EXPLORER PATH BREADCRUMB */
+    .explorer-breadcrumb {
+      display: flex; align-items: center; gap: 8px; background: var(--surface-1);
+      border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+      padding: 10px 16px; margin-bottom: 24px; font-size: 13px; font-weight: 600; overflow-x: auto;
+    }
+    .breadcrumb-item { color: var(--ink-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .breadcrumb-item:hover { color: #fff; }
+    .breadcrumb-item.active { color: #fff; cursor: default; }
+    .breadcrumb-sep { color: var(--hairline); }
+
+    /* FOLDER GRID TILES (WINDOWS EXPLORER STYLE) */
+    .folder-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px; margin-top: 18px;
+    }
+    .folder-card {
+      background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md);
+      padding: 18px 20px; cursor: pointer; transition: all 0.2s ease; display: flex;
+      flex-direction: column; justify-content: space-between; position: relative;
+    }
+    .folder-card:hover { transform: translateY(-3px); border-color: rgba(255,122,61,0.4); background: var(--surface-2); }
+    .folder-icon { font-size: 32px; margin-bottom: 12px; }
+    .folder-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; line-height: 1.4; }
+    .folder-meta { font-size: 12px; color: var(--ink-muted); }
+    
     /* TABLE CONTAINER */
-    .table-container { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); overflow-x: auto; margin-top: 24px; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 600px; }
+    .table-container { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-md); overflow-x: auto; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 650px; }
     th { background: var(--surface-2); padding: 14px 18px; border-bottom: 1px solid var(--hairline); color: var(--ink-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
     td { padding: 14px 18px; border-bottom: 1px solid var(--hairline); vertical-align: middle; }
     
@@ -28,158 +54,185 @@
     .badge-draft { background: rgba(234, 179, 8, 0.15); color: #eab308; }
     
     .action-btn { padding: 8px 14px; font-size: 13px; font-weight: 600; margin-right: 6px; border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--ink); min-height: 38px; }
-    .action-btn:hover { background: var(--surface-3); }
+    .action-btn:hover { background: var(--surface-3); color: #fff; }
     .action-btn.delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
     
-    .form-group { margin-bottom: 20px; position: relative; }
+    .form-group { margin-bottom: 18px; position: relative; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--ink-muted); }
     .form-control { width: 100%; background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 12px 14px; color: #fff; font-size: 14px; min-height: 44px; transition: border-color 0.2s; }
     .form-control:focus { outline: none; border-color: var(--primary); }
     
-    /* PASSWORD FIELD WITH TOGGLE */
+    /* LOGIN OVERLAY */
+    .login-overlay { position: fixed; inset: 0; background: rgba(9,9,9,0.94); backdrop-filter: blur(16px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-box { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 40px 32px; width: min(420px, 100%); box-shadow: 0 24px 48px rgba(0,0,0,0.8); }
+    
     .password-wrapper { position: relative; display: flex; align-items: center; }
     .password-wrapper input { padding-right: 44px; }
-    .toggle-password {
-      position: absolute; right: 10px; background: none; border: none;
-      color: var(--ink-muted); cursor: pointer; padding: 6px; display: flex;
-      align-items: center; justify-content: center; font-size: 16px;
-    }
+    .toggle-password { position: absolute; right: 10px; background: none; border: none; color: var(--ink-muted); cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
     .toggle-password:hover { color: #fff; }
 
-    /* LOGIN MODAL & ANIMATIONS */
-    .login-overlay { position: fixed; inset: 0; background: rgba(9,9,9,0.92); backdrop-filter: blur(16px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .login-box {
-      background: var(--surface-1); border: 1px solid var(--hairline); border-radius: var(--radius-lg);
-      padding: 40px 32px; width: min(420px, 100%); box-shadow: 0 24px 48px rgba(0,0,0,0.8);
-      transition: transform 0.2s ease;
-    }
-    
-    /* SHAKE ANIMATION ON ERROR */
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
-    }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
     .login-box.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-
-    /* LOADING SPINNER BUTTON */
-    .btn-spinner {
-      display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%; border-top-color: #fff; animation: spin 0.6s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
+    
     .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: var(--radius-sm); background: #22c55e; color: #fff; font-weight: 600; font-size: 14px; z-index: 3000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     
-    /* MOBILE BOTTOM TAB BAR FOR ADMIN */
     @media (max-width: 860px) {
       .admin-layout { grid-template-columns: 1fr; padding-bottom: 74px; }
-      .sidebar {
-        position: fixed; bottom: 0; left: 0; right: 0; top: auto;
-        border-right: none; border-top: 1px solid var(--hairline);
-        flex-direction: row; align-items: center; justify-content: space-around;
-        padding: 8px 12px; z-index: 100; background: rgba(16, 17, 20, 0.95);
-        backdrop-filter: blur(16px);
-      }
-      .sidebar-brand, .sidebar > div:last-child { display: none; }
+      .sidebar { position: fixed; bottom: 0; left: 0; right: 0; flex-direction: row; border-top: 1px solid var(--hairline); border-right: none; padding: 8px 12px; z-index: 1000; height: 64px; }
+      .sidebar-brand, .user-profile { display: none; }
       .sidebar nav { display: flex; width: 100%; justify-content: space-around; }
-      .nav-item { margin-bottom: 0; font-size: 12px; padding: 8px 10px; flex-direction: column; gap: 4px; }
-      .main-content { padding: 24px 16px; }
+      .nav-item { margin-bottom: 0; padding: 8px 12px; font-size: 12px; min-height: 40px; }
+      .main-content { padding: 20px 16px; }
     }
   </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
+<!-- FLOATING LOGIN MODAL -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box" id="loginBox">
-    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-      <span class="brand-badge">SK</span>
-      <h2 style="font-size: 22px; font-weight: 800;">SKAGAMU CMS</h2>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="brand-badge" style="font-size: 18px; padding: 8px 16px;">SK</span>
+      <h2 style="font-size: 22px; font-weight: 800; margin-top: 14px; color: #fff;">SKAGAMU Explorer CMS</h2>
+      <p style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">Login via database Google Sheets</p>
     </div>
-    <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 24px;">Masuk untuk mengelola portofolio karya & galeri sekolah.</p>
     
-    <form id="loginForm" novalidate>
+    <div id="loginErrorMsg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; font-weight: 600;"></div>
+
+    <form id="loginForm">
       <div class="form-group">
         <label>Username</label>
-        <input type="text" id="loginUser" class="form-control" required placeholder="Masukkan username" autocomplete="username">
+        <input type="text" id="loginUsername" class="form-control" required placeholder="adminwebsite" autocomplete="username">
       </div>
-      
       <div class="form-group">
         <label>Password</label>
         <div class="password-wrapper">
-          <input type="password" id="loginPass" class="form-control" required placeholder="Masukkan password" autocomplete="current-password">
-          <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Lihat password">👁️</button>
+          <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Lihat Password">👁️</button>
         </div>
       </div>
-      
-      <div id="loginError" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; display: none;"></div>
-
-      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;" id="loginBtn">
-        <span id="loginBtnText">Masuk Dashboard</span>
+      <button type="submit" class="btn btn-primary" id="loginSubmitBtn" style="width: 100%; margin-top: 8px;">
+        <span id="loginBtnText">Masuk ke CMS</span>
       </button>
     </form>
   </div>
 </div>
 
-<div class="admin-layout" id="adminApp" style="display: none;">
+<div class="admin-layout">
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div>
       <div class="sidebar-brand">
         <span class="brand-badge">SK</span>
-        <span>SKAGAMU CMS</span>
+        <span>CMS Explorer</span>
       </div>
       <nav>
-        <div class="nav-item active" onclick="switchTab('portfolio')"><span>📁</span><span>Karya Siswa</span></div>
-        <div class="nav-item" onclick="switchTab('gallery')"><span>🖼️</span><span>Galeri</span></div>
-        <div class="nav-item" onclick="switchTab('settings')"><span>⚙️</span><span>Pengaturan</span></div>
+        <div class="nav-item active" data-tab="explorerTab">📁 All Projects</div>
+        <div class="nav-item" data-tab="galleryTab">🖼️ Galeri Aktivitas</div>
+        <div class="nav-item" data-tab="settingsTab">⚙️ Pengaturan</div>
       </nav>
     </div>
-    <div>
-      <a href="index.html" target="_blank" class="nav-item"><span>🌐</span><span>Lihat Web</span></a>
-      <div class="nav-item" onclick="logout()" style="color: #ef4444;"><span>🚪</span><span>Logout</span></div>
+    <div class="user-profile" style="border-top: 1px solid var(--hairline); padding-top: 16px;">
+      <div id="adminUserName" style="font-size: 13px; font-weight: 700; color: #fff;">Admin SKAGAMU</div>
+      <div style="font-size: 11px; color: var(--ink-muted); margin-bottom: 12px;">Role: Administrator</div>
+      <button class="action-btn" id="logoutBtn" style="width: 100%; font-size: 12px;">Keluar</button>
     </div>
   </aside>
 
+  <!-- MAIN VIEWPORT -->
   <main class="main-content">
-    <!-- PORTFOLIO TAB -->
-    <section id="portfolioTab" class="tab-content active">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
-        <div>
-          <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800;">Manajemen Karya Siswa</h2>
-          <p style="font-size: 13px; color: var(--ink-muted);">Kelola portofolio karya siswa yang tampil di etalase website.</p>
-        </div>
-        <button class="btn btn-primary" onclick="openPortfolioModal()">+ Tambah Karya</button>
+    
+    <!-- EXPLORER TAB (3-LAYER HIERARCHY) -->
+    <section id="explorerTab" class="tab-content active">
+      
+      <!-- BREADCRUMB EXPLORER -->
+      <div class="explorer-breadcrumb" id="explorerBreadcrumb">
+        <span class="breadcrumb-item active" id="bcHome" onclick="navigateToLevel(1)">📁 Semua Modul</span>
       </div>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Preview</th>
-              <th>Judul Karya</th>
-              <th>Kategori</th>
-              <th>Pembuat</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="portfolioTableBody">
-            <tr><td colspan="6" style="text-align:center; padding: 24px; color: var(--ink-muted);">Memuat data dari Google Sheets...</td></tr>
-          </tbody>
-        </table>
+      <!-- LEVEL 1: SEMUA BAB / MODUL -->
+      <div id="viewLevel1" class="explorer-view">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: clamp(20px, 3vw, 26px); font-weight: 800; margin-bottom: 4px;">Modul Pembelajaran</h2>
+            <p style="font-size: 13px; color: var(--ink-muted);">Pilih modul/bab untuk mengelola proyek tugas dan karya siswa.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openBabModal()">+ Tambah Modul</button>
+        </div>
+        <div class="folder-grid" id="babFolderGrid">
+          <div style="padding: 24px; color: var(--ink-muted);">Memuat modul...</div>
+        </div>
       </div>
+
+      <!-- LEVEL 2: DAFTAR PROYEK DALAM MODUL -->
+      <div id="viewLevel2" class="explorer-view" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="action-btn" onclick="navigateToLevel(1)">← Kembali</button>
+              <h2 id="level2BabTitle" style="font-size: clamp(20px, 3vw, 24px); font-weight: 800;">Modul 1: Identitas & Brand Visual</h2>
+            </div>
+            <p id="level2BabDesc" style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">Daftar proyek dan tugas siswa dalam modul ini.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="action-btn" onclick="editCurrentBab()">✏️ Edit Modul</button>
+            <button class="btn btn-primary" onclick="openProjectModal()">+ Tambah Project</button>
+          </div>
+        </div>
+        <div class="folder-grid" id="projectFolderGrid">
+          <div style="padding: 24px; color: var(--ink-muted);">Memuat project...</div>
+        </div>
+      </div>
+
+      <!-- LEVEL 3: KARYA SISWA DALAM PROJECT -->
+      <div id="viewLevel3" class="explorer-view" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="action-btn" onclick="navigateToLevel(2)">← Kembali</button>
+              <h2 id="level3ProjTitle" style="font-size: clamp(20px, 3vw, 24px); font-weight: 800;">Brand Identity Kopi Wuryantoro</h2>
+            </div>
+            <p id="level3ProjBrief" style="font-size: 13px; color: var(--ink-muted); margin-top: 6px;">Instruksi tugas...</p>
+            <div id="level3LkpdBadge" style="margin-top: 8px;"></div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="action-btn" onclick="editCurrentProject()">✏️ Edit Project & LKPD</button>
+            <button class="btn btn-primary" onclick="openKaryaModal()">+ Upload Karya Siswa</button>
+          </div>
+        </div>
+
+        <!-- TABEL KARYA SISWA -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Media Preview</th>
+                <th>Judul Karya</th>
+                <th>Nama Siswa & Kelas</th>
+                <th>Tipe</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="karyaTableBody">
+              <tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--ink-muted);">Belum ada karya siswa.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </section>
 
     <!-- GALLERY TAB -->
     <section id="galleryTab" class="tab-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <div>
-          <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800;">Galeri Aktivitas</h2>
-          <p style="font-size: 13px; color: var(--ink-muted);">Dokumentasi workshop, expo, dan kegiatan studio kreatif.</p>
+          <h2 style="font-size: clamp(22px, 3vw, 28px); font-weight: 800; margin-bottom: 6px;">Galeri & Dokumentasi</h2>
+          <p style="font-size: 13px; color: var(--ink-muted);">Dokumentasi aktivitas kegiatan sekolah (tampil dalam bentuk editorial masonry grid).</p>
         </div>
         <button class="btn btn-primary" onclick="openGalleryModal()">+ Upload Foto</button>
       </div>
+
       <div class="table-container">
         <table>
           <thead>
@@ -231,47 +284,97 @@
   </main>
 </div>
 
-<!-- MODAL FORM PORTFOLIO -->
-<div class="modal-backdrop" id="portfolioModal" role="dialog" aria-modal="true">
+<!-- MODAL BAB -->
+<div class="modal-backdrop" id="babModal" role="dialog" aria-modal="true">
   <div class="modal-content">
-    <button class="modal-close" onclick="closePortfolioModal()">✕</button>
-    <h3 id="portfolioModalTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Tambah Karya Siswa</h3>
-    <form id="portfolioForm">
-      <input type="hidden" id="pId">
-      <input type="hidden" id="pImageUrl">
+    <button class="modal-close" onclick="closeBabModal()">✕</button>
+    <h3 id="babModalTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Tambah Modul Baru</h3>
+    <form id="babForm">
+      <input type="hidden" id="babId">
       <div class="form-group">
-        <label>Judul Karya</label>
-        <input type="text" id="pTitle" class="form-control" required placeholder="Contoh: Identitas Merek Kopi Wuryantoro">
+        <label>Nama Modul / Bab</label>
+        <input type="text" id="babTitle" class="form-control" required placeholder="Contoh: Modul 1: Identitas & Brand Visual">
       </div>
       <div class="form-group">
-        <label>Kategori</label>
-        <select id="pCategory" class="form-control">
-          <option value="branding">Branding</option>
-          <option value="design">Desain Grafis</option>
-          <option value="content">Konten Digital</option>
-        </select>
+        <label>Deskripsi Pembelajaran</label>
+        <textarea id="babDesc" class="form-control" rows="3" placeholder="Lingkup kompetensi dan target materi..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" id="saveBabBtn" style="width: 100%;">Simpan Modul</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PROJECT -->
+<div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeProjectModal()">✕</button>
+    <h3 id="projModalTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Tambah Project Baru</h3>
+    <form id="projectForm">
+      <input type="hidden" id="projId">
+      <input type="hidden" id="projBabId">
+      <div class="form-group">
+        <label>Judul Project / Tugas</label>
+        <input type="text" id="projTitle" class="form-control" required placeholder="Contoh: Brand Identity Kopi Wuryantoro">
+      </div>
+      <div class="form-group">
+        <label>Brief / Deskripsi Tugas</label>
+        <textarea id="projBrief" class="form-control" rows="2" placeholder="Instruksi capaian dan petunjuk pengerjaan..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Link / File Acuan LKPD (Google Docs / PDF Link)</label>
+        <input type="url" id="projLkpdUrl" class="form-control" placeholder="https://docs.google.com/document/d/...">
+      </div>
+      <button type="submit" class="btn btn-primary" id="saveProjBtn" style="width: 100%;">Simpan Project</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL KARYA SISWA (MULTI-MEDIA) -->
+<div class="modal-backdrop" id="karyaModal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeKaryaModal()">✕</button>
+    <h3 id="karyaModalTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Upload Karya Siswa</h3>
+    <form id="karyaForm">
+      <input type="hidden" id="karyaId">
+      <input type="hidden" id="karyaProjId">
+      <input type="hidden" id="karyaMediaUrl">
+      <div class="form-group">
+        <label>Judul Karya Siswa</label>
+        <input type="text" id="karyaTitle" class="form-control" required placeholder="Contoh: Desain Kemasan Botol Cold Brew">
       </div>
       <div class="form-group">
         <label>Nama Siswa & Kelas</label>
-        <input type="text" id="pAuthor" class="form-control" required placeholder="Contoh: Ahmad Fauzi • XI DKV 1">
+        <input type="text" id="karyaStudent" class="form-control" required placeholder="Contoh: Ahmad Fauzi • XI DKV 1">
       </div>
       <div class="form-group">
-        <label>Upload Cover Karya (Auto-Upload ke Google Drive)</label>
-        <input type="file" id="pFile" class="form-control" accept="image/*">
-        <div id="pImgPreview" style="margin-top: 10px;"></div>
+        <label>Tipe Media</label>
+        <select id="karyaMediaType" class="form-control" onchange="toggleMediaInput()">
+          <option value="image">Gambar / Cover (Auto Upload ke Drive)</option>
+          <option value="video">Video (YouTube / Drive Link)</option>
+          <option value="link">Link Eksternal (Figma / Web)</option>
+        </select>
+      </div>
+      <div class="form-group" id="groupImageUpload">
+        <label>Pilih File Gambar</label>
+        <input type="file" id="karyaFile" class="form-control" accept="image/*">
+        <div id="karyaImgPreview" style="margin-top: 10px;"></div>
+      </div>
+      <div class="form-group" id="groupMediaUrl" style="display: none;">
+        <label>URL Video / External Link</label>
+        <input type="url" id="karyaUrlInput" class="form-control" placeholder="https://...">
       </div>
       <div class="form-group">
-        <label>Deskripsi Karya</label>
-        <textarea id="pDesc" class="form-control" rows="3" placeholder="Ceritakan konsep dan proses pembuatan karya..."></textarea>
+        <label>Deskripsi & Refleksi Karya</label>
+        <textarea id="karyaDesc" class="form-control" rows="3" placeholder="Ceritakan konsep, software yang digunakan, dan refleksi pengerjaan..."></textarea>
       </div>
       <div class="form-group">
         <label>Status Publikasi</label>
-        <select id="pStatus" class="form-control">
-          <option value="published">Published (Tampil di Website)</option>
-          <option value="draft">Draft (Disembunyikan)</option>
+        <select id="karyaStatus" class="form-control">
+          <option value="published">Published (Tampil di Showcase Frontend)</option>
+          <option value="draft">Draft (Hanya di Admin)</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary" id="savePortfolioBtn" style="width: 100%;">Simpan Karya</button>
+      <button type="submit" class="btn btn-primary" id="saveKaryaBtn" style="width: 100%;">Simpan Karya Siswa</button>
     </form>
   </div>
 </div>
@@ -280,7 +383,7 @@
 <div class="modal-backdrop" id="galleryModal" role="dialog" aria-modal="true">
   <div class="modal-content">
     <button class="modal-close" onclick="closeGalleryModal()">✕</button>
-    <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Upload Foto Galeri</h3>
+    <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Upload Foto Dokumentasi Galeri</h3>
     <form id="galleryForm">
       <div class="form-group">
         <label>Judul Kegiatan</label>
