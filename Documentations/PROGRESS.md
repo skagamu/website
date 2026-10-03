@@ -21,7 +21,7 @@ Dokumen pelacak status implementasi, matriks fase SDLC, changelog, status task K
 | **2** | **Perancangan (Design & Architecture)** | Sitemap, arsitektur informasi, design tokens (warna, tipografi, motion), inventaris data pra-produksi. | **Selesai** | `PRA_PRODUKSI.md`, `SPESIFIKASI_WEBSITE.md` |
 | **3** | **Pengembangan (Development)** | Slicing komponen modular, integrasi interaksi (PPDB, bento grid, carousel), routing halaman. | **Selesai** | `src/app/`, `src/components/` |
 | **4** | **Pengujian (Quality Assurance / QA)** | Uji fungsional form, validasi responsivitas, audit UI/UX komponen. | **Selesai** | `tests/` |
-| **5** | **Peluncuran (Deployment & Release)** | Setup hosting/Vercel/server, domain, SSL, metadata SEO, analitik. | **Pending** | - |
+| **5** | **Peluncuran (Deployment & Release)** | Setup hosting/Vercel/server, domain, SSL, metadata SEO, analitik. | **Selesai (GitHub Pages)** | `.github/workflows/deploy.yml`, `next.config.mjs` |
 | **6** | **Pemeliharaan & Evaluasi (Maintenance)** | Monitoring uptime, perbaikan bug pasca-rilis, evaluasi metrik konversi lead PPDB. | **Pending** | - |
 
 ---
@@ -35,6 +35,13 @@ Dokumen pelacak status implementasi, matriks fase SDLC, changelog, status task K
 ---
 
 ## 4. Log Penyelesaian & Changelog
+
+### 2026-10-03 — Admin Panel CMS & Deployment (Fase 5)
+1. **GitHub Pages Deployment & Git-Backed CMS:**
+   - Dikerjakan oleh: AI coding agent
+   - Fase SDLC: Fase 5 (Peluncuran)
+   - Perubahan / Output: Migrasi state JSON lokal ke Custom CMS berbasis Octokit API. Setup GitHub Actions (`deploy.yml`) untuk Next.js static export ke repositori `skagamu/website`. Penyesuaian `basePath: "/website"` di next config dan manifest.
+   - Status Verifikasi: CI/CD berhasil, situs live, login/edit admin via CMS sukses. Update styling UI form admin beres.
 
 ### YYYY-MM-DD — Penyelesaian UI Components & Pages (Fase 3 & 4)
 1. **Pengembangan Seluruh Halaman & Komponen (FR-01 s/d FR-09):**
