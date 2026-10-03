@@ -10,7 +10,7 @@ import {
 // ============================================================================
 // KONFIGURASI SKEMA FORM DINAMIS
 // ============================================================================
-type FieldSchema = { key: string; label: string; type?: "textarea" | "text" };
+type FieldSchema = { key: string; label: string; type?: "textarea" | "text" | "select"; options?: string[] };
 
 const SCHEMAS: Record<string, FieldSchema[]> = {
   events: [
@@ -18,10 +18,10 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "title", label: "Judul Event / Berita" },
     { key: "date", label: "Tanggal Display (Misal: 12 OKT 2026)" },
     { key: "dateISO", label: "Tanggal ISO (Misal: 2026-10-12)" },
-    { key: "status", label: "Status (Upcoming/Selesai)" },
+    { key: "status", label: "Status (Upcoming/Selesai)", type: "select", options: ["Upcoming", "Selesai"] },
     { key: "category", label: "Kategori" },
     { key: "location", label: "Lokasi" },
-    { key: "image", label: "URL Gambar (/media/events/...)" },
+    { key: "image", label: "URL Gambar (/website/media/events/...)" },
     { key: "colorTheme", label: "Tema Warna Tailwind" },
     { key: "href", label: "URL Tujuan" },
     { key: "excerpt", label: "Ringkasan", type: "textarea" },
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
               onClick={() => fetchFile(token, owner, repo, tab)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                 activeTab.id === tab.id 
-                  ? "bg-amber-500 text-navy shadow-sm" 
+                  ? "bg-amber-400 text-navy font-bold shadow-md ring-1 ring-amber-300" 
                   : "text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
@@ -343,7 +343,7 @@ export default function AdminDashboard() {
         <div className="p-4 border-t border-white/10">
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors"
           >
             <LogOut size={18} />
             Keluar Sesi
@@ -352,7 +352,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 flex flex-col h-[calc(100vh-80px)] md:h-[calc(100vh-104px)] overflow-hidden">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Header Bar */}
         <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border-b border-slate-200 shadow-sm z-10 shrink-0">
           <div>
@@ -419,6 +419,17 @@ export default function AdminDashboard() {
                             rows={3}
                             className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy transition-all"
                           />
+                        ) : field.type === "select" ? (
+                          <select
+                            value={item[field.key] || ""}
+                            onChange={(e) => updateItem(index, field.key, e.target.value)}
+                            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy transition-all"
+                          >
+                            <option value="">-- Pilih --</option>
+                            {field.options?.map(opt => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
                         ) : (
                           <input
                             type="text"
