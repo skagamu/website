@@ -227,7 +227,7 @@ export default function AdminDashboard() {
     setDataLoading(true);
     try {
       // Rekonstruksi struktur JSON asli sebelum dikirim
-      let formattedData = fileData;
+      let formattedData: any = fileData;
 
       if (activeTab.id === "manifesto") {
         // Balikkan lagi dari array tunggal ke Object root
