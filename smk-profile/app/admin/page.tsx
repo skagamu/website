@@ -254,16 +254,14 @@ export default function AdminDashboard() {
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Owner Repo</label>
                 <input 
                   type="text" required value={owner} onChange={(e) => setOwner(e.target.value)}
-                  placeholder="Misal: skagamu"
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
                 />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Nama Repo</label>
                 <input 
                   type="text" required value={repo} onChange={(e) => setRepo(e.target.value)}
-                  placeholder="Misal: website"
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
                 />
               </div>
             </div>
