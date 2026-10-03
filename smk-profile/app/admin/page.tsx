@@ -139,7 +139,7 @@ export default function AdminDashboard() {
     setDataLoading(true);
     setActiveTab(tab);
     try {
-      const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${tab.file}`, {
+      const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/smk-profile/${tab.file}`, {
         headers: { Authorization: `Bearer ${pat}`, Accept: "application/vnd.github.v3+json" },
       });
       
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
       const newJsonContent = JSON.stringify({ [activeTab.id]: fileData }, null, 2);
       const encodedContent = toBase64(newJsonContent);
 
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${activeTab.file}`, {
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/smk-profile/${activeTab.file}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
