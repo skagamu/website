@@ -1,0 +1,31 @@
+{
+  "slides": [
+    {
+      "id": "praktik",
+      "label": "Belajar melalui praktik",
+      "headline": ["Siap berkarya.", "Siap untuk masa depan."],
+      "description": "Bangun keterampilan, karakter, dan kepercayaan diri melalui pendidikan vokasi yang dekat dengan dunia kerja.",
+      "durationMs": 8000,
+      "image": "/media/hero/sesilau-masa-depanku.png",
+      "objectPosition": "60% center"
+    },
+    {
+      "id": "kolaborasi",
+      "label": "Tumbuh bersama",
+      "headline": ["Temukan potensimu.", "Wujudkan lewat karya."],
+      "description": "Asah ide, berkolaborasi, dan kembangkan kompetensi untuk bekerja, berwirausaha, maupun melanjutkan pendidikan.",
+      "durationMs": 8000,
+      "image": "/media/hero/collaboration.jpg",
+      "objectPosition": "65% center"
+    },
+    {
+      "id": "bengkel",
+      "label": "Eksplorasi dunia vokasi",
+      "headline": ["Mulai dari rasa ingin tahu.", "Lanjutkan dengan aksi."],
+      "description": "Kenali dunia otomotif, bisnis digital, dan akuntansi. Pilih langkah belajar yang sesuai dengan minatmu.",
+      "durationMs": 8000,
+      "image": "/media/hero/workshop.jpg",
+      "objectPosition": "60% center"
+    }
+  ]
+}

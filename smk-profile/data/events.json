@@ -1,0 +1,56 @@
+{
+  "events": [
+    {
+      "id": "workshop-robotika-astra",
+      "title": "Workshop Robotika Industri Bersama Astra",
+      "date": "12 OKT 2026",
+      "dateISO": "2026-10-12",
+      "status": "Upcoming",
+      "excerpt": "Siswa belajar dasar otomasi dan robotik langsung dari engineer PT Astra Daihatsu Motor selama dua hari di bengkel sekolah.",
+      "category": "Event",
+      "location": "Bengkel TKR",
+      "image": "/media/events/workshop-robotika.jpg",
+      "colorTheme": "from-blue-600 via-orange-500 to-yellow-400",
+      "href": "/kabar-sekolah"
+    },
+    {
+      "id": "pameran-teaching-factory",
+      "title": "Pameran Karya Inovasi Teaching Factory",
+      "date": "25 NOV 2026",
+      "dateISO": "2026-11-25",
+      "status": "Upcoming",
+      "excerpt": "Karya produk dan jasa hasil produksi siswa dipamerkan terbuka untuk orang tua, mitra industri, dan masyarakat.",
+      "category": "Event",
+      "location": "Area Pameran Sekolah",
+      "image": "/media/events/pameran-karya.jpg",
+      "colorTheme": "from-emerald-500 via-teal-500 to-blue-500",
+      "href": "/kabar-sekolah"
+    },
+    {
+      "id": "kunjungan-industri-toyota",
+      "title": "Kunjungan Industri ke Pabrik Perakitan Toyota",
+      "date": "05 DES 2026",
+      "dateISO": "2026-12-05",
+      "status": "Upcoming",
+      "excerpt": "Ratusan siswa menyaksikan langsung lini produksi otomotif modern dan budaya kerja 5S di pabrik mitra sekolah.",
+      "category": "Event",
+      "location": "Pabrik Mitra, Karawang",
+      "image": "/media/events/kunjungan-industri.jpg",
+      "colorTheme": "from-purple-600 via-pink-500 to-orange-400",
+      "href": "/kabar-sekolah"
+    },
+    {
+      "id": "sertifikasi-bnsp",
+      "title": "Sertifikasi Kompetensi BNSP Gelombang II",
+      "date": "14 JAN 2027",
+      "dateISO": "2027-01-14",
+      "status": "Upcoming",
+      "excerpt": "Uji kompetensi keahlian bersertifikat nasional bagi siswa kelas XII dari tiga program keahlian.",
+      "category": "Event",
+      "location": "Ruang Uji Sekolah",
+      "image": "/media/events/sertifikasi-bnsp.jpg",
+      "colorTheme": "from-rose-500 via-red-500 to-orange-500",
+      "href": "/kabar-sekolah"
+    }
+  ]
+}

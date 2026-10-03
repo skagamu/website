@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+.DS_Store
+*.log
+
+# Exclude clone and old directories
+avenues-clone/
+jis-clone/
+jis-clone-app/
+smk-gm1-web/
