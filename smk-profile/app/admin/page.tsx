@@ -49,13 +49,20 @@ const TABS = [
 
 // Utilitas Base64 yang aman untuk UTF-8 (menghindari error karakter spesial)
 const toBase64 = (str: string) => window.btoa(unescape(encodeURIComponent(str)));
-const fromBase64 = (str: string) => decodeURIComponent(escape(window.atob(str)));
+const fromBase64 = (str: string) => {
+  try {
+    return decodeURIComponent(escape(window.atob(str)));
+  } catch (e) {
+    // Fallback if escape is deprecated or fails on specific chars
+    return window.atob(str);
+  }
+};
 
 export default function AdminDashboard() {
   // Auth & Config States
   const [token, setToken] = useState("");
   const [owner, setOwner] = useState("skagamu");
-  const [repo, setRepo] = useState("smk-profile");
+  const [repo, setRepo] = useState("website");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
