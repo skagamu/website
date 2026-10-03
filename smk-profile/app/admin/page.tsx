@@ -497,7 +497,7 @@ export default function AdminDashboard() {
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                 activeTab.id === tab.id 
-                  ? "bg-amber-400 text-navy font-bold shadow-md ring-1 ring-amber-300" 
+                  ? "bg-amber text-navy font-bold shadow-md" 
                   : "text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
