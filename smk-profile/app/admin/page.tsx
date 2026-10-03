@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { 
   Lock, Save, LogOut, Plus, Trash2, Github, 
   Users, Image as ImageIcon, Calendar, Loader2,
-  AlertCircle, CheckCircle2
+  AlertCircle, CheckCircle2, GraduationCap, Award, BookOpen, Flag, Upload
 } from "lucide-react";
 
 // ============================================================================
@@ -30,21 +30,49 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "id", label: "ID Unik (slug)" },
     { key: "name", label: "Nama Lengkap" },
     { key: "role", label: "Jabatan" },
-    { key: "image", label: "URL Foto (/media/teachers/...)" },
+    { key: "image", label: "URL Foto (/website/media/...)" },
+  ],
+  alumni: [
+    { key: "id", label: "ID Unik (slug)" },
+    { key: "name", label: "Nama Lengkap" },
+    { key: "role", label: "Pekerjaan saat ini" },
+    { key: "company", label: "Perusahaan / Instansi" },
+    { key: "major", label: "Jurusan Asal" },
+    { key: "year", label: "Tahun Angkatan" },
+    { key: "image", label: "URL Foto (/website/media/...)" },
+    { key: "href", label: "URL Profil Lengkap (Opsional)" }
+  ],
+  programs: [
+    { key: "id", label: "ID Unik (slug)" },
+    { key: "name", label: "Nama Jurusan" },
+    { key: "description", label: "Deskripsi", type: "textarea" },
+    { key: "icon", label: "Icon Name (Lucide)" },
+    { key: "careers", label: "Peluang Karir (pisahkan koma)", type: "textarea" },
+    { key: "facilities", label: "Fasilitas (pisahkan koma)", type: "textarea" },
+    { key: "partners", label: "Mitra Industri (pisahkan koma)", type: "textarea" }
+  ],
+  manifesto: [
+    { key: "id", label: "Tipe (Jangan diubah)" },
+    { key: "vision", label: "Visi Sekolah", type: "textarea" },
+    { key: "statement", label: "Statement/Slogan Utama", type: "textarea" },
+    { key: "mission", label: "Misi (pisahkan tiap baris dengan enter)", type: "textarea" }
   ],
   gallery: [
     { key: "id", label: "ID Unik" },
     { key: "title", label: "Judul Foto" },
     { key: "category", label: "Kategori" },
     { key: "span", label: "Grid Span Tailwind (Misal: md:col-span-1)" },
-    { key: "image", label: "URL Gambar" },
+    { key: "image", label: "URL Gambar (/website/media/...)" },
   ],
 };
 
 const TABS = [
   { id: "events", label: "Berita & Event", icon: Calendar, file: "data/events.json" },
+  { id: "alumni", label: "Daftar Alumni", icon: Award, file: "data/alumni.json" },
+  { id: "programs", label: "Jurusan / Program", icon: GraduationCap, file: "data/programs.json" },
   { id: "faculty", label: "Profil Guru", icon: Users, file: "data/faculty.json" },
   { id: "gallery", label: "Galeri Sekolah", icon: ImageIcon, file: "data/gallery.json" },
+  { id: "manifesto", label: "Tentang (Visi/Misi)", icon: Flag, file: "data/manifesto.json" },
 ];
 
 // Utilitas Base64 yang aman untuk UTF-8 (menghindari error karakter spesial)
@@ -162,8 +190,31 @@ export default function AdminDashboard() {
       const parsedJson = JSON.parse(decodedContent);
       
       // JSON kita punya struktur root: { events: [...] } atau { faculty: [...] }
-      // Kita ekstrak array-nya berdasarkan id tab
-      setFileData(parsedJson[tab.id] || []);
+      // Khusus untuk manifesto, strukturnya berupa object langsung { manifesto: { vision: ..., mission: [...] } }
+      // Kita perlu menyulapnya menjadi array beranak tunggal agar UI builder tetap bisa memprosesnya
+      let extractedData = parsedJson[tab.id];
+
+      if (tab.id === "manifesto" && !Array.isArray(extractedData)) {
+        // Transform the object to a single-item array for our table UI
+        extractedData = [
+          {
+            id: "manifesto-root",
+            vision: extractedData?.vision || "",
+            statement: extractedData?.statement || "",
+            mission: Array.isArray(extractedData?.mission) ? extractedData.mission.join("\n") : (extractedData?.mission || "")
+          }
+        ];
+      } else if (tab.id === "programs" && parsedJson.programs) {
+         // Join array items back to comma separated string for textarea
+         extractedData = parsedJson.programs.map((prog: any) => ({
+           ...prog,
+           careers: Array.isArray(prog.careers) ? prog.careers.join(", ") : prog.careers,
+           facilities: Array.isArray(prog.facilities) ? prog.facilities.join(", ") : prog.facilities,
+           partners: Array.isArray(prog.partners) ? prog.partners.join(", ") : prog.partners,
+         }));
+      }
+
+      setFileData(extractedData || []);
     } catch (err: any) {
       showToast("error", err.message);
       setFileData([]);
@@ -175,8 +226,28 @@ export default function AdminDashboard() {
   const commitChanges = async () => {
     setDataLoading(true);
     try {
-      // Rekonstruksi struktur JSON asli (misal: { events: [...] })
-      const newJsonContent = JSON.stringify({ [activeTab.id]: fileData }, null, 2);
+      // Rekonstruksi struktur JSON asli sebelum dikirim
+      let formattedData = fileData;
+
+      if (activeTab.id === "manifesto") {
+        // Balikkan lagi dari array tunggal ke Object root
+        const rootItem = fileData[0] || {};
+        formattedData = {
+          vision: rootItem.vision || "",
+          statement: rootItem.statement || "",
+          mission: rootItem.mission ? rootItem.mission.split("\n").map((s: string) => s.trim()).filter(Boolean) : []
+        };
+      } else if (activeTab.id === "programs") {
+        // Balikkan dari comma separated string ke array untuk JSON
+        formattedData = fileData.map((prog: any) => ({
+          ...prog,
+          careers: typeof prog.careers === "string" ? prog.careers.split(",").map((s:string) => s.trim()).filter(Boolean) : prog.careers,
+          facilities: typeof prog.facilities === "string" ? prog.facilities.split(",").map((s:string) => s.trim()).filter(Boolean) : prog.facilities,
+          partners: typeof prog.partners === "string" ? prog.partners.split(",").map((s:string) => s.trim()).filter(Boolean) : prog.partners,
+        }));
+      }
+
+      const newJsonContent = JSON.stringify({ [activeTab.id]: formattedData }, null, 2);
       const encodedContent = toBase64(newJsonContent);
 
       const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/smk-profile/${activeTab.file}`, {
