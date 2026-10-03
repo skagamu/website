@@ -61,8 +61,8 @@ const fromBase64 = (str: string) => {
 export default function AdminDashboard() {
   // Auth & Config States
   const [token, setToken] = useState("");
-  const [owner, setOwner] = useState("skagamu");
-  const [repo, setRepo] = useState("website");
+  const [owner, setOwner] = useState("");
+  const [repo, setRepo] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -254,24 +254,26 @@ export default function AdminDashboard() {
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Owner Repo</label>
                 <input 
                   type="text" required value={owner} onChange={(e) => setOwner(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  placeholder="Misal: skagamu"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
                 />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Nama Repo</label>
                 <input 
                   type="text" required value={repo} onChange={(e) => setRepo(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  placeholder="Misal: website"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
                 />
               </div>
             </div>
-
+            
             <div className="space-y-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-slate-500">GitHub PAT (Token)</label>
               <input 
                 type="password" required value={token} onChange={(e) => setToken(e.target.value)}
                 placeholder="ghp_xxxx..."
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-navy focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy transition-colors"
               />
               <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
                 <AlertCircle size={12} /> Token hanya disimpan di memori browser.
@@ -286,7 +288,7 @@ export default function AdminDashboard() {
 
             <button 
               type="submit" disabled={authLoading}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-navy py-3 text-sm font-bold text-white transition-all hover:bg-navy/90 active:scale-[.98] disabled:opacity-70"
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-navy py-3 text-sm font-bold text-white transition-all hover:bg-navy/90 active:scale-[.98] disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {authLoading ? <Loader2 size={18} className="animate-spin" /> : <Github size={18} />}
               {authLoading ? "Memverifikasi..." : "Akses Dashboard"}
