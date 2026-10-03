@@ -79,15 +79,18 @@ export default function AdminDashboard() {
   // Cek sesi yang tersimpan saat pertama kali dimuat
   useEffect(() => {
     const savedToken = sessionStorage.getItem("gh_pat");
-    const savedOwner = localStorage.getItem("gh_owner") || "";
-    const savedRepo = localStorage.getItem("gh_repo") || "";
     
-    setOwner(savedOwner);
-    setRepo(savedRepo);
+    // Paksa hapus isi yang tersisa di LocalStorage dari cache browser 
+    localStorage.removeItem("gh_owner");
+    localStorage.removeItem("gh_repo");
+    
+    // Jangan set setOwner/setRepo dari LocalStorage
+    // Biarkan default awal string kosong dari useState bekerja
 
     if (savedToken) {
       setToken(savedToken);
-      verifyToken(savedToken, savedOwner, savedRepo);
+      // Kita tidak menjalankan verify otomatis lagi jika owner dan repo dihapus.
+      // User harus login ulang jika me-refresh (karena owner & repo kosong).
     }
   }, []);
 
