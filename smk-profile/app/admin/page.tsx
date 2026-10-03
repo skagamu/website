@@ -79,8 +79,8 @@ export default function AdminDashboard() {
   // Cek sesi yang tersimpan saat pertama kali dimuat
   useEffect(() => {
     const savedToken = sessionStorage.getItem("gh_pat");
-    const savedOwner = localStorage.getItem("gh_owner") || "skagamu";
-    const savedRepo = localStorage.getItem("gh_repo") || "smk-profile";
+    const savedOwner = localStorage.getItem("gh_owner") || "";
+    const savedRepo = localStorage.getItem("gh_repo") || "";
     
     setOwner(savedOwner);
     setRepo(savedRepo);
