@@ -239,7 +239,7 @@ export default function AdminDashboard() {
   // ============================================================================
   if (!isLoggedIn) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-24">
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
         <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl border border-slate-100">
           <div className="mb-8 flex flex-col items-center text-center">
             <div className="flex size-16 items-center justify-center rounded-full bg-navy/5 text-navy mb-4">
@@ -304,11 +304,11 @@ export default function AdminDashboard() {
   // RENDER: DASHBOARD (UI Utama)
   // ============================================================================
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row pt-[80px] md:pt-[104px]">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       
       {/* TOAST NOTIFICATION */}
       {notification && (
-        <div className={`fixed top-28 right-6 z-50 flex items-center gap-3 rounded-lg px-5 py-3 shadow-lg border ${
+        <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg px-5 py-3 shadow-lg border ${
           notification.type === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"
         } animate-in slide-in-from-right-8`}>
           {notification.type === "success" ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
