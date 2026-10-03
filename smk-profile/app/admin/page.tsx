@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { 
   Lock, Save, LogOut, Plus, Trash2, Github, 
   Users, Image as ImageIcon, Calendar, Loader2,
-  AlertCircle, CheckCircle2, GraduationCap, Award, BookOpen, Flag, Upload
+  AlertCircle, CheckCircle2, GraduationCap, Award, BookOpen, Flag, Upload,
+  Menu, X
 } from "lucide-react";
 
 // ============================================================================
@@ -101,6 +102,7 @@ export default function AdminDashboard() {
   const [fileSha, setFileSha] = useState("");
   const [dataLoading, setDataLoading] = useState(false);
   const [uploadingImageKey, setUploadingImageKey] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar state
   
   // Notification States
   const [notification, setNotification] = useState<{ type: "success"|"error", message: string } | null>(null);
@@ -433,30 +435,66 @@ export default function AdminDashboard() {
   // RENDER: DASHBOARD (UI Utama)
   // ============================================================================
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row md:overflow-hidden">
       
       {/* TOAST NOTIFICATION */}
       {notification && (
-        <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg px-5 py-3 shadow-lg border ${
+        <div className={`fixed top-4 right-4 md:top-6 md:right-6 z-[60] flex items-center gap-3 rounded-lg px-4 py-3 md:px-5 shadow-lg border ${
           notification.type === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"
         } animate-in slide-in-from-right-8`}>
-          {notification.type === "success" ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-          <p className="text-sm font-semibold">{notification.message}</p>
+          {notification.type === "success" ? <CheckCircle2 size={18} className="shrink-0" /> : <AlertCircle size={18} className="shrink-0" />}
+          <p className="text-xs md:text-sm font-semibold">{notification.message}</p>
         </div>
       )}
 
+      {/* MOBILE HEADER (Hanya Tampil di Mobile) */}
+      <div className="md:hidden flex items-center justify-between bg-navy text-white px-4 py-3 sticky top-0 z-40 shadow-sm border-b border-white/10">
+        <div>
+          <p className="font-mono text-[10px] font-bold tracking-widest text-amber-400 uppercase">CMS Admin</p>
+          <p className="text-sm font-medium mt-0.5 truncate max-w-[200px]">{owner}/{repo}</p>
+        </div>
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 -mr-2 text-white/80 hover:text-white transition-colors"
+        >
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* OVERLAY MOBILE SIDEBAR */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-navy/40 backdrop-blur-sm z-40 md:hidden" 
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <aside className="w-full md:w-64 shrink-0 bg-navy text-white shadow-xl flex flex-col border-r border-slate-200 z-10">
-        <div className="p-6 border-b border-white/10">
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-navy text-white shadow-xl flex flex-col border-r border-slate-200 
+        transition-transform duration-300 ease-in-out md:static md:translate-x-0
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}>
+        <div className="hidden md:block p-6 border-b border-white/10">
           <p className="font-mono text-xs font-bold tracking-widest text-amber-400 uppercase">CMS Admin</p>
           <p className="text-sm font-medium mt-1 truncate">{owner}/{repo}</p>
         </div>
         
-        <nav className="flex-1 p-4 space-y-2">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-white/10">
+          <p className="font-mono text-sm font-bold tracking-widest text-amber-400 uppercase">Menu CMS</p>
+          <button onClick={() => setIsSidebarOpen(false)} className="p-1 text-white/70 hover:text-white">
+            <X size={20} />
+          </button>
+        </div>
+        
+        <nav className="flex-1 p-3 md:p-4 space-y-1 md:space-y-2 overflow-y-auto">
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => fetchFile(token, owner, repo, tab)}
+              onClick={() => {
+                fetchFile(token, owner, repo, tab);
+                setIsSidebarOpen(false); // Tutup sidebar mobile setelah klik menu
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                 activeTab.id === tab.id 
                   ? "bg-amber-400 text-navy font-bold shadow-md ring-1 ring-amber-300" 
@@ -481,50 +519,51 @@ export default function AdminDashboard() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden">
+      <main className="flex-1 flex flex-col h-[calc(100vh-56px)] md:h-screen overflow-hidden">
         {/* Header Bar */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border-b border-slate-200 shadow-sm z-10 shrink-0">
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 md:p-6 bg-white border-b border-slate-200 shadow-sm z-10 shrink-0">
           <div>
-            <h2 className="text-xl font-bold text-navy flex items-center gap-2">
-              <activeTab.icon size={22} className="text-amber-500" />
+            <h2 className="text-lg md:text-xl font-bold text-navy flex items-center gap-2">
+              <activeTab.icon size={20} className="text-amber-500 md:w-[22px] md:h-[22px]" />
               Edit {activeTab.label}
             </h2>
-            <p className="text-sm text-slate-500 mt-1">Mengedit file: <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-slate-700">{activeTab.file}</code></p>
+            <p className="text-xs md:text-sm text-slate-500 mt-1">Mengedit file: <code className="text-[10px] md:text-xs bg-slate-100 px-1 py-0.5 rounded text-slate-700 break-all">{activeTab.file}</code></p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={addNewItem}
               disabled={dataLoading}
-              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-navy transition-all hover:bg-slate-50 active:scale-[.98] disabled:opacity-50"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-navy transition-all hover:bg-slate-50 active:scale-[.98] disabled:opacity-50"
             >
-              <Plus size={16} /> Tambah Baru
+              <Plus size={16} /> Tambah
             </button>
             <button
               onClick={commitChanges}
               disabled={dataLoading}
-              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-[.98] disabled:opacity-50"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-[.98] disabled:opacity-50"
             >
               {dataLoading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-              Commit ke GitHub
+              <span className="hidden sm:inline">Commit ke GitHub</span>
+              <span className="sm:hidden">Simpan</span>
             </button>
           </div>
         </header>
 
         {/* Scrollable Form Area */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {dataLoading && fileData.length === 0 ? (
             <div className="flex h-full items-center justify-center flex-col gap-3 text-slate-400">
               <Loader2 size={32} className="animate-spin text-navy" />
-              <p>Mengambil data dari GitHub...</p>
+              <p className="text-sm">Mengambil data dari GitHub...</p>
             </div>
           ) : (
-            <div className="grid gap-6 max-w-5xl mx-auto pb-20">
+            <div className="grid gap-4 md:gap-6 max-w-5xl mx-auto pb-20 md:pb-12">
               {fileData.map((item, index) => (
                 <div key={index} className="relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4">
                   
                   {/* Card Header */}
-                  <div className="bg-slate-50 border-b border-slate-200 px-5 py-3 flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-slate-500">Item #{index + 1}</span>
+                  <div className="bg-slate-50 border-b border-slate-200 px-4 md:px-5 py-3 flex items-center justify-between">
+                    <span className="font-mono text-[10px] md:text-xs font-bold text-slate-500">Item #{index + 1}</span>
                     <button 
                       onClick={() => deleteItem(index)}
                       className="text-red-500 hover:text-red-700 p-1.5 rounded-md hover:bg-red-50 transition-colors"
@@ -535,7 +574,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Form Fields Mapping */}
-                  <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                  <div className="p-4 md:p-5 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                     {SCHEMAS[activeTab.id].map((field) => (
                       <div key={field.key} className={field.type === "textarea" ? "md:col-span-2" : ""}>
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
