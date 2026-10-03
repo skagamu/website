@@ -54,7 +54,7 @@ export default function ManifestoSection() {
         <path d="M400,400 L0,400 C100,250 250,150 400,50 Z" fill="#2563EB" /> {/* Blue curve base */}
       </svg>
       <div className="absolute bottom-4 right-4 z-0 opacity-80 md:bottom-12 md:right-12 lg:bottom-16 lg:right-16">
-        <Image src="/media/brand/logo-smk.png" alt="" width={80} height={80} className="w-12 h-12 md:w-20 md:h-20 object-contain" aria-hidden="true" />
+        <Image src="/website/media/brand/logo-smk.png" alt="" width={80} height={80} className="w-12 h-12 md:w-20 md:h-20 object-contain" aria-hidden="true" />
       </div>
 
       {/* Bottom Left Leaf Shape (Green) */}
@@ -66,7 +66,7 @@ export default function ManifestoSection() {
         {/* Center Logo Placeholder */}
         <div className="mx-auto mb-8 flex h-16 items-center justify-center md:mb-12 md:h-32">
           {/* Untuk mengganti logo ini dengan file asli, cukup ubah tag Image di bawah ini dengan gambar logo yang sesuai */}
-          <Image src="/media/brand/logo-smk.png" alt="Logo SMK Gajah Mungkur 1 Wuryantoro" width={140} height={140} className="w-20 h-20 md:w-[140px] md:h-[140px] object-contain drop-shadow-md" />
+          <Image src="/website/media/brand/logo-smk.png" alt="Logo SMK Gajah Mungkur 1 Wuryantoro" width={140} height={140} className="w-20 h-20 md:w-[140px] md:h-[140px] object-contain drop-shadow-md" />
         </div>
 
         {/* Title / Label */}

@@ -99,7 +99,7 @@ export default function GlobalNavbar() {
             {/* Logo Image */}
             <div className={`relative flex items-center justify-center transition-all duration-300 ${isScrolled ? 'size-10 md:size-12' : 'size-12 md:size-14'}`}>
               <Image 
-                src="/media/brand/logo-smk.png" 
+                src="/website/media/brand/logo-smk.png" 
                 alt="Logo SMK GM 1" 
                 fill
                 className="object-contain"
@@ -219,7 +219,7 @@ export default function GlobalNavbar() {
               >
                 <div className="relative size-12">
                   <Image 
-                    src="/media/brand/logo-smk.png" 
+                    src="/website/media/brand/logo-smk.png" 
                     alt="Logo SMK GM 1" 
                     fill
                     className="object-contain"

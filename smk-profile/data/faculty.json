@@ -4,25 +4,25 @@
       "id": "budi-santoso",
       "name": "Budi Santoso",
       "role": "Kaprog TKR",
-      "image": "/media/teachers/budi-santoso.jpg"
+      "image": "/website/media/teachers/budi-santoso.jpg"
     },
     {
       "id": "siti-rahmawati",
       "role": "Guru Produktif Bisnis Digital",
       "name": "Siti Rahmawati",
-      "image": "/media/teachers/siti-rahmawati.jpg"
+      "image": "/website/media/teachers/siti-rahmawati.jpg"
     },
     {
       "id": "agus-pratama",
       "name": "Agus Pratama",
       "role": "Instruktur Otomotif",
-      "image": "/media/teachers/agus-pratama.jpg"
+      "image": "/website/media/teachers/agus-pratama.jpg"
     },
     {
       "id": "dian-kusuma",
       "name": "Dian Kusuma",
       "role": "Kaprog Akuntansi",
-      "image": "/media/teachers/dian-kusuma.jpg"
+      "image": "/website/media/teachers/dian-kusuma.jpg"
     }
   ]
 }

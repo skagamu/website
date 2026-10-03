@@ -25,7 +25,7 @@ export default function BeritaPage() {
       {/* HERO BANNER */}
       <section className="relative flex h-[40vh] min-h-[320px] w-full items-end overflow-hidden bg-navy">
         <Image
-          src="/media/hero/collaboration.jpg"
+          src="/website/media/hero/collaboration.jpg"
           alt="Kegiatan dan event SMK Gajah Mungkur 1 Wuryantoro"
           fill
           priority

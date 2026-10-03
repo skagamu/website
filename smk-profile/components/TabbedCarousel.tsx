@@ -19,7 +19,7 @@ const PROGRAMS = [
     title: "Teknik Kendaraan Ringan",
     subtitle: "Teknologi Otomotif Modern",
     // 👇 GANTI GAMBAR TKR DI SINI 👇
-    image: "/media/hero/workshop-poster.jpg",
+    image: "/website/media/hero/workshop-poster.jpg",
     href: "/program/tkr",
   },
   {
@@ -27,7 +27,7 @@ const PROGRAMS = [
     title: "Bisnis Digital",
     subtitle: "E-commerce & Digital Marketing",
     // 👇 GANTI GAMBAR BISNIS DIGITAL DI SINI 👇
-    image: "/media/hero/collaboration.jpg",
+    image: "/website/media/hero/collaboration.jpg",
     href: "/program/bisnis",
   },
   {
@@ -35,7 +35,7 @@ const PROGRAMS = [
     title: "Akuntansi",
     subtitle: "Keuangan & Perpajakan",
     // 👇 GANTI GAMBAR AKUNTANSI DI SINI 👇
-    image: "/media/hero/workshop.jpg",
+    image: "/website/media/hero/workshop.jpg",
     href: "/program/akuntansi",
   },
 ];

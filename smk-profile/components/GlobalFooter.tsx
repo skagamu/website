@@ -39,7 +39,7 @@ export default function GlobalFooter() {
           <div className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left">
             <div className="relative size-20 shrink-0 md:size-24 lg:size-28">
               <Image 
-                src="/media/brand/logo-smk.png" 
+                src="/website/media/brand/logo-smk.png" 
                 alt="Logo SMK Gajah Mungkur 1 Wuryantoro" 
                 fill
                 className="object-contain" 
