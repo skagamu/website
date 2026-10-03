@@ -10,7 +10,7 @@ import {
 // ============================================================================
 // KONFIGURASI SKEMA FORM DINAMIS
 // ============================================================================
-type FieldSchema = { key: string; label: string; type?: "textarea" | "text" | "select"; options?: string[] };
+type FieldSchema = { key: string; label: string; type?: "textarea" | "text" | "select" | "image"; options?: string[] };
 
 const SCHEMAS: Record<string, FieldSchema[]> = {
   events: [
@@ -21,7 +21,7 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "status", label: "Status (Upcoming/Selesai)", type: "select", options: ["Upcoming", "Selesai"] },
     { key: "category", label: "Kategori" },
     { key: "location", label: "Lokasi" },
-    { key: "image", label: "URL Gambar (/website/media/events/...)" },
+    { key: "image", label: "Gambar Thumbnail", type: "image" },
     { key: "colorTheme", label: "Tema Warna Tailwind" },
     { key: "href", label: "URL Tujuan" },
     { key: "excerpt", label: "Ringkasan", type: "textarea" },
@@ -30,7 +30,7 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "id", label: "ID Unik (slug)" },
     { key: "name", label: "Nama Lengkap" },
     { key: "role", label: "Jabatan" },
-    { key: "image", label: "URL Foto (/website/media/...)" },
+    { key: "image", label: "Foto Profil", type: "image" },
   ],
   alumni: [
     { key: "id", label: "ID Unik (slug)" },
@@ -39,7 +39,7 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "company", label: "Perusahaan / Instansi" },
     { key: "major", label: "Jurusan Asal" },
     { key: "year", label: "Tahun Angkatan" },
-    { key: "image", label: "URL Foto (/website/media/...)" },
+    { key: "image", label: "Foto Alumni", type: "image" },
     { key: "href", label: "URL Profil Lengkap (Opsional)" }
   ],
   programs: [
@@ -62,7 +62,7 @@ const SCHEMAS: Record<string, FieldSchema[]> = {
     { key: "title", label: "Judul Foto" },
     { key: "category", label: "Kategori" },
     { key: "span", label: "Grid Span Tailwind (Misal: md:col-span-1)" },
-    { key: "image", label: "URL Gambar (/website/media/...)" },
+    { key: "image", label: "Upload Foto", type: "image" },
   ],
 };
 
@@ -100,6 +100,7 @@ export default function AdminDashboard() {
   const [fileData, setFileData] = useState<any[]>([]);
   const [fileSha, setFileSha] = useState("");
   const [dataLoading, setDataLoading] = useState(false);
+  const [uploadingImageKey, setUploadingImageKey] = useState<string | null>(null);
   
   // Notification States
   const [notification, setNotification] = useState<{ type: "success"|"error", message: string } | null>(null);
@@ -220,6 +221,63 @@ export default function AdminDashboard() {
       setFileData([]);
     } finally {
       setDataLoading(false);
+    }
+  };
+
+  // ============================================================================
+  // UPLOAD GAMBAR KE GITHUB REPO
+  // ============================================================================
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, itemIndex: number, fieldKey: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Batasi ukuran file (misal max 2MB untuk menghindari error push github API)
+    if (file.size > 2 * 1024 * 1024) {
+      return showToast("error", "Ukuran gambar terlalu besar. Maksimal 2MB.");
+    }
+
+    setUploadingImageKey(`${itemIndex}-${fieldKey}`);
+    try {
+      // 1. Convert file to Base64
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve((reader.result as string).split(",")[1]); // ambil base64 content
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+
+      // 2. Tentukan Path di Repositori (misal: /public/media/uploads/nama-file.jpg)
+      const safeFileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const repoFilePath = `smk-profile/public/media/uploads/${safeFileName}`;
+      const urlPath = `/website/media/uploads/${safeFileName}`;
+
+      // 3. Push file biner ke GitHub (PUT endpoint contents)
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${repoFilePath}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Upload media: ${safeFileName} via CMS`,
+          content: base64Data, // Github API menerima base64 standar
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Gagal mengupload gambar ke GitHub");
+      }
+
+      // 4. Update nilai form dengan URL yang baru di-upload
+      updateItem(itemIndex, fieldKey, urlPath);
+      showToast("success", "Gambar berhasil di-upload ke server!");
+
+    } catch (err: any) {
+      showToast("error", err.message);
+    } finally {
+      setUploadingImageKey(null);
     }
   };
 
@@ -490,6 +548,65 @@ export default function AdminDashboard() {
                             rows={3}
                             className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy transition-all"
                           />
+                        ) : field.type === "image" ? (
+                          <div className="space-y-3 p-3 rounded-lg border border-dashed border-slate-300 bg-slate-50">
+                            {/* Live Preview */}
+                            {item[field.key] ? (
+                              <div className="relative group rounded-md overflow-hidden bg-slate-200">
+                                <img 
+                                  // Hapus awalan /website jika ada agar preview jalan di local/development (opsional), 
+                                  // Atau bisa asumsikan relative link akan resolve dari base path 
+                                  src={item[field.key].startsWith("/website") ? item[field.key].replace("/website", "") : item[field.key]} 
+                                  alt="Preview" 
+                                  className="w-full h-32 object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x150?text=Preview+Tidak+Tersedia";
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                  <button
+                                    onClick={() => updateItem(index, field.key, "")}
+                                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                    title="Hapus Gambar"
+                                  >
+                                    <Trash2 size={16} />
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-full h-32 flex flex-col items-center justify-center bg-white rounded-md border border-slate-200 text-slate-400">
+                                <ImageIcon size={32} className="mb-2 text-slate-300" />
+                                <span className="text-xs">Belum ada gambar</span>
+                              </div>
+                            )}
+
+                            {/* Uploader Input (Manual URL OR File Upload) */}
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                placeholder="/website/media/..."
+                                value={item[field.key] || ""}
+                                onChange={(e) => updateItem(index, field.key, e.target.value)}
+                                className="flex-1 min-w-0 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                              />
+                              <div className="relative shrink-0">
+                                <input
+                                  type="file"
+                                  accept="image/png, image/jpeg, image/webp"
+                                  onChange={(e) => handleImageUpload(e, index, field.key)}
+                                  disabled={uploadingImageKey === `${index}-${field.key}`}
+                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                                />
+                                <button
+                                  disabled={uploadingImageKey === `${index}-${field.key}`}
+                                  className="h-full px-3 flex items-center justify-center bg-navy text-white rounded-md hover:bg-navy/90 transition-colors disabled:opacity-50"
+                                >
+                                  {uploadingImageKey === `${index}-${field.key}` ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                                </button>
+                              </div>
+                            </div>
+                            <p className="text-[10px] text-slate-500">Bisa isi URL manual, atau klik tombol ⬆️ untuk upload (Max 2MB).</p>
+                          </div>
                         ) : field.type === "select" ? (
                           <select
                             value={item[field.key] || ""}
