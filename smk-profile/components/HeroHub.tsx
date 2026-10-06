@@ -19,10 +19,11 @@ export type HeroSlide = {
 
 // Hero Slides — Sumber: data/hero.json (CMS-Ready via Git commit)
 // kind default "image"; slide video dapat ditambahkan admin dengan field "videoSrc".
-export const heroSlides = heroData.slides.map((s) => ({
+export const heroSlides = heroData.slides.map((s: any) => ({
   ...s,
-  headline: [s.headline[0] ?? "", s.headline[1] ?? ""] as [string, string],
-  kind: "image" as const,
+  headline: [s.headline?.[0] ?? "", s.headline?.[1] ?? ""] as [string, string],
+  kind: s.videoSrc ? ("video" as const) : ("image" as const),
+  videoSrc: s.videoSrc,
 })) as unknown as readonly [HeroSlide, ...HeroSlide[]];
 
 export type HeroHubProps = {

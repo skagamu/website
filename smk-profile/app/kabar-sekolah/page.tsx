@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, CalendarDays, Tag, MapPin, Clock, ArrowRight } from "lucide-react";
 import SchoolGallery from "../../components/SchoolGallery";
 import kabarData from "../../data/kabar-sekolah.json";
+import kabarArticles from "../../data/kabar-articles.json";
 import type { ContentSection, Article } from "../../types";
 
 // ============================================================================
@@ -15,7 +16,8 @@ import type { ContentSection, Article } from "../../types";
 // Admin Panel mengubah isi konten ini via Git commit.
 // ============================================================================
 const CONTENT_SECTIONS: ContentSection[] = kabarData.contentSections as ContentSection[];
-const ARTICLES: Article[] = kabarData.articles as Article[];
+const ARTICLES: Article[] = kabarArticles.articles as Article[];
+
 
 const TABS = [
   { id: "semua" as const, label: "Semua" },
@@ -122,11 +124,14 @@ export default function KabarSekolahPage() {
                 {section.title}
               </h2>
               <div className="mt-6 space-y-5">
-                {section.paragraphs.map((para, i) => (
-                  <p key={i} className="max-w-prose text-base leading-[1.8] text-slate-600 md:text-lg">
-                    {para}
-                  </p>
-                ))}
+                {section.paragraphs.map((para, i) => {
+                  const text = typeof para === 'string' ? para : (para as any).paragraph || '';
+                  return (
+                    <p key={i} className="max-w-prose text-base leading-[1.8] text-slate-600 md:text-lg">
+                      {text}
+                    </p>
+                  );
+                })}
               </div>
             </motion.div>
           </div>
@@ -199,7 +204,7 @@ export default function KabarSekolahPage() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.45, ease }}
-                  className="group flex cursor-pointer flex-col overflow-hidden border border-slate-200 bg-white transition-shadow duration-300 hover:shadow-xl"
+                  className="group flex flex-col overflow-hidden border border-slate-200 bg-white transition-shadow duration-300 hover:shadow-xl"
                 >
                   {/* Thumbnail 16:9 */}
                   <div className="relative aspect-video overflow-hidden">
@@ -235,10 +240,10 @@ export default function KabarSekolahPage() {
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
                       {article.excerpt}
                     </p>
-                    <span className="mt-5 inline-flex items-center gap-2 font-body text-sm font-semibold text-navy transition-all group-hover:gap-3 group-hover:text-amber-600">
+                    <Link href={`/kabar-sekolah/${article.slug}`} className="mt-5 inline-flex items-center gap-2 font-body text-sm font-semibold text-navy transition-all group-hover:gap-3 group-hover:text-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500">
                       Baca Selengkapnya
                       <ArrowRight size={16} aria-hidden="true" />
-                    </span>
+                    </Link>
                   </div>
                 </motion.article>
               ))}

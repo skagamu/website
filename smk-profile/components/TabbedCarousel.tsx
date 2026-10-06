@@ -5,42 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import programsData from "../data/programs.json";
+
 // ============================================================================
-// KONTEN PROGRAM KEAHLIAN
+// KONTEN PROGRAM KEAHLIAN — Sumber: data/programs.json (CMS-Ready)
 // ============================================================================
-// Panduan Mengganti Gambar (Sangat Mudah):
-// 1. Siapkan foto asli untuk jurusan terkait.
-// 2. Simpan foto ke folder `public/media/` (misal: public/media/tkr-asli.jpg)
-// 3. Ubah nama file pada bagian `image` di bawah ini agar sesuai dengan fotomu.
+// Data jurusan (nama, sub-judul, gambar, link) dikelola langsung via Admin Panel.
 // ============================================================================
-const PROGRAMS = [
-  {
-    id: "tkr",
-    title: "Teknik Kendaraan Ringan",
-    subtitle: "Teknologi Otomotif Modern",
-    // 👇 GANTI GAMBAR TKR DI SINI 👇
-    image: "/website/media/hero/workshop-poster.jpg",
-    href: "/program/tkr",
-  },
-  {
-    id: "bisnis",
-    title: "Bisnis Digital",
-    subtitle: "E-commerce & Digital Marketing",
-    // 👇 GANTI GAMBAR BISNIS DIGITAL DI SINI 👇
-    image: "/website/media/hero/collaboration.jpg",
-    href: "/program/bisnis",
-  },
-  {
-    id: "akuntansi",
-    title: "Akuntansi",
-    subtitle: "Keuangan & Perpajakan",
-    // 👇 GANTI GAMBAR AKUNTANSI DI SINI 👇
-    image: "/website/media/hero/workshop.jpg",
-    href: "/program/akuntansi",
-  },
-];
 
 export default function TabbedCarousel() {
+  const programs = programsData.programs.map((item: any) => ({
+    id: item.id,
+    title: item.name,
+    subtitle: item.subtitle || item.description,
+    image: item.image || "/website/media/hero/workshop-poster.jpg",
+    href: item.href || `/program/${item.id}`,
+  }));
   return (
     <section className="w-full bg-white py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1440px] px-6 md:px-16">
@@ -87,7 +67,7 @@ export default function TabbedCarousel() {
         className="mx-auto w-full max-w-[1440px] px-6 md:px-16"
       >
         <div className="flex w-full flex-col gap-6 overflow-hidden md:flex-row md:snap-x md:snap-mandatory md:overflow-x-auto hide-scrollbar md:gap-0">
-          {PROGRAMS.map((item) => (
+          {programs.map((item) => (
             <Link
               key={item.id}
               href={item.href}

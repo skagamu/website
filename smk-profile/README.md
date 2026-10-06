@@ -1,80 +1,80 @@
-# FR-01 · Hero Hub SMK Gajah Mungkur 1 Wuryantoro
+# Website Profil SMK Gajah Mungkur 1 Wuryantoro
 
-Implementasi terbatas pada Hero dengan Next.js App Router, TypeScript strict, Tailwind CSS, dan Framer Motion. Aplikasi berada di folder `smk-profile`.
+Website resmi profil SMK Gajah Mungkur 1 Wuryantoro. Dibangun menggunakan Next.js 15 (App Router), TypeScript, Tailwind CSS, Framer Motion, dan terintegrasi dengan Sveltia CMS sebagai pengelola konten statis via Git.
 
-## Menjalankan
+## Arsitektur & Teknologi
+
+*   **Framework:** Next.js 15 (Static Export `output: 'export'`)
+*   **Styling:** Tailwind CSS (Strict Editorial Style: Deep Navy & Amber, Tanpa sudut melengkung/border-radius)
+*   **Animasi:** Framer Motion (Hero Carousel, Scroll Reveal)
+*   **Content Management System:** Sveltia CMS (Git-based headless CMS)
+*   **Hosting Target:** GitHub Pages
+*   **CI/CD:** GitHub Actions (Deployment Otomatis)
+
+## Struktur Konten (CMS-Ready)
+
+Semua konten dinamis diatur dalam folder `data/` berbentuk `.json` yang dikelola secara langsung melalui antarmuka CMS. Tidak ada data *hardcode* pada komponen UI.
+*   `kabar-sekolah/` - Menyimpan artikel/berita mandiri untuk halaman Kabar Sekolah.
+*   `kabar-sekolah.json` - Mengatur struktur layout/paragraf statis untuk halaman Kabar Sekolah.
+*   `alumni.json` - Direktori dan testimoni alumni.
+*   `events.json` - Data kalender akademik, lomba, dan acara.
+*   `faculty.json` - Daftar dewan guru dan staf.
+*   `gallery.json` - Album foto aktivitas sekolah.
+*   `hero.json`, `programs.json`, dan `manifesto.json` - Slide beranda, program keahlian, serta visi dan misi.
+*   `kabar-articles.json` - Hasil gabungan otomatis artikel di `data/kabar-sekolah/`; jangan edit file ini secara langsung.
+
+## Menjalankan Aplikasi Lokal
 
 ```sh
+# Instalasi dependensi
 npm install
+
+# Menjalankan server pengembangan (Hot-reload)
 npm run dev
 ```
 
+Aplikasi dapat diakses pada `http://localhost:3000`.
+
+## Mengelola Konten dengan Sveltia CMS
+
+Sveltia CMS beroperasi secara *Client-Side* tanpa perlu backend server Node.js.
+
+### Akses CMS di Mode Development
+Akses CMS melalui browser di alamat:
+`http://localhost:3000/admin/index.html` (atau menyesuaikan port saat build statis menggunakan `http://localhost:4173/admin/index.html`).
+
+CMS terhubung langsung dengan repositori GitHub `skagamu/website`. Setiap kali admin menyimpan (Save) perubahan melalui antarmuka ini, Sveltia CMS akan membuat sebuah *Git Commit* langsung ke _branch_ `main` di GitHub Anda.
+
+Unggahan media disimpan ke `smk-profile/public/media/` dan URL yang dipakai situs diawali `/website/media/`. Artikel baru dibuat di koleksi **Kabar Sekolah (Artikel)**. Isi artikel dapat diisi pada kolom **Isi Artikel** dengan satu baris kosong di antara paragraf; kartu berita akan menuju halaman detail artikel setelah build selesai.
+
+## Build Produksi
+
+Website dirancang murni statis agar dapat didistribusikan via GitHub Pages dengan mulus.
+
 ```sh
-npm run typecheck
+# Script ini secara otomatis menggabungkan folder artikel JSON dan merakit build statis
 npm run build
-npx playwright test
+
+# Jika ingin mengetes hasil build statis di lokal:
+npx http-server out -p 4173 -a 0.0.0.0
+# atau menggunakan modul python bawaan:
+python3 -m http.server 4173 -d out
 ```
 
-Build menghasilkan situs statis di `out`. Sajikan folder tersebut melalui HTTP untuk preview produksi. `next start` tidak mendukung konfigurasi static export.
+*Perhatian: Perintah `next start` tidak didukung karena Next.js dikonfigurasi sebagai Static Export.*
 
-## Integrasi
+## Deployment Otomatis (CI/CD)
 
-```tsx
-import HeroHub from "../components/HeroHub";
+Proyek ini telah dikonfigurasi dengan GitHub Actions (`.github/workflows/deploy.yml`).
+Setiap kali ada perubahan pada branch `main` (baik karena Anda melakukan `git push` secara manual, maupun karena Admin menerbitkan konten baru via Sveltia CMS), GitHub secara otomatis akan mem-build ulang *website* ini dan menayangkannya ke GitHub Pages dalam hitungan menit.
 
-export default function HomePage() {
-  return (
-    <main>
-      <HeroHub ppdbHref="/ppdb/" facilitiesHref="/fasilitas/360/" />
-    </main>
-  );
-}
-```
-
-`ppdbHref` dan `facilitiesHref` adalah titik integrasi ke FR-08 dan FR-04. Halaman/formulir PPDB dan viewer 360° belum termasuk fase FR-01; kedua URL default tersebut belum memiliki halaman tujuan dalam aplikasi Hero-only ini. Isi props dengan URL layanan yang sudah aktif saat mengintegrasikan Hero. Tidak ada formulir atau pengiriman data dalam komponen ini.
-
-## Referensi dan token
-
-- PRD dan spesifikasi dibaca paralel menggunakan `execute` + `Promise.all`.
-- Referensi Hero ditemukan di `../jis-clone/src/App.tsx`, baris 273–448. Folder `jis-clone/src/components` tidak ada pada snapshot proyek.
-- JIS: media full-bleed, crossfade, garis pemisah dan konten bawah, kontrol melingkar.
-- Deep Navy `#0C2340`, Electric Amber `#F59E0B`, Off-White `#F8FAFC`.
-- Plus Jakarta Sans display 32–56 px / 1.1; Inter body 16 px / 1.6; fonts disajikan lokal oleh `next/font`.
-- CTA pill, target sentuh panah/pause 48×48 px, CTA minimum 56 px.
-- Tidak memasang navigasi global atau modul FR lain.
-
-## Media
-
-Media yang disertakan adalah **ilustrasi stok**, bukan dokumentasi SMK Gajah Mungkur 1. Penanda ini juga ditampilkan pada Hero. Dokumentasi sekolah belum tersedia di workspace. Ganti data `heroSlides` dan aset lokal dengan dokumentasi resmi setelah tersedia.
-
-| File lokal | Sumber |
-| --- | --- |
-| `public/media/hero/workshop.mp4` | [Pexels: Mechanic working on an engine in a smokey garage](https://www.pexels.com/video/mechanic-working-on-an-engine-in-a-smokey-garage-8986894/) |
-| `public/media/hero/workshop-poster.jpg` | Frame pertama video yang sama, diekstrak dengan FFmpeg |
-| `public/media/hero/collaboration.jpg` | [Unsplash image source](https://images.unsplash.com/photo-1531482615713-2afd69097998) |
-| `public/media/hero/workshop.jpg` | [Unsplash image source](https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122) |
-
-Video 720p lokal berdurasi 10,67 detik diputar loop selama slide pertama 15 detik. Foto lokal berukuran lebar 1920 px; masing-masing slide foto 8 detik. Media tidak memerlukan koneksi ke CDN saat runtime. Poster selalu tersedia jika video gagal atau autoplay ditolak.
-
-## Perilaku carousel
-
-- Timeline `MotionValue` dengan `scaleX`, tanpa render React tiap frame.
-- Pause menghentikan video dan mempertahankan progress. Resume meneruskan sisa durasi.
-- Panah/reset slide mengembalikan progress ke nol; navigasi melingkar.
-- Fokus keyboard yang masuk menghentikan autoplay sampai tombol Putar dipilih secara eksplisit.
-- ArrowLeft/ArrowRight bekerja ketika fokus berada di Hero.
-- Tab tersembunyi atau Hero keluar viewport menghentikan video dan timer sementara.
-- Reduced motion: poster statis, tanpa autoplay, crossfade, atau entrance; navigasi manual tetap tersedia.
-- Hanya satu H1; latar dekoratif disembunyikan dari screen reader. Perubahan manual diumumkan lewat live region.
-- CTA berada di luar konten slide yang diganti agar fokus pengguna tidak hilang ketika slide berubah.
-
-Static export memakai `images.unoptimized` karena tidak ada server optimizer pada GitHub Pages. Foto sudah di-resize ke 1920 px. Untuk deployment pada project subpath GitHub Pages, sesuaikan `basePath` Next.js dan prefiks `videoSrc`/URL CTA dengan lokasi deployment.
-
-## Hasil verifikasi
-
-- `npm run typecheck`: lulus.
-- `npm run build`: lulus; Next.js 15.5.27 static export.
-- `npx playwright test`: 8 tes lulus pada Google Chrome lokal. Tes membutuhkan Chrome terpasang dan menjalankan server static export secara otomatis jika port 4173 belum dipakai.
-- Ukuran layout diuji: 320, 375, 768, 1280, 1440 px. Tidak ada overflow horizontal; CTA terlihat dalam viewport pengujian; semua tombol minimal 48×48 px.
-- Lighthouse browser: Accessibility 100, Best Practices 100, SEO 100. Audit ini tidak mengukur performance/Core Web Vitals.
-- `npm install`: 0 vulnerabilities setelah override PostCSS ke rentang patch terpasang.
+## Ketentuan Desain (UI/UX)
+*   **Palet Warna:**
+    *   Deep Navy (`#0C2340`) sebagai dominan
+    *   Electric Amber (`#F59E0B`) sebagai aksen (CTA, Highlight)
+    *   Off-White (`#F8FAFC`) / Slate untuk latar bacaan
+*   **Tipografi:**
+    *   Plus Jakarta Sans (Heading) - *tight tracking*
+    *   Inter (Body)
+*   **Bentuk (Shape):**
+    *   Wajib siku tajam. Nol piksel *border radius* untuk semua elemen (kartu, tombol, kontainer gambar) untuk kesan industrial-korporat yang tegas.

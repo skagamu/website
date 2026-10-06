@@ -3,6 +3,8 @@
     {
       "id": "teknik-kendaraan-ringan",
       "name": "Teknik Kendaraan Ringan (TKR)",
+      "subtitle": "Teknologi Otomotif Modern",
+      "image": "/website/media/hero/workshop-poster.jpg",
       "description": "Fokus teknologi otomotif modern, sertifikasi mesin injeksi & kelistrikan kendaraan.",
       "icon": "wrench",
       "facilities": [
@@ -26,6 +28,8 @@
     {
       "id": "bisnis-digital",
       "name": "Bisnis Digital",
+      "subtitle": "E-commerce & Digital Marketing",
+      "image": "/website/media/hero/collaboration.jpg",
       "description": "Fokus e-commerce, digital marketing, content creation & social media strategy.",
       "icon": "shopping-cart",
       "facilities": [
@@ -49,6 +53,8 @@
     {
       "id": "akuntansi",
       "name": "Akuntansi & Keuangan",
+      "subtitle": "Keuangan & Perpajakan",
+      "image": "/website/media/hero/workshop.jpg",
       "description": "Fokus software akuntansi modern, perpajakan, dan perbankan.",
       "icon": "calculator",
       "facilities": [

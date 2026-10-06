@@ -1,0 +1,181 @@
+backend:
+  name: github
+  repo: skagamu/website
+  branch: main
+
+media_folder: "smk-profile/public/media"
+public_folder: "/website/media"
+
+collections:
+  - name: "kabar_articles"
+    label: "Kabar Sekolah (Artikel)"
+    folder: "smk-profile/data/kabar-sekolah"
+    create: true
+    extension: "json"
+    format: "json"
+    identifier_field: "title"
+    fields:
+      - { label: "ID", name: "id", widget: "number" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["berita-akademik", "pengumuman", "event"] }
+      - { label: "Category Label", name: "categoryLabel", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Isi Artikel", name: "body", widget: "text", required: false, hint: "Pisahkan paragraf dengan satu baris kosong." }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Meta", name: "meta", widget: "string", required: false }
+
+  - name: "kabar_sections"
+    label: "Kabar Sekolah (Sections)"
+    files:
+      - label: "Sections Data"
+        name: "sections"
+        file: "smk-profile/data/kabar-sekolah.json"
+        fields:
+          - label: "Content Sections"
+            name: "contentSections"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - name: "paragraphs"
+                label: "Paragraphs"
+                widget: "list"
+                fields:
+                  - { name: "paragraph", label: "Paragraph", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Image Alt", name: "imageAlt", widget: "string" }
+              - { label: "Image Position", name: "imagePosition", widget: "select", options: ["left", "right"] }
+
+  - name: "alumni"
+    label: "Alumni"
+    files:
+      - label: "Alumni Data"
+        name: "alumni"
+        file: "smk-profile/data/alumni.json"
+        fields:
+          - label: "Alumni"
+            name: "alumni"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Major", name: "major", widget: "string" }
+              - { label: "Year", name: "year", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Company", name: "company", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Href", name: "href", widget: "string" }
+
+  - name: "events"
+    label: "Events"
+    files:
+      - label: "Events Data"
+        name: "events"
+        file: "smk-profile/data/events.json"
+        fields:
+          - label: "Events"
+            name: "events"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "string" }
+              - { label: "ISO Date", name: "dateISO", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "Status", name: "status", widget: "select", options: ["Upcoming", "Past"] }
+              - { label: "Ringkasan", name: "excerpt", widget: "text" }
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Location", name: "location", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Color Theme", name: "colorTheme", widget: "string" }
+              - { label: "Href", name: "href", widget: "string" }
+
+  - name: "faculty"
+    label: "Faculty"
+    files:
+      - label: "Faculty Data"
+        name: "faculty"
+        file: "smk-profile/data/faculty.json"
+        fields:
+          - label: "Faculty"
+            name: "faculty"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+
+  - name: "gallery"
+    label: "Gallery"
+    files:
+      - label: "Gallery Data"
+        name: "gallery"
+        file: "smk-profile/data/gallery.json"
+        fields:
+          - label: "Gallery"
+            name: "gallery"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Span", name: "span", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+
+  - name: "hero"
+    label: "Hero Beranda"
+    files:
+      - label: "Slide Hero"
+        name: "hero"
+        file: "smk-profile/data/hero.json"
+        fields:
+          - label: "Slide"
+            name: "slides"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Judul (dua baris)", name: "headline", widget: "list", field: { label: "Baris", name: "line", widget: "string" }, min: 2, max: 2 }
+              - { label: "Deskripsi", name: "description", widget: "text" }
+              - { label: "Durasi (milidetik)", name: "durationMs", widget: "number", value_type: "int", min: 1000 }
+              - { label: "Gambar / Poster", name: "image", widget: "image" }
+              - { label: "Video", name: "videoSrc", widget: "file", required: false }
+              - { label: "Posisi Gambar", name: "objectPosition", widget: "string", required: false }
+
+  - name: "programs"
+    label: "Program Keahlian"
+    files:
+      - label: "Daftar Program"
+        name: "programs"
+        file: "smk-profile/data/programs.json"
+        fields:
+          - label: "Program"
+            name: "programs"
+            widget: "list"
+            fields:
+              - { label: "ID / URL", name: "id", widget: "string" }
+              - { label: "Nama", name: "name", widget: "string" }
+              - { label: "Subjudul", name: "subtitle", widget: "string", required: false }
+              - { label: "Gambar", name: "image", widget: "image", required: false }
+              - { label: "Deskripsi", name: "description", widget: "text" }
+              - { label: "Ikon", name: "icon", widget: "select", options: ["wrench", "shopping-cart", "calculator"] }
+              - { label: "Fasilitas", name: "facilities", widget: "list", field: { label: "Fasilitas", name: "facility", widget: "string" } }
+              - { label: "Prospek Karier", name: "careers", widget: "list", field: { label: "Karier", name: "career", widget: "string" } }
+              - { label: "Mitra", name: "partners", widget: "list", field: { label: "Mitra", name: "partner", widget: "string" } }
+
+  - name: "manifesto"
+    label: "Visi dan Misi"
+    files:
+      - label: "Visi dan Misi"
+        name: "manifesto"
+        file: "smk-profile/data/manifesto.json"
+        fields:
+          - label: "Konten"
+            name: "manifesto"
+            widget: "object"
+            fields:
+              - { label: "Pernyataan", name: "statement", widget: "text" }
+              - { label: "Visi", name: "vision", widget: "text" }
+              - { label: "Misi", name: "mission", widget: "list", field: { label: "Misi", name: "item", widget: "string" } }

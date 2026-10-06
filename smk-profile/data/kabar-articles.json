@@ -1,0 +1,70 @@
+{
+  "articles": [
+    {
+      "id": 5,
+      "category": "event",
+      "categoryLabel": "Event",
+      "date": "29 Agustus 2026",
+      "title": "Class Meeting & Pentas Seni Menutup Semester Meriah",
+      "excerpt": "Sepekan penuh lomba antar kelas, pameran karya, dan panggung malam puncak bersama seluruh warga sekolah.",
+      "image": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Lapangan Utama",
+      "slug": "class-meeting-pentas-seni-menutup-semester-meriah"
+    },
+    {
+      "id": 2,
+      "category": "event",
+      "categoryLabel": "Event",
+      "date": "18 September 2026",
+      "title": "Industrial Visit: Ratusan Siswa Studi Tur ke Pabrik Otomotif",
+      "excerpt": "Kunjungan industri tahunan memberi wawasan nyata tentang lini produksi modern dan budaya kerja pabrik.",
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Kampus & Mitra",
+      "slug": "industrial-visit-ratusan-siswa-studi-tur-ke-pabrik-otomotif"
+    },
+    {
+      "id": 6,
+      "category": "pengumuman",
+      "categoryLabel": "Pengumuman",
+      "date": "21 Agustus 2026",
+      "title": "Jadwal Uji Kompetensi Keahlian Sertifikasi Nasional Tahun Ini",
+      "excerpt": "Peserta ujian wajib memastikan kelengkapan log book praktik sebelum pelaksanaan minggu ketiga Oktober.",
+      "image": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Ruang Uji",
+      "slug": "jadwal-uji-kompetensi-keahlian-sertifikasi-nasional-tahun-ini"
+    },
+    {
+      "id": 4,
+      "category": "berita-akademik",
+      "categoryLabel": "Berita Akademik",
+      "date": "5 September 2026",
+      "title": "Kelas Bisnis Digital Luncurkan Brand UMKM Binaan Sekolah",
+      "excerpt": "Produk olahan pangan khas Wuryantoro kini go-digital dikelola penuh oleh siswa sebagai proyek kelas.",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Lab Bisnis Digital",
+      "slug": "kelas-bisnis-digital-luncurkan-brand-umkm-binaan-sekolah"
+    },
+    {
+      "id": 3,
+      "category": "pengumuman",
+      "categoryLabel": "Pengumuman",
+      "date": "12 September 2026",
+      "title": "Pendaftaran PPDB Gelombang II Resmi Dibuka Hingga Akhir Bulan",
+      "excerpt": "Kuota tersisa untuk tiga program keahlian. Lengkapi berkas melalui formulir daring sebelum 30 September.",
+      "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Panitia PPDB",
+      "slug": "pendaftaran-ppdb-gelombang-ii-resmi-dibuka-hingga-akhir-bulan"
+    },
+    {
+      "id": 1,
+      "category": "berita-akademik",
+      "categoryLabel": "Berita Akademik",
+      "date": "24 September 2026",
+      "title": "Siswa TKR Sabet Juara 2 LKS Tingkat Provinsi Jawa Tengah",
+      "excerpt": "Kabar membanggakan dari kompetisi Life Skill Competition bidang otomotif yang digelar pekan lalu.",
+      "image": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1200&auto=format&fit=crop",
+      "meta": "Bengkel TKR",
+      "slug": "siswa-tkr-sabet-juara-2-lks-tingkat-provinsi-jawa-tengah"
+    }
+  ]
+}

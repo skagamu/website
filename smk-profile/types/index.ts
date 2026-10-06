@@ -16,6 +16,7 @@ export interface HeroSlideData {
   /** Durasi slide aktif (ms) sebelum berpindah otomatis. */
   durationMs: number;
   image: string;
+  videoSrc?: string;
   objectPosition?: string;
 }
 
@@ -36,6 +37,8 @@ export interface ManifestoData {
 export interface ProgramData {
   id: string;
   name: string;
+  subtitle?: string;
+  image?: string;
   description: string;
   /** Ikon lucide-react: "wrench" | "shopping-cart" | "calculator". */
   icon: "wrench" | "shopping-cart" | "calculator";
@@ -118,7 +121,7 @@ export interface ContentSection {
   id: string;
   eyebrow: string;
   title: string;
-  paragraphs: string[];
+  paragraphs: (string | { paragraph: string })[];
   image: string;
   imageAlt: string;
   imagePosition: "left" | "right";
@@ -128,11 +131,13 @@ export type ArticleCategory = "berita-akademik" | "pengumuman" | "event";
 
 export interface Article {
   id: number;
+  slug: string;
   category: ArticleCategory;
   categoryLabel: string;
   date: string;
   title: string;
   excerpt: string;
+  body?: string;
   image: string;
   meta?: string;
 }
