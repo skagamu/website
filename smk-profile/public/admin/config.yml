@@ -2,180 +2,286 @@ backend:
   name: github
   repo: skagamu/website
   branch: main
-
 media_folder: "smk-profile/public/media"
 public_folder: "/website/media"
 
 collections:
-  - name: "kabar_articles"
-    label: "Kabar Sekolah (Artikel)"
-    folder: "smk-profile/data/kabar-sekolah"
-    create: true
-    extension: "json"
-    format: "json"
-    identifier_field: "title"
-    fields:
-      - { label: "ID", name: "id", widget: "number" }
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["berita-akademik", "pengumuman", "event"] }
-      - { label: "Category Label", name: "categoryLabel", widget: "string" }
-      - { label: "Excerpt", name: "excerpt", widget: "text" }
-      - { label: "Isi Artikel", name: "body", widget: "text", required: false, hint: "Pisahkan paragraf dengan satu baris kosong." }
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Meta", name: "meta", widget: "string", required: false }
-
-  - name: "kabar_sections"
-    label: "Kabar Sekolah (Sections)"
+  - name: "beranda_hero"
+    divider: true
+    label: "Beranda · Hero"
+    icon: "image"
+    description: "Atur slide utama yang tampil di beranda."
     files:
-      - label: "Sections Data"
-        name: "sections"
-        file: "smk-profile/data/kabar-sekolah.json"
-        fields:
-          - label: "Content Sections"
-            name: "contentSections"
-            widget: "list"
-            fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - name: "paragraphs"
-                label: "Paragraphs"
-                widget: "list"
-                fields:
-                  - { name: "paragraph", label: "Paragraph", widget: "text" }
-              - { label: "Image", name: "image", widget: "image" }
-              - { label: "Image Alt", name: "imageAlt", widget: "string" }
-              - { label: "Image Position", name: "imagePosition", widget: "select", options: ["left", "right"] }
-
-  - name: "alumni"
-    label: "Alumni"
-    files:
-      - label: "Alumni Data"
-        name: "alumni"
-        file: "smk-profile/data/alumni.json"
-        fields:
-          - label: "Alumni"
-            name: "alumni"
-            widget: "list"
-            fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Major", name: "major", widget: "string" }
-              - { label: "Year", name: "year", widget: "string" }
-              - { label: "Role", name: "role", widget: "string" }
-              - { label: "Company", name: "company", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-              - { label: "Href", name: "href", widget: "string" }
-
-  - name: "events"
-    label: "Events"
-    files:
-      - label: "Events Data"
-        name: "events"
-        file: "smk-profile/data/events.json"
-        fields:
-          - label: "Events"
-            name: "events"
-            widget: "list"
-            fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Date", name: "date", widget: "string" }
-              - { label: "ISO Date", name: "dateISO", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-              - { label: "Status", name: "status", widget: "select", options: ["Upcoming", "Past"] }
-              - { label: "Ringkasan", name: "excerpt", widget: "text" }
-              - { label: "Category", name: "category", widget: "string" }
-              - { label: "Location", name: "location", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-              - { label: "Color Theme", name: "colorTheme", widget: "string" }
-              - { label: "Href", name: "href", widget: "string" }
-
-  - name: "faculty"
-    label: "Faculty"
-    files:
-      - label: "Faculty Data"
-        name: "faculty"
-        file: "smk-profile/data/faculty.json"
-        fields:
-          - label: "Faculty"
-            name: "faculty"
-            widget: "list"
-            fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Role", name: "role", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-
-  - name: "gallery"
-    label: "Gallery"
-    files:
-      - label: "Gallery Data"
-        name: "gallery"
-        file: "smk-profile/data/gallery.json"
-        fields:
-          - label: "Gallery"
-            name: "gallery"
-            widget: "list"
-            fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Category", name: "category", widget: "string" }
-              - { label: "Span", name: "span", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-
-  - name: "hero"
-    label: "Hero Beranda"
-    files:
-      - label: "Slide Hero"
+      - label: "Slide utama"
         name: "hero"
         file: "smk-profile/data/hero.json"
         fields:
-          - label: "Slide"
+          - label: "Slide beranda"
             name: "slides"
             widget: "list"
             fields:
               - { label: "ID", name: "id", widget: "string" }
-              - { label: "Label", name: "label", widget: "string" }
-              - { label: "Judul (dua baris)", name: "headline", widget: "list", field: { label: "Baris", name: "line", widget: "string" }, min: 2, max: 2 }
+              - { label: "Label kecil", name: "label", widget: "string" }
+              - { label: "Judul dua baris", name: "headline", widget: "list", field: { label: "Baris judul", name: "line", widget: "string" }, min: 2, max: 2 }
               - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "Durasi (milidetik)", name: "durationMs", widget: "number", value_type: "int", min: 1000 }
-              - { label: "Gambar / Poster", name: "image", widget: "image" }
+              - { label: "Durasi (ms)", name: "durationMs", widget: "number", value_type: "int", min: 1000 }
+              - { label: "Gambar / poster", name: "image", widget: "image" }
               - { label: "Video", name: "videoSrc", widget: "file", required: false }
-              - { label: "Posisi Gambar", name: "objectPosition", widget: "string", required: false }
+              - { label: "Posisi gambar", name: "objectPosition", widget: "string", required: false }
 
-  - name: "programs"
-    label: "Program Keahlian"
+  - name: "visi_misi"
+    label: "Beranda · Visi dan Misi"
+    icon: "favorite"
+    description: "Perbarui pernyataan, visi, dan butir misi sekolah."
     files:
-      - label: "Daftar Program"
-        name: "programs"
-        file: "smk-profile/data/programs.json"
-        fields:
-          - label: "Program"
-            name: "programs"
-            widget: "list"
-            fields:
-              - { label: "ID / URL", name: "id", widget: "string" }
-              - { label: "Nama", name: "name", widget: "string" }
-              - { label: "Subjudul", name: "subtitle", widget: "string", required: false }
-              - { label: "Gambar", name: "image", widget: "image", required: false }
-              - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "Ikon", name: "icon", widget: "select", options: ["wrench", "shopping-cart", "calculator"] }
-              - { label: "Fasilitas", name: "facilities", widget: "list", field: { label: "Fasilitas", name: "facility", widget: "string" } }
-              - { label: "Prospek Karier", name: "careers", widget: "list", field: { label: "Karier", name: "career", widget: "string" } }
-              - { label: "Mitra", name: "partners", widget: "list", field: { label: "Mitra", name: "partner", widget: "string" } }
-
-  - name: "manifesto"
-    label: "Visi dan Misi"
-    files:
-      - label: "Visi dan Misi"
+      - label: "Visi dan misi"
         name: "manifesto"
         file: "smk-profile/data/manifesto.json"
         fields:
-          - label: "Konten"
+          - label: "Pernyataan utama"
             name: "manifesto"
             widget: "object"
             fields:
               - { label: "Pernyataan", name: "statement", widget: "text" }
               - { label: "Visi", name: "vision", widget: "text" }
-              - { label: "Misi", name: "mission", widget: "list", field: { label: "Misi", name: "item", widget: "string" } }
+              - label: "Misi"
+                name: "mission"
+                widget: "list"
+                field: { label: "Butir misi", name: "item", widget: "string" }
+
+  - name: "artikel"
+    divider: true
+    label: "Kabar Sekolah · Artikel"
+    icon: "article"
+    description: "Tambah dan ubah artikel; URL dibuat dari judul artikel."
+    folder: "smk-profile/data/kabar-sekolah"
+    create: true
+    extension: "json"
+    format: "json"
+    identifier_field: "id"
+    fields:
+      - { label: "ID artikel", name: "id", widget: "string", hint: "ID stabil untuk tautan; gunakan slug artikel, jangan diubah setelah dipublikasikan." }
+      - { label: "Judul artikel", name: "title", widget: "string" }
+      - { label: "Tanggal", name: "date", widget: "string" }
+      - { label: "Kategori", name: "category", widget: "select", options: ["berita-akademik", "pengumuman", "event"] }
+      - { label: "Label kategori", name: "categoryLabel", widget: "string" }
+      - { label: "Ringkasan", name: "excerpt", widget: "text" }
+      - { label: "Isi artikel", name: "body", widget: "text", required: false, hint: "Pisahkan paragraf dengan baris kosong." }
+      - { label: "Gambar", name: "image", widget: "image" }
+      - { label: "Keterangan", name: "meta", widget: "string", required: false }
+
+  - name: "kabar_sections"
+    label: "Kabar Sekolah · Bagian halaman"
+    icon: "article"
+    description: "Atur bagian pengantar pada halaman kabar sekolah."
+    files:
+      - label: "Bagian kabar sekolah"
+        name: "sections"
+        file: "smk-profile/data/kabar-sekolah.json"
+        fields:
+          - label: "Bagian konten"
+            name: "contentSections"
+            widget: "list"
+            fields:
+              - { label: "ID bagian", name: "id", widget: "string" }
+              - { label: "Label kecil", name: "eyebrow", widget: "string" }
+              - { label: "Judul", name: "title", widget: "string" }
+              - { label: "Gambar", name: "image", widget: "image" }
+              - { label: "Teks alternatif gambar", name: "imageAlt", widget: "string" }
+              - { label: "Posisi gambar", name: "imagePosition", widget: "select", options: ["left", "right"] }
+              - label: "Paragraf"
+                name: "paragraphs"
+                widget: "list"
+                field: { label: "Paragraf", name: "paragraph", widget: "text" }
+
+  - name: "programs"
+    label: "Program Keahlian"
+    label_singular: "Program"
+    icon: "school"
+    description: "Kelola tiap item sebagai entri tersendiri; urutan dapat diubah di daftar."
+    file: "smk-profile/data/programs.json"
+    create: false
+    delete: false
+    identifier_field: "id"
+    fields:
+      - { label: "ID URL", name: "id", widget: "string", hint: "ID ini menjadi alamat halaman program. Jangan ubah setelah halaman dipublikasikan." }
+      - { label: "Nama program", name: "name", widget: "string" }
+      - { label: "Subjudul kartu", name: "subtitle", widget: "string", required: false }
+      - { label: "Gambar program", name: "image", widget: "image" }
+      - { label: "Deskripsi singkat", name: "description", widget: "text" }
+      - { label: "Ikon", name: "icon", widget: "select", options: ["wrench", "shopping-cart", "calculator"] }
+      - { label: "Tagline halaman detail", name: "tagline", widget: "string" }
+      - label: "Paragraf detail"
+        name: "detailParagraphs"
+        widget: "list"
+        fields:
+          - { label: "Paragraf", name: "paragraph", widget: "text" }
+      - label: "Kompetensi unggulan"
+        name: "competencies"
+        widget: "list"
+        fields:
+          - { label: "Kompetensi", name: "competency", widget: "string" }
+      - label: "Prospek karier"
+        name: "careers"
+        widget: "list"
+        fields:
+          - { label: "Karier", name: "career", widget: "string" }
+      - label: "Mitra industri"
+        name: "partners"
+        widget: "list"
+        fields:
+          - { label: "Mitra", name: "partner", widget: "string" }
+      - label: "Fasilitas program"
+        name: "facilities"
+        widget: "list"
+        fields:
+          - { label: "Nama fasilitas", name: "title", widget: "string" }
+          - { label: "Gambar", name: "image", widget: "image" }
+          - { label: "Keterangan", name: "caption", widget: "text" }
+
+  - name: "alumni"
+    divider: true
+    label: "Alumni"
+    label_singular: "Alumni"
+    icon: "people"
+    description: "Kelola tiap item sebagai entri tersendiri; urutan dapat diubah di daftar."
+    file: "smk-profile/data/alumni.json"
+    create: true
+    delete: true
+    identifier_field: "id"
+    fields:
+      - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
+      - { label: "Nama", name: "name", widget: "string" }
+      - { label: "Program keahlian", name: "major", widget: "string" }
+      - { label: "Angkatan", name: "year", widget: "string" }
+      - { label: "Pekerjaan", name: "role", widget: "string" }
+      - { label: "Perusahaan", name: "company", widget: "string" }
+      - { label: "Foto", name: "image", widget: "image" }
+
+  - name: "acara"
+    label: "Kegiatan & Acara"
+    label_singular: "Kegiatan"
+    icon: "event"
+    description: "Kelola tiap item sebagai entri tersendiri; urutan dapat diubah di daftar."
+    file: "smk-profile/data/events.json"
+    create: true
+    delete: true
+    identifier_field: "id"
+    fields:
+      - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Tanggal tampilan", name: "date", widget: "string" }
+      - { label: "Tanggal ISO", name: "dateISO", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Status", name: "status", widget: "select", options: ["Upcoming", "Past"] }
+      - { label: "Ringkasan", name: "excerpt", widget: "text" }
+      - { label: "Kategori", name: "category", widget: "string" }
+      - { label: "Lokasi", name: "location", widget: "string" }
+      - { label: "Gambar", name: "image", widget: "image" }
+      - { label: "Warna kartu", name: "theme", widget: "select", options: ["blue", "green", "purple", "rose", "orange"] }
+      - { label: "Tautan tujuan", name: "href", widget: "string" }
+
+  - name: "guru"
+    label: "Guru & Staf"
+    label_singular: "Guru atau staf"
+    icon: "people"
+    description: "Kelola tiap item sebagai entri tersendiri; urutan dapat diubah di daftar."
+    file: "smk-profile/data/faculty.json"
+    create: true
+    delete: true
+    identifier_field: "id"
+    fields:
+      - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
+      - { label: "Nama", name: "name", widget: "string" }
+      - { label: "Jabatan", name: "role", widget: "string" }
+      - { label: "Foto", name: "image", widget: "image" }
+
+  - name: "galeri"
+    label: "Galeri Sekolah"
+    label_singular: "Foto galeri"
+    icon: "image"
+    description: "Kelola tiap item sebagai entri tersendiri; urutan dapat diubah di daftar."
+    file: "smk-profile/data/gallery.json"
+    create: true
+    delete: true
+    identifier_field: "id"
+    fields:
+      - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Kategori", name: "category", widget: "string" }
+      - { label: "Tata letak", name: "layout", widget: "select", options: ["normal", "wide", "feature"] }
+      - { label: "Gambar", name: "image", widget: "image" }
+
+  - name: "profil_sekolah"
+    divider: true
+    label: "Profil Sekolah · Sejarah"
+    icon: "history"
+    description: "Ubah judul halaman dan linimasa sejarah sekolah."
+    files:
+      - label: "Profil dan sejarah"
+        name: "profile"
+        file: "smk-profile/data/school-profile.json"
+        fields:
+          - { label: "Judul hero", name: "heroTitle", widget: "string" }
+          - { label: "Gambar hero", name: "heroImage", widget: "image" }
+          - { label: "Teks alternatif gambar", name: "heroImageAlt", widget: "string" }
+          - { label: "Label riwayat", name: "timelineEyebrow", widget: "string" }
+          - { label: "Judul riwayat", name: "timelineHeading", widget: "string" }
+          - label: "Linimasa sejarah"
+            name: "timeline"
+            widget: "list"
+            fields:
+              - { label: "Tahun", name: "year", widget: "string" }
+              - { label: "Judul", name: "title", widget: "string" }
+              - { label: "Cerita", name: "text", widget: "text" }
+              - { label: "Gambar", name: "image", widget: "image" }
+              - { label: "Teks alternatif gambar", name: "imageAlt", widget: "string" }
+
+  - name: "pengaturan_situs"
+    label: "Pengaturan Situs"
+    icon: "settings"
+    description: "Ubah identitas sekolah, navigasi, kontak, PPDB, dan media sosial."
+    files:
+      - label: "Identitas dan kontak"
+        name: "settings"
+        file: "smk-profile/data/site-settings.json"
+        fields:
+          - { label: "Nama sekolah", name: "schoolName", widget: "string" }
+          - { label: "Slogan", name: "tagline", widget: "string" }
+          - { label: "Tautan formulir PPDB", name: "ppdbUrl", widget: "string" }
+          - label: "Navigasi situs"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - { label: "Label menu", name: "label", widget: "string" }
+              - { label: "Tautan", name: "href", widget: "string" }
+              - label: "Submenu (opsional)"
+                name: "items"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Label submenu", name: "label", widget: "string" }
+                  - { label: "Tautan", name: "href", widget: "string" }
+          - label: "Kontak"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Telepon", name: "phone", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Judul alamat", name: "addressTitle", widget: "string" }
+              - { label: "Baris alamat", name: "addressLines", widget: "list", field: { label: "Baris alamat", name: "line", widget: "string" } }
+              - { label: "Judul email", name: "emailTitle", widget: "string" }
+              - { label: "Keterangan email", name: "emailDescription", widget: "text" }
+              - { label: "Judul jam operasional", name: "officeHoursTitle", widget: "string" }
+              - { label: "Jam operasional", name: "officeHours", widget: "list", field: { label: "Jam", name: "line", widget: "string" } }
+          - label: "Tautan footer"
+            name: "footerLinks"
+            widget: "list"
+            fields:
+              - { label: "Label tautan", name: "label", widget: "string" }
+              - { label: "URL", name: "href", widget: "string" }
+          - label: "Media sosial"
+            name: "socials"
+            widget: "list"
+            fields:
+              - { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "youtube", "linkedin"] }
+              - { label: "URL profil", name: "url", widget: "string" }

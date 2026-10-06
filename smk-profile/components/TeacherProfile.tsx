@@ -12,7 +12,7 @@ import type { FacultyMember } from "../types";
 // Admin Panel mengubah isi file JSON ini via Git commit (GitHub API).
 // Foto guru disimpan di public/media/teachers/.
 // ============================================================================
-const TEACHERS: FacultyMember[] = facultyData.faculty;
+const TEACHERS: FacultyMember[] = facultyData;
 
 export default function TeacherProfile() {
   return (

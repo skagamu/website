@@ -13,7 +13,8 @@ import type { GalleryItem } from "../types";
 // Admin Panel mengubah urutan, judul, dan ukuran span foto via Git commit.
 // Array ini memetakan urutan & ukuran grid; kelas `span` mengatur besar foto di desktop.
 // ============================================================================
-const GALLERY_ITEMS: GalleryItem[] = galleryData.gallery;
+const GALLERY_ITEMS: GalleryItem[] = galleryData;
+const LAYOUTS = { normal: "md:col-span-1 md:row-span-1", wide: "md:col-span-2 md:row-span-1", feature: "md:col-span-2 md:row-span-2" };
 
 export default function SchoolGallery() {
   return (
@@ -66,7 +67,7 @@ export default function SchoolGallery() {
                   delay: (index % 4) * 0.1, 
                   ease: [0.25, 1, 0.5, 1] 
                 }}
-                className={`group relative overflow-hidden bg-slate-100 w-full h-full ${item.span}`}
+                className={`group relative overflow-hidden bg-slate-100 w-full h-full ${LAYOUTS[item.layout]}`}
               >
                 {/* Image (Berwarna, tanpa filter, membesar perlahan saat hover di desktop) */}
                 <Image

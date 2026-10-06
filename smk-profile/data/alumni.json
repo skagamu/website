@@ -1,54 +1,47 @@
-{
-  "alumni": [
-    {
-      "id": "budi-santoso",
-      "name": "Budi Santoso",
-      "major": "Teknik Kendaraan Ringan",
-      "year": "Angkatan 2019",
-      "role": "Kepala Teknisi",
-      "company": "PT Astra Daihatsu Motor",
-      "image": "/website/media/hero/workshop-poster.jpg",
-      "href": "/alumni/budi-santoso"
-    },
-    {
-      "id": "siti-rahmawati",
-      "name": "Siti Rahmawati",
-      "major": "Bisnis Digital",
-      "year": "Angkatan 2020",
-      "role": "Digital Marketing Lead",
-      "company": "Tokopedia (GoTo Group)",
-      "image": "/website/media/hero/collaboration.jpg",
-      "href": "/alumni/siti-rahmawati"
-    },
-    {
-      "id": "andi-prasetyo",
-      "name": "Andi Prasetyo",
-      "major": "Akuntansi",
-      "year": "Angkatan 2018",
-      "role": "Account Officer",
-      "company": "Bank Jateng KC Wonogiri",
-      "image": "/website/media/hero/workshop.jpg",
-      "href": "/alumni/andi-prasetyo"
-    },
-    {
-      "id": "dewi-lestari",
-      "name": "Dewi Lestari",
-      "major": "Bisnis Digital",
-      "year": "Angkatan 2021",
-      "role": "Founder & CEO",
-      "company": "Lestari Digital Agency",
-      "image": "/website/media/hero/workshop-poster.jpg",
-      "href": "/alumni/dewi-lestari"
-    },
-    {
-      "id": "rizky-maulana",
-      "name": "Rizky Maulana",
-      "major": "Teknik Kendaraan Ringan",
-      "year": "Angkatan 2022",
-      "role": "Service Advisor",
-      "company": "Nasmoco Group",
-      "image": "/website/media/hero/collaboration.jpg",
-      "href": "/alumni/rizky-maulana"
-    }
-  ]
-}
+[
+  {
+    "id": "budi-santoso",
+    "name": "Budi Santoso",
+    "major": "Teknik Kendaraan Ringan",
+    "year": "Angkatan 2019",
+    "role": "Kepala Teknisi",
+    "company": "PT Astra Daihatsu Motor",
+    "image": "/website/media/hero/workshop-poster.jpg"
+  },
+  {
+    "id": "siti-rahmawati",
+    "name": "Siti Rahmawati",
+    "major": "Bisnis Digital",
+    "year": "Angkatan 2020",
+    "role": "Digital Marketing Lead",
+    "company": "Tokopedia (GoTo Group)",
+    "image": "/website/media/hero/collaboration.jpg"
+  },
+  {
+    "id": "andi-prasetyo",
+    "name": "Andi Prasetyo",
+    "major": "Akuntansi",
+    "year": "Angkatan 2018",
+    "role": "Account Officer",
+    "company": "Bank Jateng KC Wonogiri",
+    "image": "/website/media/hero/workshop.jpg"
+  },
+  {
+    "id": "dewi-lestari",
+    "name": "Dewi Lestari",
+    "major": "Bisnis Digital",
+    "year": "Angkatan 2021",
+    "role": "Founder & CEO",
+    "company": "Lestari Digital Agency",
+    "image": "/website/media/hero/workshop-poster.jpg"
+  },
+  {
+    "id": "rizky-maulana",
+    "name": "Rizky Maulana",
+    "major": "Teknik Kendaraan Ringan",
+    "year": "Angkatan 2022",
+    "role": "Service Advisor",
+    "company": "Nasmoco Group",
+    "image": "/website/media/hero/collaboration.jpg"
+  }
+]

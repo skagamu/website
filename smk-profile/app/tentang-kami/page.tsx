@@ -16,38 +16,9 @@ const MISSIONS = manifestoData.manifesto.mission.map((text) => {
   return { title, text: rest.join(": ") || text };
 });
 
-const TIMELINE = [
-  {
-    year: "1978",
-    title: "Awal Berdiri",
-    text: "Berdiri sebagai sekolah kejuruan sederhana dengan dua jurusan pertama dan belasan tenaga pengajar pionir.",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    year: "1995",
-    title: "Ekspansi Bengkel",
-    text: "Pembangunan bengkel praktik permanen pertama dan penambahan program keahlian teknik mesin.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    year: "2008",
-    title: "Akreditasi A",
-    text: "Meraih predikat akreditasi A dan menjadi rujukan sekolah kejuruan tingkat kabupaten.",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    year: "2016",
-    title: "Era Digital",
-    text: "Pembukaan program keahlian Bisnis Digital dan Akuntansi komputerisasi menyongsong ekonomi digital.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    year: "2023",
-    title: "Link & Match",
-    text: "Penandatanganan kemitraan industri dengan puluhan perusahaan nasional untuk program magang bersertifikat.",
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f1d3?q=80&w=800&auto=format&fit=crop",
-  },
-];
+import schoolProfile from "../../data/school-profile.json";
+
+const TIMELINE = schoolProfile.timeline;
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -57,8 +28,8 @@ export default function TentangKamiPage() {
       {/* HERO BANNER */}
       <section className="relative flex h-[40vh] min-h-[320px] w-full items-end overflow-hidden bg-navy">
         <Image
-          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920&auto=format&fit=crop"
-          alt="Gedung SMK Gajah Mungkur 1 Wuryantoro"
+          src={schoolProfile.heroImage}
+          alt={schoolProfile.heroImageAlt}
           fill
           priority
           sizes="100vw"
@@ -73,7 +44,7 @@ export default function TentangKamiPage() {
             <span className="font-medium text-amber-400">Tentang Kami</span>
           </nav>
           <h1 className="max-w-4xl font-sans text-4xl font-medium leading-[1.05] tracking-[-.02em] text-white md:text-6xl">
-            Profil & Sejarah Sekolah
+            {schoolProfile.heroTitle}
           </h1>
         </div>
       </section>
@@ -163,10 +134,10 @@ export default function TentangKamiPage() {
             className="mb-16 max-w-2xl"
           >
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-amber-600">
-              Jejak Perjalanan
+              {schoolProfile.timelineEyebrow}
             </p>
             <h2 className="mt-3 font-sans text-3xl font-medium leading-tight tracking-[-.02em] text-navy md:text-5xl">
-              Hampir lima dekade menempa generasi vokasi.
+              {schoolProfile.timelineHeading}
             </h2>
           </motion.div>
 
@@ -228,7 +199,7 @@ export default function TentangKamiPage() {
                       <div className="relative h-48 w-full max-w-md overflow-hidden shadow-lg">
                         <Image
                           src={item.image}
-                          alt={`Momen sejarah ${item.year}`}
+                          alt={item.imageAlt}
                           fill
                           sizes="(max-width: 768px) 100vw, 480px"
                           className="object-cover"

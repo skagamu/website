@@ -1,0 +1,44 @@
+{
+  "heroTitle": "Profil & Sejarah Sekolah",
+  "heroImage": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920&auto=format&fit=crop",
+  "heroImageAlt": "Gedung SMK Gajah Mungkur 1 Wuryantoro",
+  "timelineEyebrow": "Jejak Perjalanan",
+  "timelineHeading": "Hampir lima dekade menempa generasi vokasi.",
+  "timeline": [
+    {
+      "year": "1978",
+      "title": "Awal Berdiri",
+      "text": "Berdiri sebagai sekolah kejuruan sederhana dengan dua jurusan pertama dan belasan tenaga pengajar pionir.",
+      "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop",
+      "imageAlt": "Kegiatan pendidikan di sekolah"
+    },
+    {
+      "year": "1995",
+      "title": "Ekspansi Bengkel",
+      "text": "Pembangunan bengkel praktik permanen pertama dan penambahan program keahlian teknik mesin.",
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
+      "imageAlt": "Kegiatan praktik di bengkel"
+    },
+    {
+      "year": "2008",
+      "title": "Akreditasi A",
+      "text": "Meraih predikat akreditasi A dan menjadi rujukan sekolah kejuruan tingkat kabupaten.",
+      "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
+      "imageAlt": "Siswa belajar berkolaborasi"
+    },
+    {
+      "year": "2016",
+      "title": "Era Digital",
+      "text": "Pembukaan program keahlian Bisnis Digital dan Akuntansi komputerisasi menyongsong ekonomi digital.",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+      "imageAlt": "Pembelajaran bisnis digital"
+    },
+    {
+      "year": "2023",
+      "title": "Link & Match",
+      "text": "Penandatanganan kemitraan industri dengan puluhan perusahaan nasional untuk program magang bersertifikat.",
+      "image": "https://images.unsplash.com/photo-1521737604893-d14cc237f1d3?q=80&w=800&auto=format&fit=crop",
+      "imageAlt": "Kolaborasi sekolah dengan industri"
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import type { AlumniItem } from "../../types";
 // - Setiap objek mewakili satu entri alumni di CMS.
 // - Gambar disimpan di /media/alumni/ (misal: /media/alumni/budi.jpg).
 // ============================================================================
-const ALUMNI: AlumniItem[] = alumniData.alumni;
+const ALUMNI: AlumniItem[] = alumniData;
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -141,7 +141,7 @@ export default function AlumniPage() {
               rel="noopener noreferrer"
               className="inline-flex min-h-14 shrink-0 items-center justify-center gap-2 whitespace-nowrap bg-white px-8 py-3.5 font-body text-sm font-semibold text-black transition-colors hover:bg-slate-200 active:scale-[.98]"
             >
-              Daftar PPDB <ArrowRight size={18} aria-hidden="true" />
+              Daftar SPMB <ArrowRight size={18} aria-hidden="true" />
             </a>
           </motion.div>
         </div>

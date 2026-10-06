@@ -3,16 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, MapPin, Mail, Clock, ArrowRight, Facebook, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
+import settings from "../data/site-settings.json";
 import { PPDB_FORM_URL } from "../config/site";
 
-// ============================================================================
-// DATA & KONSTANTA FOOTER
-// ============================================================================
-// Ganti tautan/nomor kontak di sini melalui Admin Panel (CMS) di kemudian hari.
-const CONTACT_INFO = {
-  phone: "+62 273 532 7111",
-  email: "info@smkgajahmungkur1wuryantoro.sch.id",
-};
+const { contact, footerLinks, socials, schoolName, tagline } = settings;
+const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, twitter: Twitter, youtube: Youtube, linkedin: Linkedin };
 
 export default function GlobalFooter() {
   return (
@@ -47,10 +42,10 @@ export default function GlobalFooter() {
             </div>
             <div className="mt-6 md:mt-0 md:ml-6 flex flex-col">
               <h2 className="font-sans text-2xl font-bold leading-tight md:text-3xl lg:text-4xl">
-                SMK Gajah Mungkur 1<br/>Wuryantoro
+                {schoolName}
               </h2>
               <p className="mt-2 font-mono text-sm font-medium tracking-wide text-[#F59E0B]">
-                Vokasi Hebat, Lulusan Bermartabat.
+                {tagline}
               </p>
             </div>
           </div>
@@ -64,7 +59,7 @@ export default function GlobalFooter() {
               rel="noopener noreferrer"
               className="group flex items-center justify-center gap-2 border border-white bg-white px-8 py-3.5 font-body text-sm font-semibold text-black transition-colors duration-300 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
             >
-              Daftar PPDB <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
+              Daftar SPMB <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </div>
 
@@ -77,7 +72,7 @@ export default function GlobalFooter() {
           <div className="flex items-center gap-3">
             <Phone size={24} className="fill-[#F59E0B] text-[#F59E0B]" />
             <span className="font-sans text-xl font-bold tracking-wide md:text-2xl">
-              {CONTACT_INFO.phone}
+              {contact.phone}
             </span>
           </div>
 
@@ -89,12 +84,10 @@ export default function GlobalFooter() {
               <MapPin size={24} className="mt-1 shrink-0 text-[#F59E0B]" />
               <div className="flex flex-col">
                 <h4 className="font-sans text-lg font-bold text-white">
-                  Kampus Utama (Gedung A)
+                  {contact.addressTitle}
                 </h4>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
-                  Jl. Raya Wonogiri - Pracimantoro Km. 13<br />
-                  Kec. Wuryantoro, Kab. Wonogiri<br />
-                  Jawa Tengah 57661
+                  {contact.addressLines.map((line) => <span key={line}>{line}<br /></span>)}
                 </p>
               </div>
             </div>
@@ -104,12 +97,12 @@ export default function GlobalFooter() {
               <Mail size={24} className="mt-1 shrink-0 text-[#F97316]" />
               <div className="flex flex-col">
                 <h4 className="font-sans text-lg font-bold text-white">
-                  Surat Elektronik & Informasi
+                  {contact.emailTitle}
                 </h4>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
-                  Untuk pertanyaan umum, legalisir, dan kerjasama industri silakan hubungi:<br />
-                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-amber-400 hover:underline">
-                    {CONTACT_INFO.email}
+                  {contact.emailDescription}<br />
+                  <a href={`mailto:${contact.email}`} className="text-amber-400 hover:underline">
+                    {contact.email}
                   </a>
                 </p>
               </div>
@@ -120,12 +113,10 @@ export default function GlobalFooter() {
               <Clock size={24} className="mt-1 shrink-0 text-[#10B981]" />
               <div className="flex flex-col">
                 <h4 className="font-sans text-lg font-bold text-white">
-                  Jam Operasional Sekolah
+                  {contact.officeHoursTitle}
                 </h4>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
-                  Senin - Jumat: 07.00 - 15.30 WIB<br />
-                  Sabtu: 07.00 - 12.00 WIB (Ekstrakurikuler)<br />
-                  Minggu & Libur Nasional: Tutup
+                  {contact.officeHours.map((line) => <span key={line}>{line}<br /></span>)}
                 </p>
               </div>
             </div>
@@ -138,29 +129,15 @@ export default function GlobalFooter() {
           
           {/* Utility Links */}
           <div className="flex flex-wrap justify-center gap-6 font-sans text-sm font-medium text-white/90 md:justify-start md:gap-8">
-            <Link href="/kontak" className="hover:text-[#F59E0B] transition-colors">Hubungi Kami</Link>
-            <Link href="/privasi" className="hover:text-[#F59E0B] transition-colors">Kebijakan Privasi</Link>
-            <Link href="/sitemap" className="hover:text-[#F59E0B] transition-colors">Peta Situs</Link>
-            <Link href="/aksesibilitas" className="hover:text-[#F59E0B] transition-colors">Aksesibilitas</Link>
+            {footerLinks.map((link) => <Link key={link.href} href={link.href} className="hover:text-[#F59E0B] transition-colors">{link.label}</Link>)}
           </div>
 
           {/* Social Icons */}
           <div className="flex items-center gap-6">
-            <a href="https://facebook.com" aria-label="Facebook" className="text-white hover:text-[#F59E0B] transition-colors">
-              <Facebook size={20} />
-            </a>
-            <a href="https://instagram.com" aria-label="Instagram" className="text-white hover:text-[#F59E0B] transition-colors">
-              <Instagram size={20} />
-            </a>
-            <a href="https://twitter.com" aria-label="Twitter/X" className="text-white hover:text-[#F59E0B] transition-colors">
-              <Twitter size={20} />
-            </a>
-            <a href="https://youtube.com" aria-label="YouTube" className="text-white hover:text-[#F59E0B] transition-colors">
-              <Youtube size={20} />
-            </a>
-            <a href="https://linkedin.com" aria-label="LinkedIn" className="text-white hover:text-[#F59E0B] transition-colors">
-              <Linkedin size={20} />
-            </a>
+            {socials.map(({ platform, url }) => {
+              const Icon = SOCIAL_ICONS[platform as keyof typeof SOCIAL_ICONS];
+              return <a key={platform} href={url} aria-label={platform} className="text-white hover:text-[#F59E0B] transition-colors"><Icon size={20} /></a>;
+            })}
           </div>
 
         </div>

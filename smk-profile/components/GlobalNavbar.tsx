@@ -7,25 +7,12 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PPDB_FORM_URL } from "../config/site";
+import settings from "../data/site-settings.json";
 
 // ============================================================================
 // DATA & CONSTANTS
 // ============================================================================
-const NAV_LINKS = [
-  { name: "Profil", href: "/tentang-kami" },
-  { 
-    name: "Program Keahlian", 
-    href: "#",
-    dropdown: [
-      { name: "Teknik Kendaraan Ringan", href: "/program/teknik-kendaraan-ringan" },
-      { name: "Bisnis Digital", href: "/program/bisnis-digital" },
-      { name: "Akuntansi", href: "/program/akuntansi" },
-    ]
-  },
-  { name: "Fasilitas", href: "#fasilitas" },
-  { name: "Alumni", href: "/alumni" },
-  { name: "Berita", href: "/berita" },
-];
+const NAV_LINKS = settings.navigation;
 
 const PPDB_LINK = PPDB_FORM_URL;
 
@@ -116,18 +103,18 @@ export default function GlobalNavbar() {
           <div className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <div 
-                key={link.name} 
+                key={link.label}
                 className="relative group"
-                onMouseEnter={() => setActiveDropdown(link.name)}
+                onMouseEnter={() => setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link 
                   href={link.href}
                   className={`flex items-center gap-1 font-body text-sm font-medium transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B] rounded-sm hover:text-[#F59E0B]`}
                 >
-                  {link.name}
-                  {link.dropdown && (
-                    <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === link.name ? "rotate-180" : ""}`} />
+                  {link.label}
+                  {link.items && (
+                    <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === link.label ? "rotate-180" : ""}`} />
                   )}
                 </Link>
 
@@ -135,9 +122,9 @@ export default function GlobalNavbar() {
                 <span className={`absolute -bottom-1 left-0 h-0.5 w-0 bg-[#F59E0B] transition-all duration-300 ease-out group-hover:w-full`} />
 
                 {/* Simple Dropdown (Hover) */}
-                {link.dropdown && (
+                {link.items && (
                   <AnimatePresence>
-                    {activeDropdown === link.name && (
+                    {activeDropdown === link.label && (
                       <motion.div
                         initial={{ opacity: 0, y: 10, rotateX: -10 }}
                         animate={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -146,13 +133,13 @@ export default function GlobalNavbar() {
                         className="absolute left-0 top-full pt-4 origin-top"
                       >
                         <div className="flex w-64 flex-col bg-white p-2 shadow-xl ring-1 ring-black/5">
-                          {link.dropdown.map((drop) => (
+                          {link.items.map((drop) => (
                             <Link 
-                              key={drop.name} 
+                              key={drop.label}
                               href={drop.href}
                               className="px-4 py-3 font-body text-sm font-medium text-[#0F172A] hover:bg-slate-50 hover:text-[#F59E0B] focus:bg-slate-50 focus:text-[#F59E0B] focus:outline-none"
                             >
-                              {drop.name}
+                              {drop.label}
                             </Link>
                           ))}
                         </div>
@@ -172,7 +159,7 @@ export default function GlobalNavbar() {
               rel="noopener noreferrer"
               className={`inline-flex min-h-14 items-center justify-center gap-2 whitespace-nowrap px-8 py-3.5 font-body text-sm font-semibold transition-all duration-300 active:scale-[.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border bg-[#0C2340] border-[#0C2340] text-white hover:bg-[#F59E0B] hover:border-[#F59E0B] hover:shadow-lg focus-visible:ring-[#0C2340]`}
             >
-              Daftar PPDB 
+              Daftar SPMB
               <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </div>
@@ -242,7 +229,7 @@ export default function GlobalNavbar() {
             <div className="flex flex-col px-8 py-12 gap-8 flex-grow">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
-                  key={link.name}
+                  key={link.label}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 + (i * 0.05), ease: "easeOut" }}
@@ -252,20 +239,20 @@ export default function GlobalNavbar() {
                     className="font-sans text-3xl font-bold tracking-tight text-white hover:text-[#F59E0B] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    {link.name}
+                    {link.label}
                   </Link>
                   
                   {/* Tampilkan sub-menu statis jika ada dropdown */}
-                  {link.dropdown && (
+                  {link.items && (
                     <div className="mt-4 flex flex-col gap-3 pl-4 border-l border-white/20">
-                      {link.dropdown.map((drop) => (
+                      {link.items.map((drop) => (
                         <Link
-                          key={drop.name}
+                          key={drop.label}
                           href={drop.href}
                           className="font-body text-lg text-white/70 hover:text-[#F59E0B] transition-colors focus:outline-none"
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          {drop.name}
+                          {drop.label}
                         </Link>
                       ))}
                     </div>
@@ -288,7 +275,7 @@ export default function GlobalNavbar() {
                 className="inline-flex min-h-14 items-center justify-center gap-2 w-full bg-[#0C2340] border border-[#0C2340] py-3.5 font-body text-sm font-semibold text-white transition-all active:scale-[.98] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#0C2340]"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Daftar PPDB <ArrowRight size={18} aria-hidden="true" />
+                Daftar SPMB <ArrowRight size={18} aria-hidden="true" />
               </a>
             </motion.div>
           </motion.div>

@@ -14,7 +14,7 @@ import programsData from "../data/programs.json";
 // ============================================================================
 
 export default function TabbedCarousel() {
-  const programs = programsData.programs.map((item: any) => ({
+  const programs = programsData.map((item) => ({
     id: item.id,
     title: item.name,
     subtitle: item.subtitle || item.description,

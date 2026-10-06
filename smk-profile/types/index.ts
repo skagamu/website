@@ -42,14 +42,13 @@ export interface ProgramData {
   description: string;
   /** Ikon lucide-react: "wrench" | "shopping-cart" | "calculator". */
   icon: "wrench" | "shopping-cart" | "calculator";
-  facilities: string[];
+  tagline: string;
+  detailParagraphs: string[];
+  competencies: string[];
+  facilities: { title: string; image: string; caption: string }[];
   /** Mitra industri terkait program. */
   partners: string[];
   careers: string[];
-}
-
-export interface ProgramsData {
-  programs: ProgramData[];
 }
 
 /** data/faculty.json */
@@ -58,10 +57,6 @@ export interface FacultyMember {
   name: string;
   role: string;
   image: string;
-}
-
-export interface FacultyData {
-  faculty: FacultyMember[];
 }
 
 /** data/events.json */
@@ -77,13 +72,9 @@ export interface EventItem {
   category: string;
   location: string;
   image: string;
-  /** Kelas Tailwind gradient untuk background dinamis. */
-  colorTheme: string;
+  /** Pilihan tema dekoratif dipetakan ke kelas Tailwind di komponen. */
+  theme: "blue" | "green" | "purple" | "rose" | "orange";
   href: string;
-}
-
-export interface EventsData {
-  events: EventItem[];
 }
 
 /** data/gallery.json */
@@ -91,13 +82,8 @@ export interface GalleryItem {
   id: string;
   title: string;
   category: string;
-  /** Kelas Tailwind span untuk bento grid. */
-  span: string;
+  layout: "normal" | "wide" | "feature";
   image: string;
-}
-
-export interface GalleryData {
-  gallery: GalleryItem[];
 }
 
 /** data/alumni.json */
@@ -109,11 +95,6 @@ export interface AlumniItem {
   role: string;
   company: string;
   image: string;
-  href: string;
-}
-
-export interface AlumniData {
-  alumni: AlumniItem[];
 }
 
 /** data/kabar-sekolah.json */
@@ -130,7 +111,7 @@ export interface ContentSection {
 export type ArticleCategory = "berita-akademik" | "pengumuman" | "event";
 
 export interface Article {
-  id: number;
+  id: string;
   slug: string;
   category: ArticleCategory;
   categoryLabel: string;

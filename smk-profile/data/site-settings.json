@@ -1,0 +1,99 @@
+{
+  "schoolName": "SMK Gajah Mungkur 1 Wuryantoro",
+  "tagline": "Vokasi Hebat, Lulusan Bermartabat.",
+  "ppdbUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdooWVprIeIY2Vx6zcZzKVbKjaMsciv5sLdKWR9c6Ar47HGYg/viewform?usp=dialog",
+  "navigation": [
+    {
+      "label": "Profil",
+      "href": "/tentang-kami"
+    },
+    {
+      "label": "Program Keahlian",
+      "href": "#",
+      "items": [
+        {
+          "label": "Teknik Kendaraan Ringan",
+          "href": "/program/teknik-kendaraan-ringan"
+        },
+        {
+          "label": "Bisnis Digital",
+          "href": "/program/bisnis-digital"
+        },
+        {
+          "label": "Akuntansi",
+          "href": "/program/akuntansi"
+        }
+      ]
+    },
+    {
+      "label": "Fasilitas",
+      "href": "#fasilitas"
+    },
+    {
+      "label": "Alumni",
+      "href": "/alumni"
+    },
+    {
+      "label": "Berita",
+      "href": "/berita"
+    }
+  ],
+  "contact": {
+    "phone": "+62 273 532 7111",
+    "email": "info@smkgajahmungkur1wuryantoro.sch.id",
+    "addressTitle": "Kampus Utama (Gedung A)",
+    "addressLines": [
+      "Jl. Raya Wonogiri - Pracimantoro Km. 13",
+      "Kec. Wuryantoro, Kab. Wonogiri",
+      "Jawa Tengah 57661"
+    ],
+    "emailTitle": "Surat Elektronik & Informasi",
+    "emailDescription": "Untuk pertanyaan umum, legalisir, dan kerjasama industri silakan hubungi:",
+    "officeHoursTitle": "Jam Operasional Sekolah",
+    "officeHours": [
+      "Senin - Jumat: 07.00 - 15.30 WIB",
+      "Sabtu: 07.00 - 12.00 WIB (Ekstrakurikuler)",
+      "Minggu & Libur Nasional: Tutup"
+    ]
+  },
+  "footerLinks": [
+    {
+      "label": "Hubungi Kami",
+      "href": "/kontak"
+    },
+    {
+      "label": "Kebijakan Privasi",
+      "href": "/privasi"
+    },
+    {
+      "label": "Peta Situs",
+      "href": "/sitemap"
+    },
+    {
+      "label": "Aksesibilitas",
+      "href": "/aksesibilitas"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "facebook",
+      "url": "https://facebook.com"
+    },
+    {
+      "platform": "instagram",
+      "url": "https://instagram.com"
+    },
+    {
+      "platform": "twitter",
+      "url": "https://twitter.com"
+    },
+    {
+      "platform": "youtube",
+      "url": "https://youtube.com"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://linkedin.com"
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import type { EventItem } from "../../types";
 // - Gambar disimpan di /media/event/ (misal: /media/event/workshop.jpg).
 // - href bisa menuju halaman detail per event saat CMS aktif.
 // ============================================================================
-const EVENTS: EventItem[] = eventsData.events;
+const EVENTS: EventItem[] = eventsData;
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

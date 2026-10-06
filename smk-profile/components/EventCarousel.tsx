@@ -14,7 +14,8 @@ import type { EventItem } from "../types";
 // Admin Panel mengubah daftar event via Git commit ke file JSON ini.
 // Gambar event disimpan di public/media/events/.
 // ============================================================================
-const EVENTS: EventItem[] = eventsData.events;
+const EVENTS: EventItem[] = eventsData;
+const THEMES = { blue: "from-blue-900 to-slate-900", green: "from-emerald-900 to-slate-900", purple: "from-purple-900 to-slate-900", rose: "from-rose-900 to-slate-900", orange: "from-orange-900 to-slate-900" };
 
 // Varian animasi pergerakan kartu
 const cardVariantsDesktop = {
@@ -81,7 +82,7 @@ export default function EventCarousel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className={`absolute inset-0 bg-gradient-to-br ${activeEvent.colorTheme}`}
+            className={`absolute inset-0 bg-gradient-to-br ${THEMES[activeEvent.theme]}`}
           />
         </AnimatePresence>
         <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />

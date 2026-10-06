@@ -6,104 +6,21 @@ import { ChevronRight, Wrench, Briefcase, Building2 } from "lucide-react";
 import { PPDB_FORM_URL } from "../../../config/site";
 import type { Metadata } from "next";
 
-// ============================================================================
-// MOCK DATA (CMS-Ready) — TODO: Ganti dengan fetch dari API/CMS (FR-10)
-// ============================================================================
-type Program = {
-  slug: string;
-  name: string;
-  tagline: string;
-  heroImage: string;
-  description: string[];
-  careers: string[];
-  facilities: { title: string; image: string; caption: string }[];
-};
+import programsData from "../../../data/programs.json";
+import type { ProgramData } from "../../../types";
 
-const PROGRAMS: Program[] = [
-  {
-    slug: "teknik-kendaraan-ringan",
-    name: "Teknik Kendaraan Ringan",
-    tagline: "Menguasai mesin, menggerakkan masa depan.",
-    heroImage: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1920&auto=format&fit=crop",
-    description: [
-      "Program Keahlian Teknik Kendaraan Ringan (TKR) SMK Gajah Mungkur 1 Wuryantoro menyiapkan tenaga teknisi profesional yang menguasai diagnosa, perawatan, dan perbaikan kendaraan roda empat modern — dari sistem mesin, kelistrikan, hingga teknologi berbasis komputer.",
-      "Pembelajaran berlangsung di bengkel berstandar industri dengan pendekatan Project-Based Learning. Siswa terlibat langsung pada unit kendaraan nyata, dibimbing oleh guru bersertifikat kompetensi dan praktisi dari mitra industri otomotif.",
-    ],
-    careers: [
-      "Teknisi Bengkel Resmi (Dealer)",
-      "Mekanik Ahli Kelistrikan Mobil",
-      "Pengusaha Bengkel Mandiri",
-      "Quality Control Otomotif",
-      "Asisten Service Advisor",
-      "Teknisi Balap / Motorsport",
-    ],
-    facilities: [
-      { title: "Bengkel Utama", image: "https://images.unsplash.com/photo-1632823469850-1b7b1e8b7e1e?q=80&w=1200&auto=format&fit=crop", caption: "Area praktik dengan 8 stall kerja dan lift kendaraan hidrolik." },
-      { title: "Lab Kelistrikan", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop", caption: "Modul trainer kelistrikan bodi dan mesin." },
-      { title: "Ruang Diagnosa", image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop", caption: "Peralatan scanner OBD-II terkini." },
-      { title: "Engine Room", image: "https://images.unsplash.com/photo-1625047509168-a7026f36de04?q=80&w=1200&auto=format&fit=crop", caption: "Koleksi cut-away engine untuk pembelajaran anatomi mesin." },
-    ],
-  },
-  {
-    slug: "bisnis-digital",
-    name: "Bisnis Digital",
-    tagline: "Berjualan tanpa batas, berkarya tanpa henti.",
-    heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1920&auto=format&fit=crop",
-    description: [
-      "Bisnis Digital merancang lulusan yang cakap memanfaatkan teknologi untuk membangun dan mengelola usaha. Kurikulum mencakup digital marketing, pengelolaan marketplace, analitik data, hingga produksi konten kreatif.",
-      "Siswa belajar langsung mengelola toko daring sekolah dan menjalankan proyek kampanye nyata bersama UMKM sekitar Wuryantoro — membangun portofolio sejak bangku sekolah.",
-    ],
-    careers: [
-      "Digital Marketer",
-      "Admin Marketplace / Toko Daring",
-      "Content Creator & Copywriter",
-      "Social Media Specialist",
-      "Pengusaha UMKM Digital",
-      "Analis Data E-Commerce",
-    ],
-    facilities: [
-      { title: "Lab Komputer Bisnis", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop", caption: "Workstation dengan software analitik dan desain." },
-      { title: "Studio Konten", image: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=1200&auto=format&fit=crop", caption: "Ruang produksi foto & video produk." },
-      { title: "Ruang Live Streaming", image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200&auto=format&fit=crop", caption: "Set live commerce lengkap dengan lighting profesional." },
-      { title: "Co-Working Space", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop", caption: "Area kolaborasi proyek bisnis siswa." },
-    ],
-  },
-  {
-    slug: "akuntansi",
-    name: "Akuntansi",
-    tagline: "Angka yang jujur, bisnis yang sehat.",
-    heroImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1920&auto=format&fit=crop",
-    description: [
-      "Program Keahlian Akuntansi membekali siswa dengan kompetensi pembukuan keuangan, perpajakan, hingga pengoperasian aplikasi akuntansi komputerisasi yang menjadi standar dunia usaha.",
-      "Melalui simulasi kantor dan praktik kerja lapangan di kantor akuntan dan perusahaan mitra, siswa terbiasa dengan sikap profesional, ketelitian, dan etika kerja seorang akuntan muda.",
-    ],
-    careers: [
-      "Staf Administrasi Keuangan",
-      "Asisten Akuntan",
-      "Petugas Pajak",
-      "Kasir Bank / Teller",
-      "Pembukuan UMKM",
-      "Auditor Junior",
-    ],
-    facilities: [
-      { title: "Lab Akuntansi Komputer", image: "https://images.unsplash.com/photo-1542744173-8e7e5345bb63?q=80&w=1200&auto=format&fit=crop", caption: "Penerapan software akuntansi terintegrasi." },
-      { title: "Ruang Simulasi Kantor", image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200&auto=format&fit=crop", caption: "Praktik administrasi transaksi harian." },
-      { title: "Lab Perpajakan", image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1200&auto=format&fit=crop", caption: "Studi kasus pelaporan pajak tahunan." },
-      { title: "Perpustakaan Bisnis", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200&auto=format&fit=crop", caption: "Referensi standar akuntansi keuangan." },
-    ],
-  },
-];
+const PROGRAMS = programsData as ProgramData[];
 
 // ============================================================================
 // SEO Metadata Dinamis
 // ============================================================================
 export async function generateStaticParams() {
-  return PROGRAMS.map((p) => ({ slug: p.slug }));
+  return PROGRAMS.map((p) => ({ slug: p.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const program = PROGRAMS.find((p) => p.slug === slug);
+  const program = PROGRAMS.find((p) => p.id === slug);
   if (!program) return { title: "Program tidak ditemukan" };
   return {
     title: `${program.name} — SMK Gajah Mungkur 1 Wuryantoro`,
@@ -113,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProgramDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const program = PROGRAMS.find((p) => p.slug === slug);
+  const program = PROGRAMS.find((p) => p.id === slug);
   if (!program) notFound();
 
   const SIDEBAR_LINKS = [
@@ -127,7 +44,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
       {/* HERO BANNER (h-[40vh]) */}
       <section className="relative flex h-[40vh] min-h-[320px] w-full items-end overflow-hidden bg-navy">
         <Image
-          src={program.heroImage}
+          src={program.image!}
           alt={`Kegiatan pembelajaran ${program.name}`}
           fill
           priority
@@ -193,7 +110,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
               rel="noopener noreferrer"
               className="mt-6 inline-flex min-h-14 items-center justify-center gap-2 whitespace-nowrap bg-navy px-6 py-3 font-body text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[.98]"
             >
-              Daftar PPDB
+              Daftar SPMB
             </a>
           </nav>
         </aside>
@@ -208,7 +125,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
               Tentang Program
             </h2>
               <div className="max-w-prose space-y-6">
-                {program.description.map((para, i) => (
+                {program.detailParagraphs.map((para, i) => (
                   <p key={i} className="text-lg leading-[1.8] text-slate-700">
                     {para}
                   </p>
@@ -287,7 +204,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
               rel="noopener noreferrer"
               className="mt-8 inline-flex min-h-14 items-center justify-center gap-2 whitespace-nowrap bg-white px-8 py-3.5 font-body text-sm font-semibold text-black transition-colors hover:bg-slate-200 active:scale-[.98]"
             >
-              Daftar PPDB Sekarang
+              Daftar SPMB Sekarang
             </a>
           </section>
         </div>

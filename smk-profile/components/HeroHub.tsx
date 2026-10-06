@@ -189,7 +189,7 @@ export default function HeroHub({
             </motion.a>
             <motion.a href={ppdbHref} target="_blank" rel="noopener noreferrer" whileHover={reduced ? undefined : { y: -2 }}
               className={`${ctaClass} bg-white text-black hover:bg-slate-200`}>
-              Daftar PPDB <ArrowRight size={18} aria-hidden="true" />
+              Daftar SPMB <ArrowRight size={18} aria-hidden="true" />
             </motion.a>
           </motion.div>
         </div>

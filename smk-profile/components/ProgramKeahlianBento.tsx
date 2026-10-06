@@ -40,10 +40,10 @@ const STYLES: Record<string, { color: string; hoverColor: string; iconColor: str
   },
 };
 
-const programs = (programsData.programs as ProgramData[]).map((p) => ({
+const programs = (programsData as ProgramData[]).map((p) => ({
   ...p,
   title: p.name,
-  skills: p.facilities,
+  skills: p.competencies,
   icon: ICONS[p.icon] ?? Wrench,
   color: STYLES[p.id]?.color ?? "bg-navy text-white",
   hoverColor: STYLES[p.id]?.hoverColor ?? "hover:bg-navy/95",

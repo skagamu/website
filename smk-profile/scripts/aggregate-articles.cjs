@@ -16,7 +16,7 @@ const articles = files.map((file) => {
 
   if (!slug || slugs.has(slug)) throw new Error(`Slug artikel tidak unik: ${file}`);
   slugs.add(slug);
-  return { ...article, slug };
+  return { ...article, id: article.id || slug, slug };
 });
 
 fs.writeFileSync(
