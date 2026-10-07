@@ -109,9 +109,20 @@
     "id": "akuntansi",
     "name": "Akuntansi & Keuangan",
     "subtitle": "Keuangan & Perpajakan",
-    "image": "/website/media/hero/workshop.jpg",
+    "image": "/website/media/Akuntansi.png",
     "description": "Fokus software akuntansi modern, perpajakan, dan perbankan.",
     "icon": "calculator",
+    "tagline": "Angka yang jujur, bisnis yang sehat.",
+    "detailParagraphs": [
+      "Program Keahlian Akuntansi membekali siswa dengan kompetensi pembukuan keuangan, perpajakan, hingga pengoperasian aplikasi akuntansi komputerisasi yang menjadi standar dunia usaha.",
+      "Melalui simulasi kantor dan praktik kerja lapangan di kantor akuntan dan perusahaan mitra, siswa terbiasa dengan sikap profesional, ketelitian, dan etika kerja seorang akuntan muda."
+    ],
+    "competencies": [
+      "Lab Komputer Akuntansi",
+      "Software MYOB / Zahir / Accurate",
+      "Mini Bank Praktik Teller",
+      "Ruang Simulasi Perkantoran"
+    ],
     "careers": [
       "Staf Administrasi Keuangan",
       "Asisten Akuntan",
@@ -123,17 +134,6 @@
     "partners": [
       "Bank Jateng",
       "KAP Budi"
-    ],
-    "competencies": [
-      "Lab Komputer Akuntansi",
-      "Software MYOB / Zahir / Accurate",
-      "Mini Bank Praktik Teller",
-      "Ruang Simulasi Perkantoran"
-    ],
-    "tagline": "Angka yang jujur, bisnis yang sehat.",
-    "detailParagraphs": [
-      "Program Keahlian Akuntansi membekali siswa dengan kompetensi pembukuan keuangan, perpajakan, hingga pengoperasian aplikasi akuntansi komputerisasi yang menjadi standar dunia usaha.",
-      "Melalui simulasi kantor dan praktik kerja lapangan di kantor akuntan dan perusahaan mitra, siswa terbiasa dengan sikap profesional, ketelitian, dan etika kerja seorang akuntan muda."
     ],
     "facilities": [
       {
