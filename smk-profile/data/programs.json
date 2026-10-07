@@ -56,9 +56,20 @@
     "id": "bisnis-digital",
     "name": "Bisnis Digital",
     "subtitle": "E-commerce & Digital Marketing",
-    "image": "/website/media/hero/collaboration.jpg",
+    "image": "/website/media/Bisnis digital.jpg.jpeg",
     "description": "Fokus e-commerce, digital marketing, content creation & social media strategy.",
     "icon": "shopping-cart",
+    "tagline": "Berjualan tanpa batas, berkarya tanpa henti.",
+    "detailParagraphs": [
+      "Bisnis Digital merancang lulusan yang cakap memanfaatkan teknologi untuk membangun dan mengelola usaha. Kurikulum mencakup digital marketing, pengelolaan marketplace, analitik data, hingga produksi konten kreatif.",
+      "Siswa belajar langsung mengelola toko daring sekolah dan menjalankan proyek kampanye nyata bersama UMKM sekitar Wuryantoro — membangun portofolio sejak bangku sekolah."
+    ],
+    "competencies": [
+      "Lab Komputer Terpadu",
+      "Studio Konten & Fotografi Produk",
+      "Akun & Tools Digital Marketing",
+      "Ruang Co-Working UMKM Binaan"
+    ],
     "careers": [
       "Digital Marketer",
       "Admin Marketplace / Toko Daring",
@@ -70,17 +81,6 @@
     "partners": [
       "Shopee",
       "Tokopedia"
-    ],
-    "competencies": [
-      "Lab Komputer Terpadu",
-      "Studio Konten & Fotografi Produk",
-      "Akun & Tools Digital Marketing",
-      "Ruang Co-Working UMKM Binaan"
-    ],
-    "tagline": "Berjualan tanpa batas, berkarya tanpa henti.",
-    "detailParagraphs": [
-      "Bisnis Digital merancang lulusan yang cakap memanfaatkan teknologi untuk membangun dan mengelola usaha. Kurikulum mencakup digital marketing, pengelolaan marketplace, analitik data, hingga produksi konten kreatif.",
-      "Siswa belajar langsung mengelola toko daring sekolah dan menjalankan proyek kampanye nyata bersama UMKM sekitar Wuryantoro — membangun portofolio sejak bangku sekolah."
     ],
     "facilities": [
       {
