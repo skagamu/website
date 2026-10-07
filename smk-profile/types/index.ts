@@ -74,7 +74,7 @@ export interface EventItem {
   image: string;
   /** Pilihan tema dekoratif dipetakan ke kelas Tailwind di komponen. */
   theme: "blue" | "green" | "purple" | "rose" | "orange";
-  href: string;
+  href?: string;
 }
 
 /** data/gallery.json */
@@ -111,7 +111,7 @@ export interface ContentSection {
 export type ArticleCategory = "berita-akademik" | "pengumuman" | "event";
 
 export interface Article {
-  id: string;
+  id: string | number;
   slug: string;
   category: ArticleCategory;
   categoryLabel: string;

@@ -81,7 +81,7 @@ export default function GlobalNavbar() {
           <Link 
             href="/" 
             className="group flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B] rounded-sm"
-            aria-label="Beranda SMK Gajah Mungkur 1"
+            aria-label="SMK Gajah Mungkur 1 Wuryantoro"
           >
             {/* Logo Image */}
             <div className={`relative flex items-center justify-center transition-all duration-300 ${isScrolled ? 'size-10 md:size-12' : 'size-12 md:size-14'}`}>
@@ -107,10 +107,14 @@ export default function GlobalNavbar() {
                 className="relative group"
                 onMouseEnter={() => setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
+                onFocus={() => link.items && setActiveDropdown(link.label)}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setActiveDropdown(null);
+                }}
               >
                 <Link 
                   href={link.href}
-                  className={`flex items-center gap-1 font-body text-sm font-medium transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B] rounded-sm hover:text-[#F59E0B]`}
+                  className="flex items-center gap-1 rounded-sm font-body text-sm font-medium transition-colors duration-300 hover:text-[#8A4B00] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B]"
                 >
                   {link.label}
                   {link.items && (
@@ -137,7 +141,7 @@ export default function GlobalNavbar() {
                             <Link 
                               key={drop.label}
                               href={drop.href}
-                              className="px-4 py-3 font-body text-sm font-medium text-[#0F172A] hover:bg-slate-50 hover:text-[#F59E0B] focus:bg-slate-50 focus:text-[#F59E0B] focus:outline-none"
+                              className="px-4 py-3 font-body text-sm font-medium text-[#0F172A] hover:bg-slate-50 hover:text-[#8A4B00] focus:bg-slate-50 focus:text-[#8A4B00] focus:outline-none"
                             >
                               {drop.label}
                             </Link>

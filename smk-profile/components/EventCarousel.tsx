@@ -109,12 +109,14 @@ export default function EventCarousel() {
                 {activeEvent.title}
               </h3>
               
-              <Link 
-                href={activeEvent.href} 
-                className="mt-8 flex items-center gap-3 border border-white/50 bg-white/10 px-8 py-4 font-sans text-sm font-bold text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-navy"
-              >
-                Lihat Detail <ArrowRight size={18} />
-              </Link>
+              {activeEvent.href && (
+                <Link
+                  href={activeEvent.href}
+                  className="mt-8 flex items-center gap-3 border border-white/50 bg-white/10 px-8 py-4 font-sans text-sm font-bold text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-navy"
+                >
+                  Lihat Detail <ArrowRight size={18} />
+                </Link>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -179,12 +181,14 @@ export default function EventCarousel() {
               <h3 className="mb-6 px-4 font-sans text-xl sm:text-2xl font-medium leading-[1.15] tracking-[-.02em] text-white drop-shadow-md">
                 {activeEvent.title}
               </h3>
-              <Link 
-                href={activeEvent.href} 
-                className="flex items-center gap-2 border border-white/50 bg-white/10 px-6 py-3 font-sans text-sm font-bold text-white backdrop-blur-md transition-colors hover:bg-white hover:text-navy"
-              >
-                Lihat Detail <ArrowRight size={16} />
-              </Link>
+              {activeEvent.href && (
+                <Link
+                  href={activeEvent.href}
+                  className="flex items-center gap-2 border border-white/50 bg-white/10 px-6 py-3 font-sans text-sm font-bold text-white backdrop-blur-md transition-colors hover:bg-white hover:text-navy"
+                >
+                  Lihat Detail <ArrowRight size={16} />
+                </Link>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 import programsData from "../data/programs.json";
 
@@ -22,7 +21,7 @@ export default function TabbedCarousel() {
     href: `/program/${item.id}`,
   }));
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section id="program" className="w-full bg-white py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1440px] px-6 md:px-16">
         {/* Header Area: 3 Asymmetric Columns */}
         <div className="mb-10 flex flex-col gap-8 md:mb-16 md:flex-row md:items-end md:justify-between">
@@ -30,7 +29,7 @@ export default function TabbedCarousel() {
           <div className="md:w-5/12 lg:w-4/12">
             <h2 className="max-w-4xl font-sans text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.15] tracking-[-.02em]">
               <span className="block text-navy">Jelajahi</span>
-              <span className="block text-amber">Program Keahlian</span>
+              <span className="block text-[#8A4B00]">Program Keahlian</span>
             </h2>
           </div>
 
@@ -41,19 +40,6 @@ export default function TabbedCarousel() {
             </p>
           </div>
 
-          {/* Right: CTA */}
-          <div className="flex flex-col items-start gap-8 md:w-3/12 md:items-end lg:w-4/12">
-            <Link
-              href="/program"
-              className="group inline-flex items-center gap-2 font-sans text-sm font-bold text-[#2563EB] transition-colors hover:text-navy"
-            >
-              Lihat Semua Program
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
-          </div>
         </div>
       </div>
 

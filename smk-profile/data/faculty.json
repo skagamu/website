@@ -3,24 +3,24 @@
     "id": "budi-santoso",
     "name": "Budi Santoso",
     "role": "Kaprog TKR",
-    "image": "/website/media/teachers/budi-santoso.jpg"
+    "image": ""
   },
   {
     "id": "siti-rahmawati",
     "role": "Guru Produktif Bisnis Digital",
     "name": "Siti Rahmawati",
-    "image": "/website/media/teachers/siti-rahmawati.jpg"
+    "image": ""
   },
   {
     "id": "agus-pratama",
     "name": "Agus Pratama",
     "role": "Instruktur Otomotif",
-    "image": "/website/media/teachers/agus-pratama.jpg"
+    "image": ""
   },
   {
     "id": "dian-kusuma",
     "name": "Dian Kusuma",
     "role": "Kaprog Akuntansi",
-    "image": "/website/media/teachers/dian-kusuma.jpg"
+    "image": ""
   }
 ]

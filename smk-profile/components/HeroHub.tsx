@@ -75,7 +75,7 @@ function BackgroundMedia({ slide, active, playing, reduced, priority }: {
       transition={{ duration: reduced ? 0 : 0.6 }}
       className="pointer-events-none absolute inset-0"
     >
-      <img src={slide.image} alt="" className="absolute inset-0 size-full object-cover" style={{ objectPosition: slide.objectPosition }} />
+      <img src={slide.image} alt="" fetchPriority={priority ? "high" : "auto"} loading={priority ? "eager" : "lazy"} className="absolute inset-0 size-full object-cover" style={{ objectPosition: slide.objectPosition }} />
       {slide.kind === "video" && active && !reduced && !failed && (
         <video ref={videoRef} muted loop playsInline preload="none"
           poster={slide.image} onError={() => setFailed(true)}
@@ -90,7 +90,7 @@ function BackgroundMedia({ slide, active, playing, reduced, priority }: {
 export default function HeroHub({
   slides = heroSlides,
   ppdbHref = PPDB_FORM_URL,
-  facilitiesHref = "/fasilitas/360/",
+  facilitiesHref = "/#fasilitas",
 }: HeroHubProps) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);

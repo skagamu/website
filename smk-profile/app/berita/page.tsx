@@ -83,7 +83,7 @@ export default function BeritaPage() {
                 className="group flex flex-col"
               >
                 {/* Card Image (3:4, ala event homepage) */}
-                <Link href={event.href} className="relative block aspect-[3/4] w-full overflow-hidden shadow-lg">
+                <div className="relative block aspect-[3/4] w-full overflow-hidden shadow-lg">
                   <Image
                     src={event.image}
                     alt={event.title}
@@ -102,18 +102,27 @@ export default function BeritaPage() {
                       {event.title}
                     </h2>
                   </div>
-                </Link>
+                  {event.href && (
+                    <Link
+                      href={event.href}
+                      aria-label={`Baca artikel terkait: ${event.title}`}
+                      className="absolute inset-0 z-10"
+                    />
+                  )}
+                </div>
 
                 {/* Excerpt + link */}
                 <p className="mt-5 flex-1 text-sm leading-[1.7] text-slate-600 md:text-[15px]">
                   {event.excerpt}
                 </p>
-                <Link
-                  href={event.href}
-                  className="mt-4 inline-flex items-center gap-2 font-body text-sm font-semibold text-navy transition-all group-hover:gap-3 group-hover:text-amber-600"
-                >
-                  Lihat Detail <ArrowRight size={16} aria-hidden="true" />
-                </Link>
+                {event.href && (
+                  <Link
+                    href={event.href}
+                    className="mt-4 inline-flex items-center gap-2 font-body text-sm font-semibold text-navy transition-all group-hover:gap-3 group-hover:text-amber-600"
+                  >
+                    Lihat Detail <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>

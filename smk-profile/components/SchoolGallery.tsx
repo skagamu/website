@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import galleryData from "../data/gallery.json";
 import type { GalleryItem } from "../types";
 
@@ -29,7 +27,7 @@ export default function SchoolGallery() {
           <div className="md:w-5/12 lg:w-4/12">
             <h2 className="max-w-4xl font-sans text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.15] tracking-[-.02em]">
               <span className="block text-navy">Momen &</span>
-              <span className="block text-amber">Fasilitas</span>
+              <span className="block text-[#8A4B00]">Fasilitas</span>
             </h2>
           </div>
           
@@ -40,16 +38,6 @@ export default function SchoolGallery() {
             </p>
           </div>
           
-          {/* Kanan: Link CTA */}
-          <div className="md:w-3/12 lg:w-4/12 flex md:justify-end">
-            <Link 
-              href="/galeri" 
-              className="group flex items-center gap-2 font-sans text-sm font-bold tracking-wide text-navy transition-colors hover:text-navy/80"
-            >
-              Lihat Semua Galeri 
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
         </div>
 
         {/* ASYMMETRIC BENTO GRID */}

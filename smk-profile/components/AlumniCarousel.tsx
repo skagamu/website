@@ -43,7 +43,7 @@ export default function AlumniCarousel() {
           <div className="md:w-5/12 lg:w-4/12">
             <h2 className="max-w-4xl font-sans text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.15] tracking-[-.02em]">
               <span className="block text-navy">Kisah Sukses</span>
-              <span className="block text-amber">Alumni</span>
+              <span className="block text-[#8A4B00]">Alumni</span>
             </h2>
           </div>
 

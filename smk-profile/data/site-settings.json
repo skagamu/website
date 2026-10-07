@@ -9,7 +9,7 @@
     },
     {
       "label": "Program Keahlian",
-      "href": "#",
+      "href": "/#program",
       "items": [
         {
           "label": "Teknik Kendaraan Ringan",
@@ -27,7 +27,7 @@
     },
     {
       "label": "Fasilitas",
-      "href": "#fasilitas"
+      "href": "/#fasilitas"
     },
     {
       "label": "Alumni",
@@ -59,41 +59,8 @@
   "footerLinks": [
     {
       "label": "Hubungi Kami",
-      "href": "/kontak"
-    },
-    {
-      "label": "Kebijakan Privasi",
-      "href": "/privasi"
-    },
-    {
-      "label": "Peta Situs",
-      "href": "/sitemap"
-    },
-    {
-      "label": "Aksesibilitas",
-      "href": "/aksesibilitas"
+      "href": "mailto:info@smkgajahmungkur1wuryantoro.sch.id"
     }
   ],
-  "socials": [
-    {
-      "platform": "facebook",
-      "url": "https://facebook.com"
-    },
-    {
-      "platform": "instagram",
-      "url": "https://instagram.com"
-    },
-    {
-      "platform": "twitter",
-      "url": "https://twitter.com"
-    },
-    {
-      "platform": "youtube",
-      "url": "https://youtube.com"
-    },
-    {
-      "platform": "linkedin",
-      "url": "https://linkedin.com"
-    }
-  ]
+  "socials": []
 }

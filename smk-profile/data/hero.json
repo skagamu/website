@@ -9,7 +9,7 @@
       ],
       "description": "Bangun keterampilan, karakter, dan kepercayaan diri melalui pendidikan vokasi yang dekat dengan dunia kerja.",
       "durationMs": 8000,
-      "image": "/website/media/Silau.webp",
+      "image": "/website/media/hero/silau-home.webp",
       "videoSrc": "",
       "objectPosition": "60% center"
     },
@@ -22,7 +22,7 @@
       ],
       "description": "Asah ide, berkolaborasi, dan kembangkan kompetensi untuk bekerja, berwirausaha, maupun melanjutkan pendidikan.",
       "durationMs": 8000,
-      "image": "/website/media/hero/collaboration.jpg",
+      "image": "/website/media/hero/collaboration-slide.webp",
       "videoSrc": "",
       "objectPosition": "65% center"
     },
@@ -35,7 +35,7 @@
       ],
       "description": "Kenali dunia otomotif, bisnis digital, dan akuntansi. Pilih langkah belajar yang sesuai dengan minatmu.",
       "durationMs": 8000,
-      "image": "/website/media/hero/workshop.jpg",
+      "image": "/website/media/hero/workshop-slide.webp",
       "videoSrc": "",
       "objectPosition": "60% center"
     }

@@ -83,9 +83,9 @@ export default function GlobalFooter() {
             <div className="flex items-start gap-4">
               <MapPin size={24} className="mt-1 shrink-0 text-[#F59E0B]" />
               <div className="flex flex-col">
-                <h4 className="font-sans text-lg font-bold text-white">
+                <h3 className="font-sans text-lg font-bold text-white">
                   {contact.addressTitle}
-                </h4>
+                </h3>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
                   {contact.addressLines.map((line) => <span key={line}>{line}<br /></span>)}
                 </p>
@@ -96,9 +96,9 @@ export default function GlobalFooter() {
             <div className="flex items-start gap-4">
               <Mail size={24} className="mt-1 shrink-0 text-[#F97316]" />
               <div className="flex flex-col">
-                <h4 className="font-sans text-lg font-bold text-white">
+                <h3 className="font-sans text-lg font-bold text-white">
                   {contact.emailTitle}
-                </h4>
+                </h3>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
                   {contact.emailDescription}<br />
                   <a href={`mailto:${contact.email}`} className="text-amber-400 hover:underline">
@@ -112,9 +112,9 @@ export default function GlobalFooter() {
             <div className="flex items-start gap-4">
               <Clock size={24} className="mt-1 shrink-0 text-[#10B981]" />
               <div className="flex flex-col">
-                <h4 className="font-sans text-lg font-bold text-white">
+                <h3 className="font-sans text-lg font-bold text-white">
                   {contact.officeHoursTitle}
-                </h4>
+                </h3>
                 <p className="mt-2 font-body text-[15px] leading-relaxed text-white/80">
                   {contact.officeHours.map((line) => <span key={line}>{line}<br /></span>)}
                 </p>
@@ -133,12 +133,14 @@ export default function GlobalFooter() {
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-6">
-            {socials.map(({ platform, url }) => {
-              const Icon = SOCIAL_ICONS[platform as keyof typeof SOCIAL_ICONS];
-              return <a key={platform} href={url} aria-label={platform} className="text-white hover:text-[#F59E0B] transition-colors"><Icon size={20} /></a>;
-            })}
-          </div>
+          {socials.length > 0 && (
+            <div className="flex items-center gap-6">
+              {socials.map(({ platform, url }) => {
+                const Icon = SOCIAL_ICONS[platform as keyof typeof SOCIAL_ICONS];
+                return <a key={platform} href={url} aria-label={platform} className="text-white hover:text-[#F59E0B] transition-colors"><Icon size={20} /></a>;
+              })}
+            </div>
+          )}
 
         </div>
 

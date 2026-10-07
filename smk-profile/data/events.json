@@ -8,8 +8,7 @@
     "excerpt": "Siswa belajar dasar otomasi dan robotik langsung dari engineer PT Astra Daihatsu Motor selama dua hari di bengkel sekolah.",
     "category": "Event",
     "location": "Bengkel TKR",
-    "image": "/website/media/events/workshop-robotika.jpg",
-    "href": "/kabar-sekolah",
+    "image": "/website/media/hero/workshop-poster.jpg",
     "theme": "blue"
   },
   {
@@ -21,8 +20,7 @@
     "excerpt": "Karya produk dan jasa hasil produksi siswa dipamerkan terbuka untuk orang tua, mitra industri, dan masyarakat.",
     "category": "Event",
     "location": "Area Pameran Sekolah",
-    "image": "/website/media/events/pameran-karya.jpg",
-    "href": "/kabar-sekolah",
+    "image": "/website/media/hero/collaboration.jpg",
     "theme": "green"
   },
   {
@@ -34,8 +32,8 @@
     "excerpt": "Ratusan siswa menyaksikan langsung lini produksi otomotif modern dan budaya kerja 5S di pabrik mitra sekolah.",
     "category": "Event",
     "location": "Pabrik Mitra, Karawang",
-    "image": "/website/media/events/kunjungan-industri.jpg",
-    "href": "/kabar-sekolah",
+    "image": "/website/media/hero/workshop.jpg",
+    "href": "/kabar-sekolah/industrial-visit-ratusan-siswa-studi-tur-ke-pabrik-otomotif",
     "theme": "purple"
   },
   {
@@ -47,8 +45,8 @@
     "excerpt": "Uji kompetensi keahlian bersertifikat nasional bagi siswa kelas XII dari tiga program keahlian.",
     "category": "Event",
     "location": "Ruang Uji Sekolah",
-    "image": "/website/media/events/sertifikasi-bnsp.jpg",
-    "href": "/kabar-sekolah",
+    "image": "/website/media/hero/workshop-poster.jpg",
+    "href": "/kabar-sekolah/jadwal-uji-kompetensi-keahlian-sertifikasi-nasional-tahun-ini",
     "theme": "rose"
   }
 ]

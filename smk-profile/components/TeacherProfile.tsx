@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import facultyData from "../data/faculty.json";
 import type { FacultyMember } from "../types";
 
@@ -29,7 +27,7 @@ export default function TeacherProfile() {
           <div className="md:w-5/12 lg:w-4/12">
             <h2 className="max-w-4xl font-sans text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.15] tracking-[-.02em]">
               <span className="block text-navy">Tenaga</span>
-              <span className="block text-amber">Pendidik</span>
+              <span className="block text-[#8A4B00]">Pendidik</span>
             </h2>
           </div>
           
@@ -40,16 +38,6 @@ export default function TeacherProfile() {
             </p>
           </div>
           
-          {/* Kanan: Link CTA */}
-          <div className="md:w-3/12 lg:w-4/12 flex md:justify-end">
-            <Link 
-              href="/guru" 
-              className="group flex items-center gap-2 font-sans text-sm font-bold tracking-wide text-navy transition-colors hover:text-navy/80"
-            >
-              Lihat Semua Guru 
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
         </div>
 
         {/* PORTRAIT GRID (Konten Utama) */}
@@ -72,14 +60,20 @@ export default function TeacherProfile() {
                     
                     {/* Bagian Foto (Dengan Padding Atas-Kiri-Kanan) */}
                     <div className="relative aspect-[4/5] w-full p-5 pb-0">
-                      <div className="relative h-full w-full overflow-hidden bg-gray-100">
-                        <Image
-                          src={teacher.image}
-                          alt={teacher.name}
-                          fill
-                          sizes="(max-width: 768px) 85vw, 25vw"
-                          className="object-cover"
-                        />
+                      <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gray-100">
+                        {teacher.image ? (
+                          <Image
+                            src={teacher.image}
+                            alt={teacher.name}
+                            fill
+                            sizes="(max-width: 768px) 85vw, 25vw"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <span aria-hidden="true" className="font-sans text-5xl font-medium text-slate-500">
+                            {teacher.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2)}
+                          </span>
+                        )}
                       </div>
                     </div>
                     

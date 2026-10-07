@@ -104,7 +104,7 @@ collections:
     delete: false
     identifier_field: "id"
     fields:
-      - { label: "ID URL", name: "id", widget: "string", hint: "ID ini menjadi alamat halaman program. Jangan ubah setelah halaman dipublikasikan." }
+      - { label: "ID URL", name: "id", widget: "hidden" }
       - { label: "Nama program", name: "name", widget: "string" }
       - { label: "Subjudul kartu", name: "subtitle", widget: "string", required: false }
       - { label: "Gambar program", name: "image", widget: "image" }
@@ -114,23 +114,19 @@ collections:
       - label: "Paragraf detail"
         name: "detailParagraphs"
         widget: "list"
-        fields:
-          - { label: "Paragraf", name: "paragraph", widget: "text" }
+        field: { label: "Paragraf", name: "paragraph", widget: "text" }
       - label: "Kompetensi unggulan"
         name: "competencies"
         widget: "list"
-        fields:
-          - { label: "Kompetensi", name: "competency", widget: "string" }
+        field: { label: "Kompetensi", name: "kompetensi", widget: "string" }
       - label: "Prospek karier"
         name: "careers"
         widget: "list"
-        fields:
-          - { label: "Karier", name: "career", widget: "string" }
+        field: { label: "Karier", name: "karier", widget: "string" }
       - label: "Mitra industri"
         name: "partners"
         widget: "list"
-        fields:
-          - { label: "Mitra", name: "partner", widget: "string" }
+        field: { label: "Mitra", name: "mitra", widget: "string" }
       - label: "Fasilitas program"
         name: "facilities"
         widget: "list"
@@ -156,7 +152,7 @@ collections:
       - { label: "Angkatan", name: "year", widget: "string" }
       - { label: "Pekerjaan", name: "role", widget: "string" }
       - { label: "Perusahaan", name: "company", widget: "string" }
-      - { label: "Foto", name: "image", widget: "image" }
+      - { label: "Foto", name: "image", widget: "image", required: false, hint: "Opsional; tanpa foto akan tampil inisial nama." }
 
   - name: "acara"
     label: "Kegiatan & Acara"
@@ -178,7 +174,7 @@ collections:
       - { label: "Lokasi", name: "location", widget: "string" }
       - { label: "Gambar", name: "image", widget: "image" }
       - { label: "Warna kartu", name: "theme", widget: "select", options: ["blue", "green", "purple", "rose", "orange"] }
-      - { label: "Tautan tujuan", name: "href", widget: "string" }
+      - { label: "Tautan artikel terkait", name: "href", widget: "string", required: false, hint: "Kosongkan jika belum ada artikel detail yang sesuai." }
 
   - name: "guru"
     label: "Guru & Staf"
