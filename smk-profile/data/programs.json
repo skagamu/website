@@ -3,9 +3,20 @@
     "id": "teknik-kendaraan-ringan",
     "name": "Teknik Kendaraan Ringan (TKR)",
     "subtitle": "Teknologi Otomotif Modern",
-    "image": "/website/media/hero/workshop-poster.jpg",
+    "image": "/website/media/otomotif.jpg.jpeg",
     "description": "Fokus teknologi otomotif modern, sertifikasi mesin injeksi & kelistrikan kendaraan.",
     "icon": "wrench",
+    "tagline": "Menguasai mesin, menggerakkan masa depan.",
+    "detailParagraphs": [
+      "Program Keahlian Teknik Kendaraan Ringan (TKR) SMK Gajah Mungkur 1 Wuryantoro menyiapkan tenaga teknisi profesional yang menguasai diagnosa, perawatan, dan perbaikan kendaraan roda empat modern — dari sistem mesin, kelistrikan, hingga teknologi berbasis komputer.",
+      "Pembelajaran berlangsung di bengkel berstandar industri dengan pendekatan Project-Based Learning. Siswa terlibat langsung pada unit kendaraan nyata, dibimbing oleh guru bersertifikat kompetensi dan praktisi dari mitra industri otomotif."
+    ],
+    "competencies": [
+      "Bengkel Otomotif Standar Industri",
+      "Lab Kelistrikan & Diagnostik",
+      "Unit Praktik Kendaraan Terkini",
+      "Alat Ukur & Scanner Profesional"
+    ],
     "careers": [
       "Teknisi Bengkel Resmi (Dealer)",
       "Mekanik Ahli Kelistrikan Mobil",
@@ -17,17 +28,6 @@
     "partners": [
       "Astra Daihatsu",
       "Nasmoco"
-    ],
-    "competencies": [
-      "Bengkel Otomotif Standar Industri",
-      "Lab Kelistrikan & Diagnostik",
-      "Unit Praktik Kendaraan Terkini",
-      "Alat Ukur & Scanner Profesional"
-    ],
-    "tagline": "Menguasai mesin, menggerakkan masa depan.",
-    "detailParagraphs": [
-      "Program Keahlian Teknik Kendaraan Ringan (TKR) SMK Gajah Mungkur 1 Wuryantoro menyiapkan tenaga teknisi profesional yang menguasai diagnosa, perawatan, dan perbaikan kendaraan roda empat modern — dari sistem mesin, kelistrikan, hingga teknologi berbasis komputer.",
-      "Pembelajaran berlangsung di bengkel berstandar industri dengan pendekatan Project-Based Learning. Siswa terlibat langsung pada unit kendaraan nyata, dibimbing oleh guru bersertifikat kompetensi dan praktisi dari mitra industri otomotif."
     ],
     "facilities": [
       {
