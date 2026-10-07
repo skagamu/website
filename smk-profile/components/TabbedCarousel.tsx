@@ -19,7 +19,7 @@ export default function TabbedCarousel() {
     title: item.name,
     subtitle: item.subtitle || item.description,
     image: item.image || "/website/media/hero/workshop-poster.jpg",
-    href: item.href || `/program/${item.id}`,
+    href: `/program/${item.id}`,
   }));
   return (
     <section className="w-full bg-white py-16 md:py-24">

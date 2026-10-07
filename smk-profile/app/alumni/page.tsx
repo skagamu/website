@@ -15,7 +15,7 @@ import type { AlumniItem } from "../../types";
 // - Setiap objek mewakili satu entri alumni di CMS.
 // - Gambar disimpan di /media/alumni/ (misal: /media/alumni/budi.jpg).
 // ============================================================================
-const ALUMNI: AlumniItem[] = alumniData;
+const ALUMNI = alumniData as AlumniItem[];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

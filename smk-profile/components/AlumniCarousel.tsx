@@ -16,7 +16,7 @@ import type { AlumniItem } from "../types";
 // Pastikan CMS menyimpan URL gambar alumni ke folder `public/media/alumni/`
 // (misal: "/media/alumni/budi.jpg") agar tidak tercampur dengan aset lain.
 // ============================================================================
-const ALUMNI: AlumniItem[] = alumniData;
+const ALUMNI = alumniData as AlumniItem[];
 
 export default function AlumniCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);

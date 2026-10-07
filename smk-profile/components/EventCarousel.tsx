@@ -14,7 +14,7 @@ import type { EventItem } from "../types";
 // Admin Panel mengubah daftar event via Git commit ke file JSON ini.
 // Gambar event disimpan di public/media/events/.
 // ============================================================================
-const EVENTS: EventItem[] = eventsData;
+const EVENTS = eventsData as EventItem[];
 const THEMES = { blue: "from-blue-900 to-slate-900", green: "from-emerald-900 to-slate-900", purple: "from-purple-900 to-slate-900", rose: "from-rose-900 to-slate-900", orange: "from-orange-900 to-slate-900" };
 
 // Varian animasi pergerakan kartu
