@@ -31,23 +31,13 @@
     ],
     "facilities": [
       {
-        "title": "Bengkel Utama",
-        "image": "https://images.unsplash.com/photo-1632823469850-1b7b1e8b7e1e?q=80&w=1200&auto=format&fit=crop",
-        "caption": "Area praktik dengan 8 stall kerja dan lift kendaraan hidrolik."
-      },
-      {
-        "title": "Lab Kelistrikan",
-        "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
-        "caption": "Modul trainer kelistrikan bodi dan mesin."
-      },
-      {
         "title": "Ruang Diagnosa",
-        "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop",
+        "image": "/website/media/foto detail TKR 2.webp",
         "caption": "Peralatan scanner OBD-II terkini."
       },
       {
         "title": "Engine Room",
-        "image": "https://images.unsplash.com/photo-1625047509168-a7026f36de04?q=80&w=1200&auto=format&fit=crop",
+        "image": "/website/media/foto detail TKR 2.webp",
         "caption": "Koleksi cut-away engine untuk pembelajaran anatomi mesin."
       }
     ]
