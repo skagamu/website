@@ -79,24 +79,19 @@
     ],
     "facilities": [
       {
-        "title": "Lab Komputer Bisnis",
-        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
-        "caption": "Workstation dengan software analitik dan desain."
-      },
-      {
-        "title": "Studio Konten",
-        "image": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=1200&auto=format&fit=crop",
-        "caption": "Ruang produksi foto & video produk."
+        "title": "Live Selling",
+        "image": "/website/media/BD 1.webp",
+        "caption": "Praktek Live Selling marketplace dengan produk & Proses asli"
       },
       {
         "title": "Ruang Live Streaming",
-        "image": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200&auto=format&fit=crop",
+        "image": "/website/media/IMG_0165.webp",
         "caption": "Set live commerce lengkap dengan lighting profesional."
       },
       {
-        "title": "Co-Working Space",
-        "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
-        "caption": "Area kolaborasi proyek bisnis siswa."
+        "title": "Praktek Pembelajaran",
+        "image": "/website/media/IMG_0163.webp",
+        "caption": "Praktek Penjualan dan Akuntansi"
       }
     ]
   },
