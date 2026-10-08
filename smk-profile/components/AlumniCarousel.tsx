@@ -125,20 +125,20 @@ export default function AlumniCarousel() {
                     {alumnus.name}
                   </h3>
                   
-                  {/* 2 & 3. Jurusan & Angkatan (Warna Biru sesuai referensi) */}
-                  <div className="mt-1 flex flex-col font-sans text-[15px] font-bold text-[#2563EB] md:text-base">
-                    <span>{alumnus.major}</span>
-                    <span>{alumnus.year}</span>
-                  </div>
-
-                  {/* Jabatan & Pekerjaan */}
-                  <div className="mt-4 flex flex-col">
+                  {/* Pencapaian kerja ditonjolkan sebelum latar pendidikan. */}
+                  <div className="mt-3 flex flex-col">
                     <span className="font-sans text-sm font-bold text-navy md:text-[15px]">
                       {alumnus.role}
                     </span>
-                    <span className="mt-0.5 font-body text-sm text-slate-600 md:text-[15px]">
+                    <span className="mt-0.5 font-body text-base font-medium text-slate-700">
                       {alumnus.company}
                     </span>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-x-2 font-sans text-sm text-slate-500">
+                    <span>{alumnus.major}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{alumnus.year}</span>
                   </div>
                 </div>
               </div>
