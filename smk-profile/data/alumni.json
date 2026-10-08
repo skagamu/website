@@ -43,5 +43,14 @@
     "role": "Service Advisor",
     "company": "Nasmoco Group",
     "image": "/website/media/hero/collaboration.jpg"
+  },
+  {
+    "id": "6a01d003-4e29-4c1f-93b9-742547e51510",
+    "name": "Yudha",
+    "major": "Teknik Kendaraan Ringan",
+    "year": "2023",
+    "role": "Operator",
+    "company": "PT. TMMIN",
+    "image": "/website/media/WhatsApp Image 2026-10-01 at 06.18.21.webp"
   }
 ]
