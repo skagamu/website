@@ -151,7 +151,7 @@ collections:
     file: "smk-profile/data/alumni.json"
     create: true
     delete: true
-    identifier_field: "id"
+    identifier_field: "name"
     fields:
       - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
       - { label: "Nama", name: "name", widget: "string" }
