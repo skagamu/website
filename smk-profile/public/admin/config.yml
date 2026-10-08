@@ -5,6 +5,16 @@ backend:
 media_folder: "smk-profile/public/media"
 public_folder: "/website/media"
 
+# Optimize raster photos in the browser before they are committed to the repo.
+media_libraries:
+  all:
+    transformations:
+      raster_image:
+        format: webp
+        quality: 85
+        width: 2048
+        height: 2048
+
 collections:
   - name: "beranda_hero"
     label: "Beranda · Hero"
