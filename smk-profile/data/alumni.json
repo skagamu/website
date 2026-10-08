@@ -52,5 +52,14 @@
     "role": "Service Advisor",
     "company": "Nasmoco Group",
     "image": "/website/media/hero/collaboration.jpg"
+  },
+  {
+    "id": "43c4b2d6-5702-4adf-8067-807511600e92",
+    "name": "Probo Kridiantoro",
+    "major": "Teknik Kendaraan Ringan",
+    "year": "2024",
+    "role": "Operator",
+    "company": "PT. Astra Daihatsu Motor",
+    "image": "/website/media/WhatsApp Image 2026-10-07 at 11.47.16.webp"
   }
 ]
