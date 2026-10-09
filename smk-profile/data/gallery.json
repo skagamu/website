@@ -7,6 +7,13 @@
     "image": "/website/media/otokontes.webp"
   },
   {
+    "id": "32a1a321-52b0-40e7-be8c-6c0865cc24f6",
+    "title": "MPLS",
+    "category": "Event",
+    "layout": "normal",
+    "image": "/website/media/mpls 1.webp"
+  },
+  {
     "id": "ruang-diskusi",
     "title": "Ruang Diskusi Terbuka",
     "category": "Lingkungan",
@@ -40,12 +47,5 @@
     "category": "Akademik",
     "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1200",
     "layout": "wide"
-  },
-  {
-    "id": "32a1a321-52b0-40e7-be8c-6c0865cc24f6",
-    "title": "MPLS",
-    "category": "Event",
-    "layout": "normal",
-    "image": "/website/media/mpls 1.webp"
   }
 ]
