@@ -54,5 +54,12 @@
     "category": "Event",
     "layout": "wide",
     "image": "/website/media/AFN00202.webp"
+  },
+  {
+    "id": "9542ad44-a0b6-4fbe-8fd3-f4e3e97690cf",
+    "title": "Bapak Ibu Guru",
+    "category": "Profil",
+    "layout": "normal",
+    "image": "/website/media/AFN00051.webp"
   }
 ]
