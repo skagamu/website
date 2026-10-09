@@ -14,41 +14,6 @@
     "image": "/website/media/mpls 1.webp"
   },
   {
-    "id": "ruang-diskusi",
-    "title": "Ruang Diskusi Terbuka",
-    "category": "Lingkungan",
-    "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
-    "layout": "normal"
-  },
-  {
-    "id": "instruktur",
-    "title": "Instruktur Berpengalaman",
-    "category": "Tenaga Pendidik",
-    "image": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=800",
-    "layout": "normal"
-  },
-  {
-    "id": "proyek-kolaborasi",
-    "title": "Proyek Kolaborasi Siswa",
-    "category": "Kegiatan Praktik",
-    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1200",
-    "layout": "wide"
-  },
-  {
-    "id": "lab-komputer",
-    "title": "Laboratorium Komputer Terpadu",
-    "category": "Fasilitas Digital",
-    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200",
-    "layout": "wide"
-  },
-  {
-    "id": "kelas-teori",
-    "title": "Kelas Teori & Pemaparan",
-    "category": "Akademik",
-    "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1200",
-    "layout": "wide"
-  },
-  {
     "id": "a392bf68-1a31-4b02-a166-f5afdd05be73",
     "title": "Pawai Budaya HUT RI 81",
     "category": "Event",
