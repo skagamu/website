@@ -43,20 +43,19 @@
     }
   ],
   "contact": {
-    "phone": "+62 273 532 7111",
+    "phone": "+62 856-4313-3699",
     "email": "info@smkgajahmungkur1wuryantoro.sch.id",
     "addressTitle": "Kampus Utama (Gedung A)",
     "addressLines": [
-      "Jl. Raya Wonogiri - Pracimantoro Km. 13",
+      "Jl. Tangkil Tromol Pos 04,",
       "Kec. Wuryantoro, Kab. Wonogiri",
       "Jawa Tengah 57661"
     ],
-    "emailTitle": "Surat Elektronik & Informasi",
+    "emailTitle": "Email & Informasi",
     "emailDescription": "Untuk pertanyaan umum, legalisir, dan kerjasama industri silakan hubungi:",
     "officeHoursTitle": "Jam Operasional Sekolah",
     "officeHours": [
       "Senin - Jumat: 07.00 - 15.30 WIB",
-      "Sabtu: 07.00 - 12.00 WIB (Ekstrakurikuler)",
       "Minggu & Libur Nasional: Tutup"
     ]
   },
