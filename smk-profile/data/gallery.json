@@ -61,5 +61,12 @@
     "category": "Profil",
     "layout": "normal",
     "image": "/website/media/AFN00051.webp"
+  },
+  {
+    "id": "b6319bd5-b9f2-4773-a1f0-1b05eb2e3268",
+    "title": "Ekstrakurikuler",
+    "category": "Skagamu Volleyball",
+    "layout": "normal",
+    "image": "/website/media/AFN00082.webp"
   }
 ]
