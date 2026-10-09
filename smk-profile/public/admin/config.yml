@@ -285,5 +285,5 @@ collections:
             name: "socials"
             widget: "list"
             fields:
-              - { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "youtube", "linkedin"] }
+              - { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "youtube", "linkedin", "tiktok"] }
               - { label: "URL profil", name: "url", widget: "string" }

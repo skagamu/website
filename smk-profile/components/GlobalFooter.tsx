@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, MapPin, Mail, Clock, ArrowRight, Facebook, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
+import { Phone, MapPin, Mail, Clock, ArrowRight, Facebook, Instagram, Twitter, Youtube, Linkedin, Music2 } from "lucide-react";
 import settings from "../data/site-settings.json";
 import { PPDB_FORM_URL } from "../config/site";
 
 const { contact, footerLinks, socials, schoolName, tagline } = settings;
-const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, twitter: Twitter, youtube: Youtube, linkedin: Linkedin };
+const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, twitter: Twitter, youtube: Youtube, linkedin: Linkedin, tiktok: Music2 };
 
 export default function GlobalFooter() {
   return (
