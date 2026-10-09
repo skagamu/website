@@ -47,5 +47,12 @@
     "category": "Akademik",
     "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1200",
     "layout": "wide"
+  },
+  {
+    "id": "a392bf68-1a31-4b02-a166-f5afdd05be73",
+    "title": "Pawai Budaya HUT RI 81",
+    "category": "Event",
+    "layout": "wide",
+    "image": "/website/media/AFN00202.webp"
   }
 ]
