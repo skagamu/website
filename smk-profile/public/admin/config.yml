@@ -206,7 +206,7 @@ collections:
     file: "smk-profile/data/gallery.json"
     create: true
     delete: true
-    identifier_field: "id"
+    identifier_field: "title"
     fields:
       - { label: "ID", name: "id", widget: "uuid", hint: "Dibuat otomatis; biarkan apa adanya." }
       - { label: "Judul", name: "title", widget: "string" }
