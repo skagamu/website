@@ -12,32 +12,6 @@
       "image": "/website/media/hero/silau-home.webp",
       "videoSrc": "",
       "objectPosition": "60% center"
-    },
-    {
-      "id": "kolaborasi",
-      "label": "Tumbuh bersama",
-      "headline": [
-        "Temukan potensimu.",
-        "Wujudkan lewat karya."
-      ],
-      "description": "Asah ide, berkolaborasi, dan kembangkan kompetensi untuk bekerja, berwirausaha, maupun melanjutkan pendidikan.",
-      "durationMs": 8000,
-      "image": "/website/media/hero/collaboration-slide.webp",
-      "videoSrc": "",
-      "objectPosition": "65% center"
-    },
-    {
-      "id": "bengkel",
-      "label": "Eksplorasi dunia vokasi",
-      "headline": [
-        "Mulai dari rasa ingin tahu.",
-        "Lanjutkan dengan aksi."
-      ],
-      "description": "Kenali dunia otomotif, bisnis digital, dan akuntansi. Pilih langkah belajar yang sesuai dengan minatmu.",
-      "durationMs": 8000,
-      "image": "/website/media/hero/workshop-slide.webp",
-      "videoSrc": "",
-      "objectPosition": "60% center"
     }
   ]
 }
