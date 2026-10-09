@@ -5,7 +5,8 @@
   "navigation": [
     {
       "label": "Profil",
-      "href": "/tentang-kami"
+      "href": "/tentang-kami",
+      "items": []
     },
     {
       "label": "Program Keahlian",
@@ -27,15 +28,18 @@
     },
     {
       "label": "Fasilitas",
-      "href": "/#fasilitas"
+      "href": "/#fasilitas",
+      "items": []
     },
     {
       "label": "Alumni",
-      "href": "/alumni"
+      "href": "/alumni",
+      "items": []
     },
     {
       "label": "Berita",
-      "href": "/berita"
+      "href": "/berita",
+      "items": []
     }
   ],
   "contact": {
@@ -62,5 +66,14 @@
       "href": "mailto:info@smkgajahmungkur1wuryantoro.sch.id"
     }
   ],
-  "socials": []
+  "socials": [
+    {
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@skagamu.official"
+    },
+    {
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@gmrp_onfire"
+    }
+  ]
 }
